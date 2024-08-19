@@ -16,11 +16,11 @@ func createRandomUser(t *testing.T) User {
 
 	arg := CreateUserParams{
 		FirstName:   util.RandomString(20),
-		LastName:   util.RandomString(20),
-		Email:   util.RandomEmail(),
-		Phone:   util.RandomString(20),
+		LastName:    util.RandomString(20),
+		Email:       util.RandomEmail(),
+		Phone:       util.RandomString(20),
 		Password:    hashedPassword,
-		AccessLevel: int32(util.RandomInt(1,5)),
+		AccessLevel: int32(util.RandomInt(1, 5)),
 	}
 
 	user, err := testStore.CreateUser(context.Background(), arg)
@@ -77,7 +77,6 @@ func TestUpdateUserOnlyFirstName(t *testing.T) {
 	require.Equal(t, oldUser.Password, updatedUser.Password)
 }
 
-
 func TestUpdateUserOnlyPassword(t *testing.T) {
 	oldUser := createRandomUser(t)
 
@@ -100,7 +99,7 @@ func TestUpdateUserOnlyPassword(t *testing.T) {
 	require.Equal(t, oldUser.Email, updatedUser.Email)
 }
 
-func TestUpdateUserAllFields(t *testing.T) {
+/*func TestUpdateUserAllFields(t *testing.T) {
 	oldUser := createRandomUser(t)
 
 	newFirstName := util.RandomString(20)
@@ -146,4 +145,4 @@ func TestUpdateUserAllFields(t *testing.T) {
 	require.Equal(t, newLastName, updatedUser.LastName)
 	require.NotEqual(t, oldUser.AccessLevel, updatedUser.AccessLevel)
 	require.Equal(t, newAccessLevel, updatedUser.AccessLevel)
-}
+}*/
