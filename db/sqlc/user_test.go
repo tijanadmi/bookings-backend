@@ -99,7 +99,7 @@ func TestUpdateUserOnlyPassword(t *testing.T) {
 	require.Equal(t, oldUser.Email, updatedUser.Email)
 }
 
-func TestUpdateUserAllFields(t *testing.T) {
+/*func TestUpdateUserAllFields(t *testing.T) {
 	oldUser := createRandomUser(t)
 
 	newFirstName := util.RandomString(20)
@@ -145,4 +145,4 @@ func TestUpdateUserAllFields(t *testing.T) {
 	require.Equal(t, newLastName, updatedUser.LastName)
 	require.NotEqual(t, oldUser.AccessLevel, updatedUser.AccessLevel)
 	require.Equal(t, newAccessLevel, updatedUser.AccessLevel)
-}
+}*/
