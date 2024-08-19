@@ -21,8 +21,14 @@ migratedown:
 migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
+new_migration:
+	migrate create -ext sql -dir db/migration -seq $(name)
+
 sqlc:
 	sqlc generate
 	
 test:
 	go test -v -cover -short ./...
+
+server:
+	go run main.go
