@@ -99,15 +99,15 @@ func TestUpdateUserOnlyPassword(t *testing.T) {
 	require.Equal(t, oldUser.Email, updatedUser.Email)
 }
 
-/*func TestUpdateUserAllFields(t *testing.T) {
+func TestUpdateUserAllFields(t *testing.T) {
 	oldUser := createRandomUser(t)
 
 	newFirstName := util.RandomString(20)
 	newLastName := util.RandomString(20)
-	newPhone:= util.RandomString(20)
+	newPhone := util.RandomString(20)
 	newPassword := util.RandomString(6)
 	newHashedPassword, err := util.HashPassword(newPassword)
-	newAccessLevel:= int32(util.RandomInt(1,5))
+	newAccessLevel := int32(util.RandomInt(1, 5))
 	require.NoError(t, err)
 
 	updatedUser, err := testStore.UpdateUser(context.Background(), UpdateUserParams{
@@ -130,7 +130,7 @@ func TestUpdateUserOnlyPassword(t *testing.T) {
 		},
 		AccessLevel: pgtype.Int4{
 			Int32: newAccessLevel,
-			Valid:  true,
+			Valid: true,
 		},
 	})
 
@@ -145,4 +145,4 @@ func TestUpdateUserOnlyPassword(t *testing.T) {
 	require.Equal(t, newLastName, updatedUser.LastName)
 	require.NotEqual(t, oldUser.AccessLevel, updatedUser.AccessLevel)
 	require.Equal(t, newAccessLevel, updatedUser.AccessLevel)
-}*/
+}
