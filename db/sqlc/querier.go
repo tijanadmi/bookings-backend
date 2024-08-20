@@ -6,6 +6,8 @@ package db
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 type Querier interface {
@@ -15,6 +17,7 @@ type Querier interface {
 	CreateRestriction(ctx context.Context, arg CreateRestrictionParams) (Restriction, error)
 	CreateRoom(ctx context.Context, arg CreateRoomParams) (Room, error)
 	CreateRoomRestriction(ctx context.Context, arg CreateRoomRestrictionParams) (RoomRestriction, error)
+	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteReservation(ctx context.Context, id int32) error
 	DeleteRestriction(ctx context.Context, id int32) error
@@ -30,6 +33,7 @@ type Querier interface {
 	GetRoomForUpdate(ctx context.Context, id int32) (Room, error)
 	GetRoomRestriction(ctx context.Context, id int32) (RoomRestriction, error)
 	GetRoomRestrictionForUpdate(ctx context.Context, id int32) (RoomRestriction, error)
+	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUser(ctx context.Context, email string) (User, error)
 	ListReservations(ctx context.Context, arg ListReservationsParams) ([]Reservation, error)
 	ListRestrictions(ctx context.Context, arg ListRestrictionsParams) ([]Restriction, error)
