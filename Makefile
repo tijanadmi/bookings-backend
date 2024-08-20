@@ -1,7 +1,7 @@
 DB_URL=postgresql://root:root@localhost:5433/bookings?sslmode=disable
 
 postgres:
-	docker run --name postgres16 -p 5433:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -d postgres:16-alpine
+	docker run --name postgres16 --network bookings-network -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -d postgres:16-alpine
 
 createdb:
 	docker exec -it postgres16 createdb --username=root --owner=root bookings
