@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookings-backend-api-deployment
+  labels:
+    app: bookings-backend-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookings-backend-api
+  template:
+    metadata:
+      labels:
+        app: bookings-backend-api
+    spec:
+      containers:
+      - name: bookings-backend-api
+        image: 339713150634.dkr.ecr.us-east-1.amazonaws.com/bookings:latest
+        ports:
+        - containerPort: 8080
