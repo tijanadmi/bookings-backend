@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message Room {
+    string room_name_sr = 1;
+    string room_name_en = 2;
+    string room_name_bg = 3;
+    string room_shortdes_sr = 4;
+    string room_shortdes_en = 5;
+    string room_shortdesc_bg = 6;
+    string room_des_sr = 7;
+    string room_des_en = 8;
+    string room_desc_bg = 9;
+    string room_pictures_folder = 10;
+    int32 room_guest_number= 11;
+    int32 room_price_en= 12;
+    google.protobuf.Timestamp created_at = 13;
+    google.protobuf.Timestamp updated_at = 14;
+
+}

@@ -12,6 +12,8 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "rpc_create_user.proto";
 import "rpc_login_user.proto";
 
+import "rpc_create_room.proto";
+
 option go_package = "github.com/tijanadmi/bookings_backend/pb";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
@@ -66,4 +68,15 @@ service Bookings {
     //         summary: "Verify email";
     //     };
     // }
+
+    rpc CreateRoom (CreateRoomRequest) returns (CreateRoomResponse) {
+        option (google.api.http) = {
+            post: "/v1/create_room"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to create a new room";
+            summary: "Create new room";
+        };
+    }
 }

@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Bookings_CreateUser_FullMethodName = "/pb.Bookings/CreateUser"
 	Bookings_LoginUser_FullMethodName  = "/pb.Bookings/LoginUser"
+	Bookings_CreateRoom_FullMethodName = "/pb.Bookings/CreateRoom"
 )
 
 // BookingsClient is the client API for Bookings service.
@@ -39,6 +40,7 @@ type BookingsClient interface {
 	//	    };
 	//	}
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
+	CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error)
 }
 
 type bookingsClient struct {
@@ -69,6 +71,16 @@ func (c *bookingsClient) LoginUser(ctx context.Context, in *LoginUserRequest, op
 	return out, nil
 }
 
+func (c *bookingsClient) CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateRoomResponse)
+	err := c.cc.Invoke(ctx, Bookings_CreateRoom_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookingsServer is the server API for Bookings service.
 // All implementations must embed UnimplementedBookingsServer
 // for forward compatibility.
@@ -85,6 +97,7 @@ type BookingsServer interface {
 	//	    };
 	//	}
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
+	CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error)
 	mustEmbedUnimplementedBookingsServer()
 }
 
@@ -100,6 +113,9 @@ func (UnimplementedBookingsServer) CreateUser(context.Context, *CreateUserReques
 }
 func (UnimplementedBookingsServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
+}
+func (UnimplementedBookingsServer) CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRoom not implemented")
 }
 func (UnimplementedBookingsServer) mustEmbedUnimplementedBookingsServer() {}
 func (UnimplementedBookingsServer) testEmbeddedByValue()                  {}
@@ -158,6 +174,24 @@ func _Bookings_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookings_CreateRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).CreateRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_CreateRoom_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).CreateRoom(ctx, req.(*CreateRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Bookings_ServiceDesc is the grpc.ServiceDesc for Bookings service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -172,6 +206,10 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginUser",
 			Handler:    _Bookings_LoginUser_Handler,
+		},
+		{
+			MethodName: "CreateRoom",
+			Handler:    _Bookings_CreateRoom_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

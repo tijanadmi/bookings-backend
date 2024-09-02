@@ -21,6 +21,40 @@
     "application/json"
   ],
   "paths": {
+    "/v1/create_room": {
+      "post": {
+        "summary": "Create new room",
+        "description": "Use this API to create a new room",
+        "operationId": "Bookings_CreateRoom",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateRoomResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateRoomRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/create_user": {
       "post": {
         "summary": "Create new user",
@@ -91,6 +125,57 @@
     }
   },
   "definitions": {
+    "pbCreateRoomRequest": {
+      "type": "object",
+      "properties": {
+        "roomNameSr": {
+          "type": "string"
+        },
+        "roomNameEn": {
+          "type": "string"
+        },
+        "roomNameBg": {
+          "type": "string"
+        },
+        "roomShortdesSr": {
+          "type": "string"
+        },
+        "roomShortdesEn": {
+          "type": "string"
+        },
+        "roomShortdescBg": {
+          "type": "string"
+        },
+        "roomDesSr": {
+          "type": "string"
+        },
+        "roomDesEn": {
+          "type": "string"
+        },
+        "roomDescBg": {
+          "type": "string"
+        },
+        "roomPicturesFolder": {
+          "type": "string"
+        },
+        "roomGuestNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomPriceEn": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateRoomResponse": {
+      "type": "object",
+      "properties": {
+        "room": {
+          "$ref": "#/definitions/pbRoom"
+        }
+      }
+    },
     "pbCreateUserRequest": {
       "type": "object",
       "properties": {
@@ -153,6 +238,57 @@
           "format": "date-time"
         },
         "refreshTokenExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pbRoom": {
+      "type": "object",
+      "properties": {
+        "roomNameSr": {
+          "type": "string"
+        },
+        "roomNameEn": {
+          "type": "string"
+        },
+        "roomNameBg": {
+          "type": "string"
+        },
+        "roomShortdesSr": {
+          "type": "string"
+        },
+        "roomShortdesEn": {
+          "type": "string"
+        },
+        "roomShortdescBg": {
+          "type": "string"
+        },
+        "roomDesSr": {
+          "type": "string"
+        },
+        "roomDesEn": {
+          "type": "string"
+        },
+        "roomDescBg": {
+          "type": "string"
+        },
+        "roomPicturesFolder": {
+          "type": "string"
+        },
+        "roomGuestNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomPriceEn": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
           "type": "string",
           "format": "date-time"
         }
