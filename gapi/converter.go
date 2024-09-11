@@ -17,3 +17,30 @@ func convertUser(user db.User) *pb.User {
 		CreatedAt:   timestamppb.New(user.CreatedAt),
 	}
 }
+
+func convertRoom(room db.Room) *pb.Room {
+	return &pb.Room{
+		RoomNameSr:         room.RoomNameSr,
+		RoomNameEn:         room.RoomNameSr,
+		RoomNameBg:         room.RoomNameSr,
+		RoomShortdesSr:     room.RoomShortDesSr,
+		RoomShortdesEn:     room.RoomShortDesEn,
+		RoomShortdescBg:    room.RoomShortDesBg,
+		RoomDesSr:          room.RoomDescriptionSr,
+		RoomDesEn:          room.RoomDescriptionEn,
+		RoomDescBg:         room.RoomDescriptionBg,
+		RoomPicturesFolder: room.RoomPicturesFolder,
+		RoomGuestNumber:    room.RoomGuestNumber,
+		RoomPriceEn:        room.RoomPriceEn,
+		CreatedAt:          timestamppb.New(room.CreatedAt),
+	}
+}
+
+func convertRestriction(restriction db.Restriction) *pb.Restriction {
+	return &pb.Restriction{
+		RestrictionNameSr: restriction.RestrictionNameSr,
+		RestrictionNameEn: restriction.RestrictionNameSr,
+		RestrictionNameBg: restriction.RestrictionNameSr,
+		CreatedAt:         timestamppb.New(restriction.CreatedAt),
+	}
+}

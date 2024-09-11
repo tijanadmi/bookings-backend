@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package pb;
+
+import "reservation.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message CreateReservationRequest {
+    int32 room_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    string phone = 5;
+    google.protobuf.Timestamp start_date = 6;
+    google.protobuf.Timestamp end_date = 7;
+    int32 processed = 8;
+}
+
+message CreateReservationResponse {
+    Reservation reservation = 1;
+}

@@ -19,9 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Bookings_CreateUser_FullMethodName = "/pb.Bookings/CreateUser"
-	Bookings_LoginUser_FullMethodName  = "/pb.Bookings/LoginUser"
-	Bookings_CreateRoom_FullMethodName = "/pb.Bookings/CreateRoom"
+	Bookings_CreateUser_FullMethodName        = "/pb.Bookings/CreateUser"
+	Bookings_UpdateUser_FullMethodName        = "/pb.Bookings/UpdateUser"
+	Bookings_LoginUser_FullMethodName         = "/pb.Bookings/LoginUser"
+	Bookings_CreateRoom_FullMethodName        = "/pb.Bookings/CreateRoom"
+	Bookings_CreateRestriction_FullMethodName = "/pb.Bookings/CreateRestriction"
+	Bookings_CreateReservation_FullMethodName = "/pb.Bookings/CreateReservation"
 )
 
 // BookingsClient is the client API for Bookings service.
@@ -29,18 +32,11 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BookingsClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
-	//	rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
-	//	    option (google.api.http) = {
-	//	        patch: "/v1/update_user"
-	//	        body: "*"
-	//	    };
-	//	    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-	//	        description: "Use this API to update user";
-	//	        summary: "Update user";
-	//	    };
-	//	}
+	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error)
+	CreateRestriction(ctx context.Context, in *CreateRestrictionRequest, opts ...grpc.CallOption) (*CreateRestrictionResponse, error)
+	CreateReservation(ctx context.Context, in *CreateReservationRequest, opts ...grpc.CallOption) (*CreateReservationResponse, error)
 }
 
 type bookingsClient struct {
@@ -55,6 +51,16 @@ func (c *bookingsClient) CreateUser(ctx context.Context, in *CreateUserRequest, 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateUserResponse)
 	err := c.cc.Invoke(ctx, Bookings_CreateUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateUserResponse)
+	err := c.cc.Invoke(ctx, Bookings_UpdateUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -81,23 +87,36 @@ func (c *bookingsClient) CreateRoom(ctx context.Context, in *CreateRoomRequest, 
 	return out, nil
 }
 
+func (c *bookingsClient) CreateRestriction(ctx context.Context, in *CreateRestrictionRequest, opts ...grpc.CallOption) (*CreateRestrictionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateRestrictionResponse)
+	err := c.cc.Invoke(ctx, Bookings_CreateRestriction_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) CreateReservation(ctx context.Context, in *CreateReservationRequest, opts ...grpc.CallOption) (*CreateReservationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateReservationResponse)
+	err := c.cc.Invoke(ctx, Bookings_CreateReservation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookingsServer is the server API for Bookings service.
 // All implementations must embed UnimplementedBookingsServer
 // for forward compatibility.
 type BookingsServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
-	//	rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
-	//	    option (google.api.http) = {
-	//	        patch: "/v1/update_user"
-	//	        body: "*"
-	//	    };
-	//	    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-	//	        description: "Use this API to update user";
-	//	        summary: "Update user";
-	//	    };
-	//	}
+	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error)
+	CreateRestriction(context.Context, *CreateRestrictionRequest) (*CreateRestrictionResponse, error)
+	CreateReservation(context.Context, *CreateReservationRequest) (*CreateReservationResponse, error)
 	mustEmbedUnimplementedBookingsServer()
 }
 
@@ -111,11 +130,20 @@ type UnimplementedBookingsServer struct{}
 func (UnimplementedBookingsServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
+func (UnimplementedBookingsServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
 func (UnimplementedBookingsServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
 }
 func (UnimplementedBookingsServer) CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRoom not implemented")
+}
+func (UnimplementedBookingsServer) CreateRestriction(context.Context, *CreateRestrictionRequest) (*CreateRestrictionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRestriction not implemented")
+}
+func (UnimplementedBookingsServer) CreateReservation(context.Context, *CreateReservationRequest) (*CreateReservationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateReservation not implemented")
 }
 func (UnimplementedBookingsServer) mustEmbedUnimplementedBookingsServer() {}
 func (UnimplementedBookingsServer) testEmbeddedByValue()                  {}
@@ -156,6 +184,24 @@ func _Bookings_CreateUser_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookings_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_UpdateUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Bookings_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginUserRequest)
 	if err := dec(in); err != nil {
@@ -192,6 +238,42 @@ func _Bookings_CreateRoom_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookings_CreateRestriction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRestrictionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).CreateRestriction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_CreateRestriction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).CreateRestriction(ctx, req.(*CreateRestrictionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_CreateReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateReservationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).CreateReservation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_CreateReservation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).CreateReservation(ctx, req.(*CreateReservationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Bookings_ServiceDesc is the grpc.ServiceDesc for Bookings service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -204,12 +286,24 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Bookings_CreateUser_Handler,
 		},
 		{
+			MethodName: "UpdateUser",
+			Handler:    _Bookings_UpdateUser_Handler,
+		},
+		{
 			MethodName: "LoginUser",
 			Handler:    _Bookings_LoginUser_Handler,
 		},
 		{
 			MethodName: "CreateRoom",
 			Handler:    _Bookings_CreateRoom_Handler,
+		},
+		{
+			MethodName: "CreateRestriction",
+			Handler:    _Bookings_CreateRestriction_Handler,
+		},
+		{
+			MethodName: "CreateReservation",
+			Handler:    _Bookings_CreateReservation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

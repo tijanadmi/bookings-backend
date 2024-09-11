@@ -108,7 +108,8 @@ func runGrpcServer(
 		log.Fatal().Err(err).Msg("cannot create server")
 	}
 
-	grpcServer := grpc.NewServer()
+	gprcLogger := grpc.UnaryInterceptor(gapi.GrpcLogger)
+	grpcServer := grpc.NewServer(gprcLogger)
 	pb.RegisterBookingsServer(grpcServer, server)
 	reflection.Register(grpcServer)
 
@@ -174,8 +175,8 @@ func runGatewayServer(
 	}
 
 	log.Info().Msgf("start HTTP gateway server at %s", listener.Addr().String())
-	//handler:=gapi.HttpLogger(mux)
-	err = http.Serve(listener, mux)
+	handler := gapi.HttpLogger(mux)
+	err = http.Serve(listener, handler)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot start HTTP gateway server")
 	}

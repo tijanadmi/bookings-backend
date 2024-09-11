@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message Restriction {
+    string restriction_name_sr = 1;
+    string restriction_name_en = 2;
+    string restriction_name_bg = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+
+}

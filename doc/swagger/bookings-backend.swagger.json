@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Bookings Backend API",
-    "version": "1.0",
+    "version": "1.1",
     "contact": {
       "name": "TDI Spaces",
       "url": "https://github.com/tijanadmi",
@@ -21,6 +21,74 @@
     "application/json"
   ],
   "paths": {
+    "/v1/create_reservation": {
+      "post": {
+        "summary": "Create new reservation",
+        "description": "Use this API to create a new reservation",
+        "operationId": "Bookings_CreateReservation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateReservationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateReservationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/create_restriction": {
+      "post": {
+        "summary": "Create new restriction",
+        "description": "Use this API to create a new restriction",
+        "operationId": "Bookings_CreateRestriction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateRestrictionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateRestrictionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/create_room": {
       "post": {
         "summary": "Create new room",
@@ -122,9 +190,106 @@
           "Bookings"
         ]
       }
+    },
+    "/v1/update_user": {
+      "patch": {
+        "summary": "Update user",
+        "description": "Use this API to update user",
+        "operationId": "Bookings_UpdateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbUpdateUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
     }
   },
   "definitions": {
+    "pbCreateReservationRequest": {
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "processed": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateReservationResponse": {
+      "type": "object",
+      "properties": {
+        "reservation": {
+          "$ref": "#/definitions/pbReservation"
+        }
+      }
+    },
+    "pbCreateRestrictionRequest": {
+      "type": "object",
+      "properties": {
+        "restrictionNameSr": {
+          "type": "string"
+        },
+        "restrictionNameEn": {
+          "type": "string"
+        },
+        "restrictionNameBg": {
+          "type": "string"
+        }
+      }
+    },
+    "pbCreateRestrictionResponse": {
+      "type": "object",
+      "properties": {
+        "restriction": {
+          "$ref": "#/definitions/pbRestriction"
+        }
+      }
+    },
     "pbCreateRoomRequest": {
       "type": "object",
       "properties": {
@@ -243,6 +408,69 @@
         }
       }
     },
+    "pbReservation": {
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "processed": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pbRestriction": {
+      "type": "object",
+      "properties": {
+        "restrictionNameSr": {
+          "type": "string"
+        },
+        "restrictionNameEn": {
+          "type": "string"
+        },
+        "restrictionNameBg": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "pbRoom": {
       "type": "object",
       "properties": {
@@ -291,6 +519,38 @@
         "updatedAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbUpdateUserRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "accessLevel": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbUpdateUserResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/pbUser"
         }
       }
     },

@@ -11,6 +11,7 @@ var (
 	//isValidFullName = regexp.MustCompile(`^[a-zA-Z-\s]+$`).MatchString
 	isValidFullName    = regexp.MustCompile(`^[a-zA-Z\s]+$`).MatchString
 	isValidPhoneNumber = regexp.MustCompile(`^\+?[0-9]+$`).MatchString
+	isValidNumber = regexp.MustCompile(`^[0-9]+$`).MatchString
 )
 
 func ValidateString(value string, minLength int, maxLength int) error {
@@ -20,6 +21,7 @@ func ValidateString(value string, minLength int, maxLength int) error {
 	}
 	return nil
 }
+
 
 func ValidateName(value string) error {
 	if err := ValidateString(value, 3, 100); err != nil {

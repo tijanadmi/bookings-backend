@@ -10,16 +10,19 @@ import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "rpc_create_user.proto";
+import "rpc_update_user.proto";
 import "rpc_login_user.proto";
 
 import "rpc_create_room.proto";
+import "rpc_create_restriction.proto";
+import "rpc_create_reservation.proto";
 
 option go_package = "github.com/tijanadmi/bookings_backend/pb";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     info: {
         title: "Bookings Backend API";
-        version: "1.0";
+        version: "1.1";
         contact: {
             name: "TDI Spaces";
             url: "https://github.com/tijanadmi";
@@ -39,16 +42,16 @@ service Bookings {
             summary: "Create new user";
         };
     }
-    // rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
-    //     option (google.api.http) = {
-    //         patch: "/v1/update_user"
-    //         body: "*"
-    //     };
-    //     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-    //         description: "Use this API to update user";
-    //         summary: "Update user";
-    //     };
-    // }
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
+        option (google.api.http) = {
+            patch: "/v1/update_user"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to update user";
+            summary: "Update user";
+        };
+    }
     rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {
         option (google.api.http) = {
             post: "/v1/login_user"
@@ -77,6 +80,26 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to create a new room";
             summary: "Create new room";
+        };
+    }
+    rpc CreateRestriction (CreateRestrictionRequest) returns (CreateRestrictionResponse) {
+        option (google.api.http) = {
+            post: "/v1/create_restriction"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to create a new restriction";
+            summary: "Create new restriction";
+        };
+    }
+    rpc CreateReservation (CreateReservationRequest) returns (CreateReservationResponse) {
+        option (google.api.http) = {
+            post: "/v1/create_reservation"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to create a new reservation";
+            summary: "Create new reservation";
         };
     }
 }
