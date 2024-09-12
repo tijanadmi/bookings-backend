@@ -16,6 +16,7 @@ import "rpc_login_user.proto";
 import "rpc_create_room.proto";
 import "rpc_create_restriction.proto";
 import "rpc_create_reservation.proto";
+import "rpc_create_room_restriction.proto";
 
 option go_package = "github.com/tijanadmi/bookings_backend/pb";
 
@@ -100,6 +101,16 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to create a new reservation";
             summary: "Create new reservation";
+        };
+    }
+    rpc CreateRoomRestriction (CreateRoomRestrictionRequest) returns (CreateRoomRestrictionResponse) {
+        option (google.api.http) = {
+            post: "/v1/create_room_restriction"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to create a new room restriction";
+            summary: "Create new room restriction";
         };
     }
 }

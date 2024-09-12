@@ -44,3 +44,32 @@ func convertRestriction(restriction db.Restriction) *pb.Restriction {
 		CreatedAt:         timestamppb.New(restriction.CreatedAt),
 	}
 }
+
+func convertReservation(reservation db.Reservation) *pb.Reservation {
+	startDate := reservation.StartDate.Format("2006-01-02")
+	endDate := reservation.EndDate.Format("2006-01-02")
+	return &pb.Reservation{
+		RoomId:    &reservation.RoomID,
+		FirstName: &reservation.FirstName,
+		LastName:  &reservation.LastName,
+		Email:     &reservation.Email,
+		Phone:     &reservation.Phone,
+		StartDate: &startDate,
+		EndDate:   &endDate,
+		Processed: &reservation.Processed,
+		CreatedAt: timestamppb.New(reservation.CreatedAt),
+	}
+}
+
+func convertRoomRestriction(roomRestriction db.RoomRestriction) *pb.RoomRestriction {
+	startDate := roomRestriction.StartDate.Format("2006-01-02")
+	endDate := roomRestriction.EndDate.Format("2006-01-02")
+	return &pb.RoomRestriction{
+		StartDate:     &startDate,
+		EndDate:       &endDate,
+		RoomId:        &roomRestriction.RoomID,
+		ReservationId: &roomRestriction.ReservationID,
+		RestrictionId: &roomRestriction.RestrictionID,
+		CreatedAt:     timestamppb.New(roomRestriction.CreatedAt),
+	}
+}

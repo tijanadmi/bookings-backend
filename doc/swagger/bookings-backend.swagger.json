@@ -123,6 +123,40 @@
         ]
       }
     },
+    "/v1/create_room_restriction": {
+      "post": {
+        "summary": "Create new room restriction",
+        "description": "Use this API to create a new room restriction",
+        "operationId": "Bookings_CreateRoomRestriction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateRoomRestrictionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateRoomRestrictionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/create_user": {
       "post": {
         "summary": "Create new user",
@@ -247,12 +281,10 @@
           "type": "string"
         },
         "startDate": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "endDate": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "processed": {
           "type": "integer",
@@ -338,6 +370,37 @@
       "properties": {
         "room": {
           "$ref": "#/definitions/pbRoom"
+        }
+      }
+    },
+    "pbCreateRoomRestrictionRequest": {
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "reservationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "restrictionId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateRoomRestrictionResponse": {
+      "type": "object",
+      "properties": {
+        "restriction": {
+          "$ref": "#/definitions/pbRoomRestriction"
         }
       }
     },
@@ -428,12 +491,10 @@
           "type": "string"
         },
         "startDate": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "endDate": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "processed": {
           "type": "integer",
@@ -509,6 +570,37 @@
           "format": "int32"
         },
         "roomPriceEn": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pbRoomRestriction": {
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "reservationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "restrictionId": {
           "type": "integer",
           "format": "int32"
         },

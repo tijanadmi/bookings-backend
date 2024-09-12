@@ -1,0 +1,15 @@
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message RoomRestriction {
+    required string start_date = 1;
+    required string end_date = 2;
+    required int32 room_id = 3;
+    required int32 reservation_id = 4;
+    optional int32 restriction_id  = 5;
+    required google.protobuf.Timestamp created_at = 6;
+    optional google.protobuf.Timestamp updated_at = 7;
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+import "room_restriction.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message CreateRoomRestrictionRequest {
+    string start_date = 1;
+    string end_date = 2;
+    int32 room_id = 3;
+    int32 reservation_id = 4;
+    int32 restriction_id  = 5;
+}
+
+message CreateRoomRestrictionResponse {
+    RoomRestriction restriction = 1;
+}

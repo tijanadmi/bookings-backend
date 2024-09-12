@@ -11,9 +11,9 @@ message Reservation {
     optional string last_name = 3;
     required string email = 4;
     optional string phone = 5;
-    required google.protobuf.Timestamp start_date = 6;
-    required google.protobuf.Timestamp end_date = 7;
-    required int32 processed = 8;
-    optional google.protobuf.Timestamp created_at = 9;
+    required string start_date = 6;
+    required string end_date = 7;
+    optional int32 processed = 8;
+    required google.protobuf.Timestamp created_at = 9;
     optional google.protobuf.Timestamp updated_at = 10;
 }
