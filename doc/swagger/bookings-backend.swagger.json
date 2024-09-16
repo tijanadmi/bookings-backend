@@ -225,6 +225,40 @@
         ]
       }
     },
+    "/v1/update_room": {
+      "patch": {
+        "summary": "Update room",
+        "description": "Use this API to update room",
+        "operationId": "Bookings_UpdateRoom",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateRoomResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbUpdateRoomRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/update_user": {
       "patch": {
         "summary": "Update user",
@@ -611,6 +645,61 @@
         "updatedAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbUpdateRoomRequest": {
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomNameSr": {
+          "type": "string"
+        },
+        "roomNameEn": {
+          "type": "string"
+        },
+        "roomNameBg": {
+          "type": "string"
+        },
+        "roomShortdesSr": {
+          "type": "string"
+        },
+        "roomShortdesEn": {
+          "type": "string"
+        },
+        "roomShortdescBg": {
+          "type": "string"
+        },
+        "roomDesSr": {
+          "type": "string"
+        },
+        "roomDesEn": {
+          "type": "string"
+        },
+        "roomDescBg": {
+          "type": "string"
+        },
+        "roomPicturesFolder": {
+          "type": "string"
+        },
+        "roomGuestNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomPriceEn": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbUpdateRoomResponse": {
+      "type": "object",
+      "properties": {
+        "room": {
+          "$ref": "#/definitions/pbRoom"
         }
       }
     },

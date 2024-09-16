@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package pb;
+
+import "room.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message UpdateRoomRequest {
+    int32 room_id  = 1;
+    optional string room_name_sr = 2;
+    optional string room_name_en = 3;
+    optional string room_name_bg = 4;
+    optional string room_shortdes_sr = 5;
+    optional string room_shortdes_en = 6;
+    optional string room_shortdesc_bg = 7;
+    optional string room_des_sr = 8;
+    optional string room_des_en = 9;
+    optional string room_desc_bg = 10;
+    optional string room_pictures_folder = 11;
+    optional int32 room_guest_number= 12;
+    optional int32 room_price_en= 13;
+}
+
+message UpdateRoomResponse {
+    Room room = 1;
+}

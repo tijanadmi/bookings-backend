@@ -14,6 +14,7 @@ import "rpc_update_user.proto";
 import "rpc_login_user.proto";
 
 import "rpc_create_room.proto";
+import "rpc_update_room.proto";
 import "rpc_create_restriction.proto";
 import "rpc_create_reservation.proto";
 import "rpc_create_room_restriction.proto";
@@ -81,6 +82,16 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to create a new room";
             summary: "Create new room";
+        };
+    }
+    rpc UpdateRoom (UpdateRoomRequest) returns (UpdateRoomResponse) {
+        option (google.api.http) = {
+            patch: "/v1/update_room"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to update room";
+            summary: "Update room";
         };
     }
     rpc CreateRestriction (CreateRestrictionRequest) returns (CreateRestrictionResponse) {
