@@ -46,7 +46,7 @@ The backend is developed using the Go programming language, PostgreSQL for data 
 1.	**Clone the repository:**
 
 ```sh
-git clone https://github.com/tijanadmi/movieGinMongoAPI.git
+git clone https://github.com/tijanadmi/bookings-backend.git
 cd bookings-backend
 ```
 
@@ -91,8 +91,8 @@ make server
 
 3. **Access the API:**
 
-The HTTP API will be available at http://localhost:8080
-The gRPC API will be available at http://localhost:9090
+-   The HTTP API will be available at http://localhost:8080
+-   The gRPC API will be available at http://localhost:9090
 
 ## Running Tests
 
