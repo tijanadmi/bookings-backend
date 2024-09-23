@@ -224,6 +224,40 @@
         ]
       }
     },
+    "/v1/get_user": {
+      "post": {
+        "summary": "Get user by id",
+        "description": "Use this API to get user by id",
+        "operationId": "Bookings_GetUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbGetUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/list_rooms": {
       "get": {
         "summary": "List rooms",
@@ -603,6 +637,22 @@
       "properties": {
         "room": {
           "$ref": "#/definitions/pbRoom"
+        }
+      }
+    },
+    "pbGetUserRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "pbGetUserResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/pbUser"
         }
       }
     },

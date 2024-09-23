@@ -10,6 +10,7 @@ import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "rpc_create_user.proto";
+import "rpc_get_user.proto";
 import "rpc_update_user.proto";
 import "rpc_login_user.proto";
 
@@ -45,6 +46,16 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to create a new user";
             summary: "Create new user";
+        };
+    }
+    rpc GetUser (GetUserRequest) returns (GetUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/get_user"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to get user by id";
+            summary: "Get user by id";
         };
     }
     rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
