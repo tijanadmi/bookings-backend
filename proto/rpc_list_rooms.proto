@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "room.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message ListRoomsRequest {
+    int32 limit = 1;  // Limit soba koje vraćamo
+    int32 offset = 2; // Offset za paginaciju
+}
+
+message ListRoomsResponse {
+    repeated Room rooms = 1; // Lista soba
+}

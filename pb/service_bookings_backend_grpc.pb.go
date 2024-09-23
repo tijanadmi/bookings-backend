@@ -19,14 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Bookings_CreateUser_FullMethodName            = "/pb.Bookings/CreateUser"
-	Bookings_UpdateUser_FullMethodName            = "/pb.Bookings/UpdateUser"
-	Bookings_LoginUser_FullMethodName             = "/pb.Bookings/LoginUser"
-	Bookings_CreateRoom_FullMethodName            = "/pb.Bookings/CreateRoom"
-	Bookings_UpdateRoom_FullMethodName            = "/pb.Bookings/UpdateRoom"
-	Bookings_CreateRestriction_FullMethodName     = "/pb.Bookings/CreateRestriction"
-	Bookings_CreateReservation_FullMethodName     = "/pb.Bookings/CreateReservation"
-	Bookings_CreateRoomRestriction_FullMethodName = "/pb.Bookings/CreateRoomRestriction"
+	Bookings_CreateUser_FullMethodName                    = "/pb.Bookings/CreateUser"
+	Bookings_UpdateUser_FullMethodName                    = "/pb.Bookings/UpdateUser"
+	Bookings_LoginUser_FullMethodName                     = "/pb.Bookings/LoginUser"
+	Bookings_GetRoom_FullMethodName                       = "/pb.Bookings/GetRoom"
+	Bookings_ListRooms_FullMethodName                     = "/pb.Bookings/ListRooms"
+	Bookings_SearchAvailabilityForAllRooms_FullMethodName = "/pb.Bookings/SearchAvailabilityForAllRooms"
+	Bookings_CreateRoom_FullMethodName                    = "/pb.Bookings/CreateRoom"
+	Bookings_UpdateRoom_FullMethodName                    = "/pb.Bookings/UpdateRoom"
+	Bookings_CreateRestriction_FullMethodName             = "/pb.Bookings/CreateRestriction"
+	Bookings_CreateReservation_FullMethodName             = "/pb.Bookings/CreateReservation"
+	Bookings_CreateRoomRestriction_FullMethodName         = "/pb.Bookings/CreateRoomRestriction"
 )
 
 // BookingsClient is the client API for Bookings service.
@@ -36,6 +39,9 @@ type BookingsClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
+	GetRoom(ctx context.Context, in *GetRoomRequest, opts ...grpc.CallOption) (*GetRoomResponse, error)
+	ListRooms(ctx context.Context, in *ListRoomsRequest, opts ...grpc.CallOption) (*ListRoomsResponse, error)
+	SearchAvailabilityForAllRooms(ctx context.Context, in *SearchAvailabilityForAllRoomsRequest, opts ...grpc.CallOption) (*SearchAvailabilityForAllRoomsResponse, error)
 	CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error)
 	UpdateRoom(ctx context.Context, in *UpdateRoomRequest, opts ...grpc.CallOption) (*UpdateRoomResponse, error)
 	CreateRestriction(ctx context.Context, in *CreateRestrictionRequest, opts ...grpc.CallOption) (*CreateRestrictionResponse, error)
@@ -75,6 +81,36 @@ func (c *bookingsClient) LoginUser(ctx context.Context, in *LoginUserRequest, op
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(LoginUserResponse)
 	err := c.cc.Invoke(ctx, Bookings_LoginUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) GetRoom(ctx context.Context, in *GetRoomRequest, opts ...grpc.CallOption) (*GetRoomResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetRoomResponse)
+	err := c.cc.Invoke(ctx, Bookings_GetRoom_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) ListRooms(ctx context.Context, in *ListRoomsRequest, opts ...grpc.CallOption) (*ListRoomsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListRoomsResponse)
+	err := c.cc.Invoke(ctx, Bookings_ListRooms_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) SearchAvailabilityForAllRooms(ctx context.Context, in *SearchAvailabilityForAllRoomsRequest, opts ...grpc.CallOption) (*SearchAvailabilityForAllRoomsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchAvailabilityForAllRoomsResponse)
+	err := c.cc.Invoke(ctx, Bookings_SearchAvailabilityForAllRooms_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -138,6 +174,9 @@ type BookingsServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
+	GetRoom(context.Context, *GetRoomRequest) (*GetRoomResponse, error)
+	ListRooms(context.Context, *ListRoomsRequest) (*ListRoomsResponse, error)
+	SearchAvailabilityForAllRooms(context.Context, *SearchAvailabilityForAllRoomsRequest) (*SearchAvailabilityForAllRoomsResponse, error)
 	CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error)
 	UpdateRoom(context.Context, *UpdateRoomRequest) (*UpdateRoomResponse, error)
 	CreateRestriction(context.Context, *CreateRestrictionRequest) (*CreateRestrictionResponse, error)
@@ -161,6 +200,15 @@ func (UnimplementedBookingsServer) UpdateUser(context.Context, *UpdateUserReques
 }
 func (UnimplementedBookingsServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
+}
+func (UnimplementedBookingsServer) GetRoom(context.Context, *GetRoomRequest) (*GetRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoom not implemented")
+}
+func (UnimplementedBookingsServer) ListRooms(context.Context, *ListRoomsRequest) (*ListRoomsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRooms not implemented")
+}
+func (UnimplementedBookingsServer) SearchAvailabilityForAllRooms(context.Context, *SearchAvailabilityForAllRoomsRequest) (*SearchAvailabilityForAllRoomsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchAvailabilityForAllRooms not implemented")
 }
 func (UnimplementedBookingsServer) CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRoom not implemented")
@@ -248,6 +296,60 @@ func _Bookings_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BookingsServer).LoginUser(ctx, req.(*LoginUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_GetRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).GetRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_GetRoom_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).GetRoom(ctx, req.(*GetRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_ListRooms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRoomsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).ListRooms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_ListRooms_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).ListRooms(ctx, req.(*ListRoomsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_SearchAvailabilityForAllRooms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchAvailabilityForAllRoomsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).SearchAvailabilityForAllRooms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_SearchAvailabilityForAllRooms_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).SearchAvailabilityForAllRooms(ctx, req.(*SearchAvailabilityForAllRoomsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -360,6 +462,18 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginUser",
 			Handler:    _Bookings_LoginUser_Handler,
+		},
+		{
+			MethodName: "GetRoom",
+			Handler:    _Bookings_GetRoom_Handler,
+		},
+		{
+			MethodName: "ListRooms",
+			Handler:    _Bookings_ListRooms_Handler,
+		},
+		{
+			MethodName: "SearchAvailabilityForAllRooms",
+			Handler:    _Bookings_SearchAvailabilityForAllRooms_Handler,
 		},
 		{
 			MethodName: "CreateRoom",

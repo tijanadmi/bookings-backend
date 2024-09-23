@@ -14,6 +14,9 @@ import "rpc_update_user.proto";
 import "rpc_login_user.proto";
 
 import "rpc_create_room.proto";
+import "rpc_get_room.proto";
+import "rpc_list_rooms.proto";
+import "rpc_search_availability_rooms.proto";
 import "rpc_update_room.proto";
 import "rpc_create_restriction.proto";
 import "rpc_create_reservation.proto";
@@ -74,6 +77,33 @@ service Bookings {
     //     };
     // }
 
+    rpc GetRoom (GetRoomRequest) returns (GetRoomResponse) {
+        option (google.api.http) = {
+            get: "/v1/get_room"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to get room";
+            summary: "Get room";
+        };
+    }
+    rpc ListRooms (ListRoomsRequest) returns (ListRoomsResponse) {
+        option (google.api.http) = {
+            get: "/v1/list_rooms"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to list rooms with pagination";
+            summary: "List rooms";
+        };
+    }
+    rpc SearchAvailabilityForAllRooms (SearchAvailabilityForAllRoomsRequest) returns (SearchAvailabilityForAllRoomsResponse) {
+        option (google.api.http) = {
+            get: "/v1/search_availability_rooms"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to search availability for all rooms with pagination";
+            summary: "Search availability for all  rooms";
+        };
+    }
     rpc CreateRoom (CreateRoomRequest) returns (CreateRoomResponse) {
         option (google.api.http) = {
             post: "/v1/create_room"

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "room.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message GetRoomRequest {
+    int32 room_id = 1;
+}
+
+message GetRoomResponse {
+    Room room = 1;
+}

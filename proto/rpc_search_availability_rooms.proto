@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package pb;
+
+import "room.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message SearchAvailabilityForAllRoomsRequest {
+    string end_date=1;
+    string start_date=2;
+    int32 limit = 3;  // Limit soba koje vraćamo
+    int32 offset = 4; // Offset za paginaciju
+}
+
+message SearchAvailabilityForAllRoomsResponse {
+    repeated Room rooms = 1; // Lista soba
+}
