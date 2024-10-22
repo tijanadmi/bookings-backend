@@ -13,10 +13,10 @@ import (
 )
 
 func (server *Server) CreateRoom(ctx context.Context, req *pb.CreateRoomRequest) (*pb.CreateRoomResponse, error) {
-	_, err := server.authorizeUser(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
+	// _, err := server.authorizeUser(ctx)
+	// if err != nil {
+	// 	return nil, unauthenticatedError(err)
+	// }
 	violations := validateCreateRoomRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

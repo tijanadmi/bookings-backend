@@ -14,6 +14,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rakyll/statik/fs"
+	"github.com/rs/cors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/tijanadmi/bookings_backend/api"
@@ -164,6 +165,15 @@ func runGatewayServer(
 	swaggerHandler := http.StripPrefix("/swagger/", http.FileServer( /*http.Dir("./doc/swagger")*/ statikFS))
 	mux.Handle("/swagger/", swaggerHandler)
 
+	// Configure CORS middleware
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173", "*"}, // Ovde dozvoli specifične ili sve origne
+		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Origin", "Content-Type", "Authorization"},
+		ExposedHeaders:   []string{"Content-Length"},
+		AllowCredentials: true,
+	}).Handler(mux)
+
 	// httpServer := &http.Server{
 	// 	Handler: gapi.HttpLogger(mux),
 	// 	Addr:    config.HTTPServerAddress,
@@ -175,7 +185,7 @@ func runGatewayServer(
 	}
 
 	log.Info().Msgf("start HTTP gateway server at %s", listener.Addr().String())
-	handler := gapi.HttpLogger(mux)
+	handler := gapi.HttpLogger(corsHandler)
 	err = http.Serve(listener, handler)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot start HTTP gateway server")

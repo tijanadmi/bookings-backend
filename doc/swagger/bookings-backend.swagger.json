@@ -769,6 +769,10 @@
     "pbRoom": {
       "type": "object",
       "properties": {
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
         "roomNameSr": {
           "type": "string"
         },

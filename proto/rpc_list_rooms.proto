@@ -13,4 +13,5 @@ message ListRoomsRequest {
 
 message ListRoomsResponse {
     repeated Room rooms = 1; // Lista soba
+    
 }

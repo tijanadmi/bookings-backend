@@ -10,10 +10,10 @@ import (
 )
 
 func (server *Server) ListRooms(ctx context.Context, req *pb.ListRoomsRequest) (*pb.ListRoomsResponse, error) {
-	_, err := server.authorizeUser(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
+	// _, err := server.authorizeUser(ctx)
+	// if err != nil {
+	// 	return nil, unauthenticatedError(err)
+	// }
 
 	arg := db.ListRoomsParams{
 		Limit:  req.GetLimit(),

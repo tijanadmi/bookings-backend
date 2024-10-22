@@ -20,6 +20,7 @@ func convertUser(user db.User) *pb.User {
 
 func convertRoom(room db.Room) *pb.Room {
 	return &pb.Room{
+		RoomId:             room.ID,
 		RoomNameSr:         room.RoomNameSr,
 		RoomNameEn:         room.RoomNameSr,
 		RoomNameBg:         room.RoomNameSr,
@@ -33,7 +34,6 @@ func convertRoom(room db.Room) *pb.Room {
 		RoomGuestNumber:    room.RoomGuestNumber,
 		RoomPriceEn:        room.RoomPriceEn,
 		CreatedAt:          timestamppb.New(room.CreatedAt),
-		
 	}
 }
 
