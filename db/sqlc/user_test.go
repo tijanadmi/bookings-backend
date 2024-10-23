@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"fmt"
+
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/stretchr/testify/require"
 	"github.com/tijanadmi/bookings_backend/util"
@@ -107,7 +109,7 @@ func TestUpdateUserAllFields(t *testing.T) {
 	newPhone := util.RandomString(20)
 	newPassword := util.RandomString(6)
 	newHashedPassword, err := util.HashPassword(newPassword)
-	newAccessLevel := int32(util.RandomInt(2, 5))
+	newAccessLevel := int32(util.RandomInt(1, 5))
 	require.NoError(t, err)
 
 	updatedUser, err := testStore.UpdateUser(context.Background(), UpdateUserParams{
@@ -144,6 +146,9 @@ func TestUpdateUserAllFields(t *testing.T) {
 	require.NotEqual(t, oldUser.LastName, updatedUser.LastName)
 	require.Equal(t, newLastName, updatedUser.LastName)
 	require.NotEqual(t, oldUser.AccessLevel, updatedUser.AccessLevel)
+	fmt.Println("Old Access Level:", oldUser.AccessLevel)
+	fmt.Println("New Access Level:", newAccessLevel)
+	fmt.Println("Updated Access Level:", updatedUser.AccessLevel)
 	//fmt.Println(newAccessLevel, updatedUser.AccessLevel)
 	//require.Equal(t, newAccessLevel, updatedUser.AccessLevel)
 }
