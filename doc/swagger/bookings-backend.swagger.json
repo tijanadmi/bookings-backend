@@ -191,6 +191,39 @@
         ]
       }
     },
+    "/v1/delete_room": {
+      "delete": {
+        "summary": "Delete room",
+        "description": "Use this API to delete room",
+        "operationId": "Bookings_DeleteRoom",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbDeleteRoomResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/get_room": {
       "get": {
         "summary": "Get room",
@@ -537,7 +570,7 @@
         "roomShortdesEn": {
           "type": "string"
         },
-        "roomShortdescBg": {
+        "roomShortdesBg": {
           "type": "string"
         },
         "roomDesSr": {
@@ -546,7 +579,7 @@
         "roomDesEn": {
           "type": "string"
         },
-        "roomDescBg": {
+        "roomDesBg": {
           "type": "string"
         },
         "roomPicturesFolder": {
@@ -629,6 +662,14 @@
       "properties": {
         "user": {
           "$ref": "#/definitions/pbUser"
+        }
+      }
+    },
+    "pbDeleteRoomResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
         }
       }
     },
@@ -788,7 +829,7 @@
         "roomShortdesEn": {
           "type": "string"
         },
-        "roomShortdescBg": {
+        "roomShortdesBg": {
           "type": "string"
         },
         "roomDesSr": {
@@ -797,7 +838,7 @@
         "roomDesEn": {
           "type": "string"
         },
-        "roomDescBg": {
+        "roomDesBg": {
           "type": "string"
         },
         "roomPicturesFolder": {

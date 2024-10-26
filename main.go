@@ -167,7 +167,7 @@ func runGatewayServer(
 
 	// Configure CORS middleware
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173", "*"}, // Ovde dozvoli specifične ili sve origne
+		AllowedOrigins:   []string{"http://localhost:5173"}, // Ovde dozvoli specifične ili sve origne
 		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Origin", "Content-Type", "Authorization"},
 		ExposedHeaders:   []string{"Content-Length"},

@@ -2,6 +2,7 @@ package gapi
 
 import (
 	"context"
+	"fmt"
 
 	db "github.com/tijanadmi/bookings_backend/db/sqlc"
 	"github.com/tijanadmi/bookings_backend/pb"
@@ -14,6 +15,7 @@ import (
 )
 
 func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb.LoginUserResponse, error) {
+	fmt.Println(req)
 	violations := validateLoginUserRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

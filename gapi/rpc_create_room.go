@@ -17,6 +17,7 @@ func (server *Server) CreateRoom(ctx context.Context, req *pb.CreateRoomRequest)
 	// if err != nil {
 	// 	return nil, unauthenticatedError(err)
 	// }
+
 	violations := validateCreateRoomRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -28,15 +29,17 @@ func (server *Server) CreateRoom(ctx context.Context, req *pb.CreateRoomRequest)
 		RoomNameBg:         req.GetRoomNameBg(),
 		RoomShortDesSr:     req.GetRoomShortdesSr(),
 		RoomShortDesEn:     req.GetRoomShortdesEn(),
-		RoomShortDesBg:     req.GetRoomShortdescBg(),
+		RoomShortDesBg:     req.GetRoomShortdesBg(),
 		RoomDescriptionSr:  req.GetRoomDesSr(),
 		RoomDescriptionEn:  req.GetRoomDesEn(),
-		RoomDescriptionBg:  req.GetRoomDescBg(),
+		RoomDescriptionBg:  req.GetRoomDesBg(),
 		RoomPicturesFolder: req.GetRoomPicturesFolder(),
 		RoomGuestNumber:    req.GetRoomGuestNumber(),
 		RoomPriceEn:        req.GetRoomPriceEn(),
 	}
+
 	room, err := server.store.CreateRoom(ctx, arg)
+
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok {
 			switch pqErr.Code.Name() {
@@ -74,7 +77,7 @@ func validateCreateRoomRequest(req *pb.CreateRoomRequest) (violations []*errdeta
 		violations = append(violations, fieldViolation("room_short_des_en", err))
 	}
 
-	if err := val.ValidateString(req.GetRoomShortdescBg(), 1, 200); err != nil {
+	if err := val.ValidateString(req.GetRoomShortdesBg(), 1, 200); err != nil {
 		violations = append(violations, fieldViolation("room_short_des_bg", err))
 	}
 
@@ -86,7 +89,7 @@ func validateCreateRoomRequest(req *pb.CreateRoomRequest) (violations []*errdeta
 		violations = append(violations, fieldViolation("room_description_en", err))
 	}
 
-	if err := val.ValidateString(req.GetRoomDescBg(), 1, 1000); err != nil {
+	if err := val.ValidateString(req.GetRoomDesBg(), 1, 1000); err != nil {
 		violations = append(violations, fieldViolation("room_description_bg", err))
 	}
 

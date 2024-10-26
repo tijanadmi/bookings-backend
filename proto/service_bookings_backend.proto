@@ -19,6 +19,7 @@ import "rpc_get_room.proto";
 import "rpc_list_rooms.proto";
 import "rpc_search_availability_rooms.proto";
 import "rpc_update_room.proto";
+import "rpc_delete_room.proto";
 import "rpc_create_restriction.proto";
 import "rpc_create_reservation.proto";
 import "rpc_create_room_restriction.proto";
@@ -133,6 +134,15 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to update room";
             summary: "Update room";
+        };
+    }
+    rpc DeleteRoom (DeleteRoomRequest) returns (DeleteRoomResponse) {
+        option (google.api.http) = {
+            delete: "/v1/delete_room"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to delete room";
+            summary: "Delete room";
         };
     }
     rpc CreateRestriction (CreateRestrictionRequest) returns (CreateRestrictionResponse) {

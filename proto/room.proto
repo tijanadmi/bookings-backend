@@ -13,10 +13,10 @@ message Room {
     string room_name_bg = 4;
     string room_shortdes_sr = 5;
     string room_shortdes_en = 6;
-    string room_shortdesc_bg = 7;
+    string room_shortdes_bg = 7;
     string room_des_sr = 8;
     string room_des_en = 9;
-    string room_desc_bg = 10;
+    string room_des_bg = 10;
     string room_pictures_folder = 11;
     int32 room_guest_number= 12;
     int32 room_price_en= 13;
