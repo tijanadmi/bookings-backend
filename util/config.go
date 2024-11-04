@@ -18,6 +18,11 @@ type Config struct {
 	TokenSymmetricKey    string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
 	AccessTokenDuration  time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
 	RefreshTokenDuration time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
+	Issuer               string        `mapstructure:"ISSUER"`
+	Audience             string        `mapstructure:"AUDIENCE"`
+	CookiePath           string        `mapstructure:"COOKIE_PATH"`
+	CookieName           string        `mapstructure:"COOKIE_NAME"`
+	CookieDomain         string        `mapstructure:"COOKIE_DOMAIN"`
 }
 
 // LoadConfig reads configuration from file or environment variables.

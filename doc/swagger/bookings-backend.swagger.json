@@ -1008,9 +1008,6 @@
         "phone": {
           "type": "string"
         },
-        "password": {
-          "type": "string"
-        },
         "accessLevel": {
           "type": "integer",
           "format": "int32"

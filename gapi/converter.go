@@ -12,7 +12,6 @@ func convertUser(user db.User) *pb.User {
 		LastName:    user.LastName,
 		Email:       user.Email,
 		Phone:       user.Phone,
-		Password:    user.Password,
 		AccessLevel: user.AccessLevel,
 		CreatedAt:   timestamppb.New(user.CreatedAt),
 	}

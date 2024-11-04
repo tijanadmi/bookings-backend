@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package pb;
 
-import "user.proto";
 import "google/protobuf/timestamp.proto";
+import "user.proto";
 
 option go_package = "github.com/tijanadmi/bookings_backend/pb";
 

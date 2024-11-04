@@ -145,7 +145,15 @@ func runGatewayServer(
 		},
 	})
 
-	grpcMux := runtime.NewServeMux(jsonOption)
+	grpcMux := runtime.NewServeMux(
+		jsonOption,
+		runtime.WithIncomingHeaderMatcher(func(key string) (string, bool) {
+			if key == "set-cookie" {
+				return key, true
+			}
+			return runtime.DefaultHeaderMatcher(key)
+		}),
+	)
 	ctx, cancle := context.WithCancel(context.Background())
 	defer cancle()
 
