@@ -137,6 +137,8 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 	refreshCookie := util.GetRefreshCookie(refreshToken, server.config.CookieName, server.config.CookiePath, server.config.CookieDomain, server.config.RefreshTokenDuration)
 	// Postavite metadata sa `Set-Cookie`
 	md := metadata.Pairs("Set-Cookie", refreshCookie.String())
+	fmt.Println(md)
+
 	//grpc.SetHeader(ctx, md) // Postavite header kroz `grpc-gateway`
 	// Dodavanje `Set-Cookie` u gRPC metapodatke
 	grpc.SendHeader(ctx, md)

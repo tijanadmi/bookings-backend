@@ -12,6 +12,9 @@
   "tags": [
     {
       "name": "Bookings"
+    },
+    {
+      "name": "AuthService"
     }
   ],
   "consumes": [
@@ -362,6 +365,30 @@
             }
           }
         ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/refresh": {
+      "get": {
+        "summary": "Refresh access token",
+        "description": "Use this API to refresh access token",
+        "operationId": "Bookings_RefreshToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbRefreshTokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
         "tags": [
           "Bookings"
         ]
@@ -745,6 +772,30 @@
           "format": "date-time"
         }
       }
+    },
+    "pbRefreshTokenResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "title": "New access token"
+        },
+        "refreshToken": {
+          "type": "string",
+          "title": "New refresh token"
+        },
+        "accessTokenExpiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Access token expiration timestamp"
+        },
+        "refreshTokenExpiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Refresh token expiration timestamp"
+        }
+      },
+      "title": "Response message for the RefreshToken RPC"
     },
     "pbReservation": {
       "type": "object",

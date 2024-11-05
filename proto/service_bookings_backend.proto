@@ -13,6 +13,7 @@ import "rpc_create_user.proto";
 import "rpc_get_user.proto";
 import "rpc_update_user.proto";
 import "rpc_login_user.proto";
+import "rpc_refresh_token.proto";
 
 import "rpc_create_room.proto";
 import "rpc_get_room.proto";
@@ -77,6 +78,15 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to login user and get access token & refresh token";
             summary: "Login user";
+        };
+    }
+    rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse) {
+        option (google.api.http) = {
+            get: "/v1/refresh"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to refresh access token";
+            summary: "Refresh access token";
         };
     }
     // rpc VerifyEmail (VerifyEmailRequest) returns (VerifyEmailResponse) {

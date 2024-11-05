@@ -23,6 +23,7 @@ const (
 	Bookings_GetUser_FullMethodName                       = "/pb.Bookings/GetUser"
 	Bookings_UpdateUser_FullMethodName                    = "/pb.Bookings/UpdateUser"
 	Bookings_LoginUser_FullMethodName                     = "/pb.Bookings/LoginUser"
+	Bookings_RefreshToken_FullMethodName                  = "/pb.Bookings/RefreshToken"
 	Bookings_GetRoom_FullMethodName                       = "/pb.Bookings/GetRoom"
 	Bookings_ListRooms_FullMethodName                     = "/pb.Bookings/ListRooms"
 	Bookings_SearchAvailabilityForAllRooms_FullMethodName = "/pb.Bookings/SearchAvailabilityForAllRooms"
@@ -42,6 +43,7 @@ type BookingsClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
+	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
 	GetRoom(ctx context.Context, in *GetRoomRequest, opts ...grpc.CallOption) (*GetRoomResponse, error)
 	ListRooms(ctx context.Context, in *ListRoomsRequest, opts ...grpc.CallOption) (*ListRoomsResponse, error)
 	SearchAvailabilityForAllRooms(ctx context.Context, in *SearchAvailabilityForAllRoomsRequest, opts ...grpc.CallOption) (*SearchAvailabilityForAllRoomsResponse, error)
@@ -95,6 +97,16 @@ func (c *bookingsClient) LoginUser(ctx context.Context, in *LoginUserRequest, op
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(LoginUserResponse)
 	err := c.cc.Invoke(ctx, Bookings_LoginUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RefreshTokenResponse)
+	err := c.cc.Invoke(ctx, Bookings_RefreshToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -199,6 +211,7 @@ type BookingsServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
+	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
 	GetRoom(context.Context, *GetRoomRequest) (*GetRoomResponse, error)
 	ListRooms(context.Context, *ListRoomsRequest) (*ListRoomsResponse, error)
 	SearchAvailabilityForAllRooms(context.Context, *SearchAvailabilityForAllRoomsRequest) (*SearchAvailabilityForAllRoomsResponse, error)
@@ -229,6 +242,9 @@ func (UnimplementedBookingsServer) UpdateUser(context.Context, *UpdateUserReques
 }
 func (UnimplementedBookingsServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
+}
+func (UnimplementedBookingsServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
 func (UnimplementedBookingsServer) GetRoom(context.Context, *GetRoomRequest) (*GetRoomResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoom not implemented")
@@ -346,6 +362,24 @@ func _Bookings_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BookingsServer).LoginUser(ctx, req.(*LoginUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).RefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_RefreshToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).RefreshToken(ctx, req.(*RefreshTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -534,6 +568,10 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginUser",
 			Handler:    _Bookings_LoginUser_Handler,
+		},
+		{
+			MethodName: "RefreshToken",
+			Handler:    _Bookings_RefreshToken_Handler,
 		},
 		{
 			MethodName: "GetRoom",

@@ -149,7 +149,7 @@ func runGatewayServer(
 		jsonOption,
 		runtime.WithIncomingHeaderMatcher(func(key string) (string, bool) {
 			if key == "set-cookie" {
-				return key, true
+				return "Set-Cookie", true
 			}
 			return runtime.DefaultHeaderMatcher(key)
 		}),
@@ -177,8 +177,8 @@ func runGatewayServer(
 	corsHandler := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173"}, // Ovde dozvoli specifične ili sve origne
 		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Origin", "Content-Type", "Authorization"},
-		ExposedHeaders:   []string{"Content-Length"},
+		AllowedHeaders:   []string{"Origin", "Content-Type", "Authorization", "Cookie"},
+		ExposedHeaders:   []string{"Content-Length", "Set-Cookie"},
 		AllowCredentials: true,
 	}).Handler(mux)
 

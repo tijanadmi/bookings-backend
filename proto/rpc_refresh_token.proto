@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+// Request message for the RefreshToken RPC
+message RefreshTokenRequest {
+     // Empty since we will get the refresh token from metadata
+}
+
+// Response message for the RefreshToken RPC
+message RefreshTokenResponse {
+    string access_token = 1;                               // New access token
+    string refresh_token = 2;                              // New refresh token
+    google.protobuf.Timestamp access_token_expires_at = 3; // Access token expiration timestamp
+    google.protobuf.Timestamp refresh_token_expires_at = 4; // Refresh token expiration timestamp
+}
+
+// Define the gRPC service
+service AuthService {
+    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+}
