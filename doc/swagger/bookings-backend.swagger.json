@@ -294,6 +294,90 @@
         ]
       }
     },
+    "/v1/list_all_reservations": {
+      "get": {
+        "summary": "List all reservations",
+        "description": "Use this API to list all reservations with pagination",
+        "operationId": "Bookings_ListAllReservations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListAllReservationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "description": "Limit soba koje vraćamo",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "description": "Offset za paginaciju",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/list_new_reservations": {
+      "get": {
+        "summary": "List new reservations",
+        "description": "Use this API to list new reservations with pagination",
+        "operationId": "Bookings_ListNewReservations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListNewReservationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "description": "Limit soba koje vraćamo",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "description": "Offset za paginaciju",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/list_rooms": {
       "get": {
         "summary": "List rooms",
@@ -724,6 +808,32 @@
         }
       }
     },
+    "pbListAllReservationsResponse": {
+      "type": "object",
+      "properties": {
+        "reservationAll": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbReservationAll"
+          },
+          "title": "Lista soba"
+        }
+      }
+    },
+    "pbListNewReservationsResponse": {
+      "type": "object",
+      "properties": {
+        "reservationNew": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbReservationAll"
+          },
+          "title": "Lista soba"
+        }
+      }
+    },
     "pbListRoomsResponse": {
       "type": "object",
       "properties": {
@@ -833,6 +943,57 @@
         "updatedAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbReservationAll": {
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "processed": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "roomNameSr": {
+          "type": "string",
+          "title": "Naziv sobe na srpskom"
+        },
+        "roomNameEn": {
+          "type": "string",
+          "title": "Naziv sobe na engleskom"
+        },
+        "roomNameBg": {
+          "type": "string",
+          "title": "Naziv sobe na bugarskom"
         }
       }
     },

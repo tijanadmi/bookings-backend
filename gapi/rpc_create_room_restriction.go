@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/tijanadmi/bookings_backend/db/sqlc"
 	"github.com/tijanadmi/bookings_backend/pb"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -37,7 +38,7 @@ func (server *Server) CreateRoomRestriction(ctx context.Context, req *pb.CreateR
 		StartDate:     startDate,
 		EndDate:       endDate,
 		RoomID:        req.GetRoomId(),
-		ReservationID: req.GetReservationId(),
+		ReservationID: pgtype.Int4{Int32: req.GetReservationId(), Valid: true},
 		RestrictionID: req.GetRestrictionId(),
 	}
 	roomRestriction, err := server.store.CreateRoomRestriction(ctx, arg)

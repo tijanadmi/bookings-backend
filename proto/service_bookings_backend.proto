@@ -23,6 +23,8 @@ import "rpc_update_room.proto";
 import "rpc_delete_room.proto";
 import "rpc_create_restriction.proto";
 import "rpc_create_reservation.proto";
+import "rpc_list_all_reservations.proto";
+import "rpc_list_new_reservations.proto";
 import "rpc_create_room_restriction.proto";
 
 option go_package = "github.com/tijanadmi/bookings_backend/pb";
@@ -163,6 +165,24 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to create a new restriction";
             summary: "Create new restriction";
+        };
+    }
+    rpc ListAllReservations (ListAllReservationsRequest) returns (ListAllReservationsResponse) {
+        option (google.api.http) = {
+            get: "/v1/list_all_reservations"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to list all reservations with pagination";
+            summary: "List all reservations";
+        };
+    }
+    rpc ListNewReservations (ListNewReservationsRequest) returns (ListNewReservationsResponse) {
+        option (google.api.http) = {
+            get: "/v1/list_new_reservations"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to list new reservations with pagination";
+            summary: "List new reservations";
         };
     }
     rpc CreateReservation (CreateReservationRequest) returns (CreateReservationResponse) {

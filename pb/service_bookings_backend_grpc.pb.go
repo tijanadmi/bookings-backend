@@ -31,6 +31,8 @@ const (
 	Bookings_UpdateRoom_FullMethodName                    = "/pb.Bookings/UpdateRoom"
 	Bookings_DeleteRoom_FullMethodName                    = "/pb.Bookings/DeleteRoom"
 	Bookings_CreateRestriction_FullMethodName             = "/pb.Bookings/CreateRestriction"
+	Bookings_ListAllReservations_FullMethodName           = "/pb.Bookings/ListAllReservations"
+	Bookings_ListNewReservations_FullMethodName           = "/pb.Bookings/ListNewReservations"
 	Bookings_CreateReservation_FullMethodName             = "/pb.Bookings/CreateReservation"
 	Bookings_CreateRoomRestriction_FullMethodName         = "/pb.Bookings/CreateRoomRestriction"
 )
@@ -51,6 +53,8 @@ type BookingsClient interface {
 	UpdateRoom(ctx context.Context, in *UpdateRoomRequest, opts ...grpc.CallOption) (*UpdateRoomResponse, error)
 	DeleteRoom(ctx context.Context, in *DeleteRoomRequest, opts ...grpc.CallOption) (*DeleteRoomResponse, error)
 	CreateRestriction(ctx context.Context, in *CreateRestrictionRequest, opts ...grpc.CallOption) (*CreateRestrictionResponse, error)
+	ListAllReservations(ctx context.Context, in *ListAllReservationsRequest, opts ...grpc.CallOption) (*ListAllReservationsResponse, error)
+	ListNewReservations(ctx context.Context, in *ListNewReservationsRequest, opts ...grpc.CallOption) (*ListNewReservationsResponse, error)
 	CreateReservation(ctx context.Context, in *CreateReservationRequest, opts ...grpc.CallOption) (*CreateReservationResponse, error)
 	CreateRoomRestriction(ctx context.Context, in *CreateRoomRestrictionRequest, opts ...grpc.CallOption) (*CreateRoomRestrictionResponse, error)
 }
@@ -183,6 +187,26 @@ func (c *bookingsClient) CreateRestriction(ctx context.Context, in *CreateRestri
 	return out, nil
 }
 
+func (c *bookingsClient) ListAllReservations(ctx context.Context, in *ListAllReservationsRequest, opts ...grpc.CallOption) (*ListAllReservationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAllReservationsResponse)
+	err := c.cc.Invoke(ctx, Bookings_ListAllReservations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) ListNewReservations(ctx context.Context, in *ListNewReservationsRequest, opts ...grpc.CallOption) (*ListNewReservationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListNewReservationsResponse)
+	err := c.cc.Invoke(ctx, Bookings_ListNewReservations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *bookingsClient) CreateReservation(ctx context.Context, in *CreateReservationRequest, opts ...grpc.CallOption) (*CreateReservationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateReservationResponse)
@@ -219,6 +243,8 @@ type BookingsServer interface {
 	UpdateRoom(context.Context, *UpdateRoomRequest) (*UpdateRoomResponse, error)
 	DeleteRoom(context.Context, *DeleteRoomRequest) (*DeleteRoomResponse, error)
 	CreateRestriction(context.Context, *CreateRestrictionRequest) (*CreateRestrictionResponse, error)
+	ListAllReservations(context.Context, *ListAllReservationsRequest) (*ListAllReservationsResponse, error)
+	ListNewReservations(context.Context, *ListNewReservationsRequest) (*ListNewReservationsResponse, error)
 	CreateReservation(context.Context, *CreateReservationRequest) (*CreateReservationResponse, error)
 	CreateRoomRestriction(context.Context, *CreateRoomRestrictionRequest) (*CreateRoomRestrictionResponse, error)
 	mustEmbedUnimplementedBookingsServer()
@@ -266,6 +292,12 @@ func (UnimplementedBookingsServer) DeleteRoom(context.Context, *DeleteRoomReques
 }
 func (UnimplementedBookingsServer) CreateRestriction(context.Context, *CreateRestrictionRequest) (*CreateRestrictionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRestriction not implemented")
+}
+func (UnimplementedBookingsServer) ListAllReservations(context.Context, *ListAllReservationsRequest) (*ListAllReservationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAllReservations not implemented")
+}
+func (UnimplementedBookingsServer) ListNewReservations(context.Context, *ListNewReservationsRequest) (*ListNewReservationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListNewReservations not implemented")
 }
 func (UnimplementedBookingsServer) CreateReservation(context.Context, *CreateReservationRequest) (*CreateReservationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateReservation not implemented")
@@ -510,6 +542,42 @@ func _Bookings_CreateRestriction_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookings_ListAllReservations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAllReservationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).ListAllReservations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_ListAllReservations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).ListAllReservations(ctx, req.(*ListAllReservationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_ListNewReservations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListNewReservationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).ListNewReservations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_ListNewReservations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).ListNewReservations(ctx, req.(*ListNewReservationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Bookings_CreateReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateReservationRequest)
 	if err := dec(in); err != nil {
@@ -600,6 +668,14 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateRestriction",
 			Handler:    _Bookings_CreateRestriction_Handler,
+		},
+		{
+			MethodName: "ListAllReservations",
+			Handler:    _Bookings_ListAllReservations_Handler,
+		},
+		{
+			MethodName: "ListNewReservations",
+			Handler:    _Bookings_ListNewReservations_Handler,
 		},
 		{
 			MethodName: "CreateReservation",

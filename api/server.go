@@ -42,14 +42,34 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 func (server *Server) setupRouter() {
 	router := gin.Default()
 
+	// Konfiguracija CORS middleware-a
+	router.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization, Cookie")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	})
+
+	// Ruta za statičke fajlove (slike)
+	router.Static("/images", "./images")
+
 	router.POST("/users", server.createUser)
 	router.POST("/users/login", server.loginUser)
 	router.POST("/tokens/renew_access", server.renewAccessToken)
 
-	authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
-	authRoutes.POST("/rooms", server.createRoom)
-	authRoutes.GET("/rooms/:id", server.getRoom)
-	authRoutes.GET("/rooms", server.listRooms)
+	router.POST("/rooms", server.createRoom)
+	router.GET("/rooms/:id", server.getRoom)
+	router.GET("/rooms", server.listRooms)
+
+	// authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
+	// authRoutes.POST("/rooms", server.createRoom)
+	// authRoutes.GET("/rooms/:id", server.getRoom)
+	// authRoutes.GET("/rooms", server.listRooms)
 
 	// authRoutes.POST("/transfers", server.createTransfer)
 

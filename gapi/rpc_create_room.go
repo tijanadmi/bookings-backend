@@ -2,6 +2,7 @@ package gapi
 
 import (
 	"context"
+	"log"
 
 	"github.com/lib/pq"
 	db "github.com/tijanadmi/bookings_backend/db/sqlc"
@@ -17,6 +18,7 @@ func (server *Server) CreateRoom(ctx context.Context, req *pb.CreateRoomRequest)
 	// if err != nil {
 	// 	return nil, unauthenticatedError(err)
 	// }
+	log.Println(req)
 
 	violations := validateCreateRoomRequest(req)
 	if violations != nil {
@@ -37,6 +39,8 @@ func (server *Server) CreateRoom(ctx context.Context, req *pb.CreateRoomRequest)
 		RoomGuestNumber:    req.GetRoomGuestNumber(),
 		RoomPriceEn:        req.GetRoomPriceEn(),
 	}
+	log.Println(req)
+	log.Println(arg)
 
 	room, err := server.store.CreateRoom(ctx, arg)
 

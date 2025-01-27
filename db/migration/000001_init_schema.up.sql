@@ -69,7 +69,7 @@ CREATE TABLE public.room_restrictions (
 	start_date date NOT NULL,
 	end_date date NOT NULL,
 	room_id int NOT NULL,
-	reservation_id int NOT NULL,
+	reservation_id int,
 	restriction_id int NOT NULL,
 	created_at timestamptz NOT NULL DEFAULT (now()),
 	updated_at timestamptz NOT NULL DEFAULT (now()),

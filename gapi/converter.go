@@ -61,15 +61,103 @@ func convertReservation(reservation db.Reservation) *pb.Reservation {
 	}
 }
 
+func convertReservationAll(reservation db.AllReservationsRow) *pb.ReservationAll {
+	startDate := reservation.StartDate.Format("2006-01-02")
+	endDate := reservation.EndDate.Format("2006-01-02")
+
+	var roomNameSr, roomNameEn, roomNameBg *string
+
+	// Provera i konverzija RoomNameSr
+	if reservation.RoomNameSr.Valid {
+		roomName := reservation.RoomNameSr.String
+		roomNameSr = &roomName
+	}
+
+	// Provera i konverzija RoomNameEn
+	if reservation.RoomNameEn.Valid {
+		roomName := reservation.RoomNameEn.String
+		roomNameEn = &roomName
+	}
+
+	// Provera i konverzija RoomNameBg
+	if reservation.RoomNameBg.Valid {
+		roomName := reservation.RoomNameBg.String
+		roomNameBg = &roomName
+	}
+
+	return &pb.ReservationAll{
+		RoomId:     &reservation.RoomID,
+		FirstName:  &reservation.FirstName,
+		LastName:   &reservation.LastName,
+		Email:      &reservation.Email,
+		Phone:      &reservation.Phone,
+		StartDate:  &startDate,
+		EndDate:    &endDate,
+		Processed:  &reservation.Processed,
+		CreatedAt:  timestamppb.New(reservation.CreatedAt),
+		RoomNameSr: roomNameSr,
+		RoomNameEn: roomNameEn,
+		RoomNameBg: roomNameBg,
+	}
+}
+
+func convertReservationNew(reservation db.AllNewReservationsRow) *pb.ReservationAll {
+	startDate := reservation.StartDate.Format("2006-01-02")
+	endDate := reservation.EndDate.Format("2006-01-02")
+
+	var roomNameSr, roomNameEn, roomNameBg *string
+
+	// Provera i konverzija RoomNameSr
+	if reservation.RoomNameSr.Valid {
+		roomName := reservation.RoomNameSr.String
+		roomNameSr = &roomName
+	}
+
+	// Provera i konverzija RoomNameEn
+	if reservation.RoomNameEn.Valid {
+		roomName := reservation.RoomNameEn.String
+		roomNameEn = &roomName
+	}
+
+	// Provera i konverzija RoomNameBg
+	if reservation.RoomNameBg.Valid {
+		roomName := reservation.RoomNameBg.String
+		roomNameBg = &roomName
+	}
+
+	return &pb.ReservationAll{
+		RoomId:     &reservation.RoomID,
+		FirstName:  &reservation.FirstName,
+		LastName:   &reservation.LastName,
+		Email:      &reservation.Email,
+		Phone:      &reservation.Phone,
+		StartDate:  &startDate,
+		EndDate:    &endDate,
+		Processed:  &reservation.Processed,
+		CreatedAt:  timestamppb.New(reservation.CreatedAt),
+		RoomNameSr: roomNameSr,
+		RoomNameEn: roomNameEn,
+		RoomNameBg: roomNameBg,
+	}
+}
+
 func convertRoomRestriction(roomRestriction db.RoomRestriction) *pb.RoomRestriction {
 	startDate := roomRestriction.StartDate.Format("2006-01-02")
 	endDate := roomRestriction.EndDate.Format("2006-01-02")
+
+	var reservation_id *int32
+	// Provera i konverzija RoomNameSr
+	if roomRestriction.ReservationID.Valid {
+		reservationId := roomRestriction.ReservationID.Int32
+		reservation_id = &reservationId
+	}
 	return &pb.RoomRestriction{
 		StartDate:     &startDate,
 		EndDate:       &endDate,
 		RoomId:        &roomRestriction.RoomID,
-		ReservationId: &roomRestriction.ReservationID,
+		ReservationId: reservation_id,
 		RestrictionId: &roomRestriction.RestrictionID,
 		CreatedAt:     timestamppb.New(roomRestriction.CreatedAt),
 	}
 }
+
