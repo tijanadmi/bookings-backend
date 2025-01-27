@@ -12,5 +12,5 @@ message ListAllReservationsRequest {
 }
 
 message ListAllReservationsResponse {
-    repeated ReservationAll reservation_all = 1; // Lista soba
+    repeated ReservationAll reservations = 1; // Lista soba
 }

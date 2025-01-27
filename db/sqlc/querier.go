@@ -12,6 +12,7 @@ import (
 
 type Querier interface {
 	AllNewReservations(ctx context.Context, arg AllNewReservationsParams) ([]AllNewReservationsRow, error)
+	AllProcessedReservations(ctx context.Context, arg AllProcessedReservationsParams) ([]AllProcessedReservationsRow, error)
 	AllReservations(ctx context.Context, arg AllReservationsParams) ([]AllReservationsRow, error)
 	CreateReservation(ctx context.Context, arg CreateReservationParams) (Reservation, error)
 	CreateRestriction(ctx context.Context, arg CreateRestrictionParams) (Restriction, error)

@@ -378,6 +378,108 @@
         ]
       }
     },
+    "/v1/list_processed_reservations": {
+      "get": {
+        "summary": "List processed reservations",
+        "description": "Use this API to list processed reservations with pagination",
+        "operationId": "Bookings_ListProcessedReservations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListProcessedReservationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "description": "Limit soba koje vraćamo",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "description": "Offset za paginaciju",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/list_reservations_params": {
+      "get": {
+        "summary": "List processed reservations",
+        "description": "Use this API to list processed reservations with pagination",
+        "operationId": "Bookings_ListReservationsWithParams",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListReservationsParamsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderDir",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "processed",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "description": "Limit soba koje vraćamo",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "description": "Offset za paginaciju",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/list_rooms": {
       "get": {
         "summary": "List rooms",
@@ -811,7 +913,7 @@
     "pbListAllReservationsResponse": {
       "type": "object",
       "properties": {
-        "reservationAll": {
+        "reservations": {
           "type": "array",
           "items": {
             "type": "object",
@@ -824,7 +926,33 @@
     "pbListNewReservationsResponse": {
       "type": "object",
       "properties": {
-        "reservationNew": {
+        "reservations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbReservationAll"
+          },
+          "title": "Lista soba"
+        }
+      }
+    },
+    "pbListProcessedReservationsResponse": {
+      "type": "object",
+      "properties": {
+        "reservations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbReservationAll"
+          },
+          "title": "Lista soba"
+        }
+      }
+    },
+    "pbListReservationsParamsResponse": {
+      "type": "object",
+      "properties": {
+        "reservations": {
           "type": "array",
           "items": {
             "type": "object",
@@ -949,7 +1077,19 @@
     "pbReservationAll": {
       "type": "object",
       "properties": {
+        "reservationId": {
+          "type": "integer",
+          "format": "int32"
+        },
         "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomGuestNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomPriceEn": {
           "type": "integer",
           "format": "int32"
         },

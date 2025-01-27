@@ -26,7 +26,7 @@ func (server *Server) ListNewReservations(ctx context.Context, req *pb.ListNewRe
 
 	rsp := &pb.ListNewReservationsResponse{}
 	for _, reservation := range reservations {
-		rsp.ReservationNew = append(rsp.ReservationNew, convertReservationNew(reservation))
+		rsp.Reservations = append(rsp.Reservations, convertReservationNew(reservation))
 	}
 	return rsp, nil
 }

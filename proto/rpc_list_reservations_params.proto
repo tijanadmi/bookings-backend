@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+import "reservation_all.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message ListReservationsParamsRequest {
+    string order_by =1;
+	string order_dir =2;
+	string processed =3;
+    int32 limit = 4;  // Limit soba koje vraćamo
+    int32 offset = 5; // Offset za paginaciju
+}
+
+message ListReservationsParamsResponse {
+    repeated ReservationAll reservations = 1; // Lista soba
+}

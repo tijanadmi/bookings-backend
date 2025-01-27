@@ -13,7 +13,7 @@ import (
 )
 
 const allNewReservations = `-- name: AllNewReservations :many
-select r.id as reservation_id, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
 r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
@@ -31,20 +31,22 @@ type AllNewReservationsParams struct {
 }
 
 type AllNewReservationsRow struct {
-	ReservationID int32       `json:"reservation_id"`
-	FirstName     string      `json:"first_name"`
-	LastName      string      `json:"last_name"`
-	Email         string      `json:"email"`
-	Phone         string      `json:"phone"`
-	StartDate     time.Time   `json:"start_date"`
-	EndDate       time.Time   `json:"end_date"`
-	RoomID        int32       `json:"room_id"`
-	CreatedAt     time.Time   `json:"created_at"`
-	UpdatedAt     time.Time   `json:"updated_at"`
-	Processed     int32       `json:"processed"`
-	RoomNameSr    pgtype.Text `json:"room_name_sr"`
-	RoomNameEn    pgtype.Text `json:"room_name_en"`
-	RoomNameBg    pgtype.Text `json:"room_name_bg"`
+	ReservationID   int32       `json:"reservation_id"`
+	RoomGuestNumber pgtype.Int4 `json:"room_guest_number"`
+	RoomPriceEn     pgtype.Int4 `json:"room_price_en"`
+	FirstName       string      `json:"first_name"`
+	LastName        string      `json:"last_name"`
+	Email           string      `json:"email"`
+	Phone           string      `json:"phone"`
+	StartDate       time.Time   `json:"start_date"`
+	EndDate         time.Time   `json:"end_date"`
+	RoomID          int32       `json:"room_id"`
+	CreatedAt       time.Time   `json:"created_at"`
+	UpdatedAt       time.Time   `json:"updated_at"`
+	Processed       int32       `json:"processed"`
+	RoomNameSr      pgtype.Text `json:"room_name_sr"`
+	RoomNameEn      pgtype.Text `json:"room_name_en"`
+	RoomNameBg      pgtype.Text `json:"room_name_bg"`
 }
 
 func (q *Queries) AllNewReservations(ctx context.Context, arg AllNewReservationsParams) ([]AllNewReservationsRow, error) {
@@ -58,6 +60,82 @@ func (q *Queries) AllNewReservations(ctx context.Context, arg AllNewReservations
 		var i AllNewReservationsRow
 		if err := rows.Scan(
 			&i.ReservationID,
+			&i.RoomGuestNumber,
+			&i.RoomPriceEn,
+			&i.FirstName,
+			&i.LastName,
+			&i.Email,
+			&i.Phone,
+			&i.StartDate,
+			&i.EndDate,
+			&i.RoomID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Processed,
+			&i.RoomNameSr,
+			&i.RoomNameEn,
+			&i.RoomNameBg,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const allProcessedReservations = `-- name: AllProcessedReservations :many
+select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+rm.room_name_en,
+rm.room_name_bg
+from reservations r
+left join rooms rm on (r.room_id = rm.id)
+where processed = 1
+order by r.start_date asc
+LIMIT $1
+OFFSET $2
+`
+
+type AllProcessedReservationsParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+type AllProcessedReservationsRow struct {
+	ReservationID   int32       `json:"reservation_id"`
+	RoomGuestNumber pgtype.Int4 `json:"room_guest_number"`
+	RoomPriceEn     pgtype.Int4 `json:"room_price_en"`
+	FirstName       string      `json:"first_name"`
+	LastName        string      `json:"last_name"`
+	Email           string      `json:"email"`
+	Phone           string      `json:"phone"`
+	StartDate       time.Time   `json:"start_date"`
+	EndDate         time.Time   `json:"end_date"`
+	RoomID          int32       `json:"room_id"`
+	CreatedAt       time.Time   `json:"created_at"`
+	UpdatedAt       time.Time   `json:"updated_at"`
+	Processed       int32       `json:"processed"`
+	RoomNameSr      pgtype.Text `json:"room_name_sr"`
+	RoomNameEn      pgtype.Text `json:"room_name_en"`
+	RoomNameBg      pgtype.Text `json:"room_name_bg"`
+}
+
+func (q *Queries) AllProcessedReservations(ctx context.Context, arg AllProcessedReservationsParams) ([]AllProcessedReservationsRow, error) {
+	rows, err := q.db.Query(ctx, allProcessedReservations, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []AllProcessedReservationsRow{}
+	for rows.Next() {
+		var i AllProcessedReservationsRow
+		if err := rows.Scan(
+			&i.ReservationID,
+			&i.RoomGuestNumber,
+			&i.RoomPriceEn,
 			&i.FirstName,
 			&i.LastName,
 			&i.Email,
@@ -83,7 +161,7 @@ func (q *Queries) AllNewReservations(ctx context.Context, arg AllNewReservations
 }
 
 const allReservations = `-- name: AllReservations :many
-select r.id as reservation_id, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
 r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
@@ -100,20 +178,22 @@ type AllReservationsParams struct {
 }
 
 type AllReservationsRow struct {
-	ReservationID int32       `json:"reservation_id"`
-	FirstName     string      `json:"first_name"`
-	LastName      string      `json:"last_name"`
-	Email         string      `json:"email"`
-	Phone         string      `json:"phone"`
-	StartDate     time.Time   `json:"start_date"`
-	EndDate       time.Time   `json:"end_date"`
-	RoomID        int32       `json:"room_id"`
-	CreatedAt     time.Time   `json:"created_at"`
-	UpdatedAt     time.Time   `json:"updated_at"`
-	Processed     int32       `json:"processed"`
-	RoomNameSr    pgtype.Text `json:"room_name_sr"`
-	RoomNameEn    pgtype.Text `json:"room_name_en"`
-	RoomNameBg    pgtype.Text `json:"room_name_bg"`
+	ReservationID   int32       `json:"reservation_id"`
+	RoomGuestNumber pgtype.Int4 `json:"room_guest_number"`
+	RoomPriceEn     pgtype.Int4 `json:"room_price_en"`
+	FirstName       string      `json:"first_name"`
+	LastName        string      `json:"last_name"`
+	Email           string      `json:"email"`
+	Phone           string      `json:"phone"`
+	StartDate       time.Time   `json:"start_date"`
+	EndDate         time.Time   `json:"end_date"`
+	RoomID          int32       `json:"room_id"`
+	CreatedAt       time.Time   `json:"created_at"`
+	UpdatedAt       time.Time   `json:"updated_at"`
+	Processed       int32       `json:"processed"`
+	RoomNameSr      pgtype.Text `json:"room_name_sr"`
+	RoomNameEn      pgtype.Text `json:"room_name_en"`
+	RoomNameBg      pgtype.Text `json:"room_name_bg"`
 }
 
 func (q *Queries) AllReservations(ctx context.Context, arg AllReservationsParams) ([]AllReservationsRow, error) {
@@ -127,6 +207,8 @@ func (q *Queries) AllReservations(ctx context.Context, arg AllReservationsParams
 		var i AllReservationsRow
 		if err := rows.Scan(
 			&i.ReservationID,
+			&i.RoomGuestNumber,
+			&i.RoomPriceEn,
 			&i.FirstName,
 			&i.LastName,
 			&i.Email,
@@ -240,7 +322,7 @@ func (q *Queries) GetReservation(ctx context.Context, id int32) (Reservation, er
 }
 
 const getReservationByID = `-- name: GetReservationByID :one
-select r.id as reservation_id, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
 r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
@@ -259,20 +341,22 @@ type GetReservationByIDParams struct {
 }
 
 type GetReservationByIDRow struct {
-	ReservationID int32       `json:"reservation_id"`
-	FirstName     string      `json:"first_name"`
-	LastName      string      `json:"last_name"`
-	Email         string      `json:"email"`
-	Phone         string      `json:"phone"`
-	StartDate     time.Time   `json:"start_date"`
-	EndDate       time.Time   `json:"end_date"`
-	RoomID        int32       `json:"room_id"`
-	CreatedAt     time.Time   `json:"created_at"`
-	UpdatedAt     time.Time   `json:"updated_at"`
-	Processed     int32       `json:"processed"`
-	RoomNameSr    pgtype.Text `json:"room_name_sr"`
-	RoomNameEn    pgtype.Text `json:"room_name_en"`
-	RoomNameBg    pgtype.Text `json:"room_name_bg"`
+	ReservationID   int32       `json:"reservation_id"`
+	RoomGuestNumber pgtype.Int4 `json:"room_guest_number"`
+	RoomPriceEn     pgtype.Int4 `json:"room_price_en"`
+	FirstName       string      `json:"first_name"`
+	LastName        string      `json:"last_name"`
+	Email           string      `json:"email"`
+	Phone           string      `json:"phone"`
+	StartDate       time.Time   `json:"start_date"`
+	EndDate         time.Time   `json:"end_date"`
+	RoomID          int32       `json:"room_id"`
+	CreatedAt       time.Time   `json:"created_at"`
+	UpdatedAt       time.Time   `json:"updated_at"`
+	Processed       int32       `json:"processed"`
+	RoomNameSr      pgtype.Text `json:"room_name_sr"`
+	RoomNameEn      pgtype.Text `json:"room_name_en"`
+	RoomNameBg      pgtype.Text `json:"room_name_bg"`
 }
 
 func (q *Queries) GetReservationByID(ctx context.Context, arg GetReservationByIDParams) (GetReservationByIDRow, error) {
@@ -280,6 +364,8 @@ func (q *Queries) GetReservationByID(ctx context.Context, arg GetReservationByID
 	var i GetReservationByIDRow
 	err := row.Scan(
 		&i.ReservationID,
+		&i.RoomGuestNumber,
+		&i.RoomPriceEn,
 		&i.FirstName,
 		&i.LastName,
 		&i.Email,
