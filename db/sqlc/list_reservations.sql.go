@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -37,8 +38,8 @@ type ListReservationsResult struct {
 
 // TransferTx performs a money transfer from one account to the other.
 // It creates the transfer, add account entries, and update accounts' balance within a database transaction
-func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg ReservationsWithParams) ([]ListReservationsResult, error) {
-
+func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg ReservationsWithParams) ([]ListReservationsResult, int64, error) {
+	log.Println("ListReservationsWithParams")
 	// Provera sigurnosti unosa (samo dozvoljena polja)
 	validOrderFields := map[string]bool{
 		"start_date":    true,
@@ -48,12 +49,12 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 		"room_price_en": true,
 	}
 	if !validOrderFields[arg.OrderBy] {
-		return nil, fmt.Errorf("invalid order by field")
+		return nil, 0, fmt.Errorf("invalid order by field")
 	}
 
 	// Provera pravca sortiranja
 	if arg.OrderDir != "ASC" && arg.OrderDir != "DESC" {
-		return nil, fmt.Errorf("invalid order direction")
+		return nil, 0, fmt.Errorf("invalid order direction")
 	}
 
 	// Dinamički WHERE uslov za processed
@@ -66,33 +67,69 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 	case "all":
 		whereClause = "" // Bez dodatnih uslova
 	default:
-		return nil, fmt.Errorf("invalid processed value")
+		return nil, 0, fmt.Errorf("invalid processed value")
 	}
 
+	log.Println("Prosao sve validacije")
 	// Dinamički SQL upit
+	// query := fmt.Sprintf(`
+	// 	SELECT r.id as reservation_id, rm.room_guest_number, rm.room_price_en,
+	// 	       r.first_name, r.last_name, r.email, r.phone,
+	// 	       r.start_date, r.end_date, r.room_id, r.created_at, r.updated_at, r.processed,
+	// 	       rm.room_name_sr, rm.room_name_en, rm.room_name_bg
+	// 	FROM reservations r
+	// 	LEFT JOIN rooms rm ON (r.room_id = rm.id)
+	// 	%s
+	// 	ORDER BY %s %s
+	// 	LIMIT $1
+	// 	OFFSET $2;
+	// `, whereClause, arg.OrderBy, arg.OrderDir)
+
+	// // Izvršenje upita
+
+	// rows, err := store.db.Query(ctx, query, arg.Limit, arg.Offset)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer rows.Close()
+
+	// Dinamički SQL upit sa brojanjem ukupnog broja redova
 	query := fmt.Sprintf(`
-		SELECT r.id as reservation_id, rm.room_guest_number, rm.room_price_en, 
-		       r.first_name, r.last_name, r.email, r.phone, 
-		       r.start_date, r.end_date, r.room_id, r.created_at, r.updated_at, r.processed, 
-		       rm.room_name_sr, rm.room_name_en, rm.room_name_bg
-		FROM reservations r
-		LEFT JOIN rooms rm ON (r.room_id = rm.id)
-		%s
+		WITH reservations_with_count AS (
+			SELECT r.id as reservation_id, rm.room_guest_number, rm.room_price_en, 
+			       r.first_name, r.last_name, r.email, r.phone, 
+			       r.start_date, r.end_date, r.room_id, r.created_at, r.updated_at, r.processed, 
+			       rm.room_name_sr, rm.room_name_en, rm.room_name_bg,
+			       COUNT(*) OVER () as total_count
+			FROM reservations r
+			LEFT JOIN rooms rm ON (r.room_id = rm.id)
+			%s
+		)
+		SELECT reservation_id, room_guest_number, room_price_en, 
+		       first_name, last_name, email, phone, 
+		       start_date, end_date, room_id, created_at, updated_at, processed, 
+		       room_name_sr, room_name_en, room_name_bg, total_count
+		FROM reservations_with_count
 		ORDER BY %s %s
 		LIMIT $1
 		OFFSET $2;
 	`, whereClause, arg.OrderBy, arg.OrderDir)
 
+	log.Println(query)
 	// Izvršenje upita
-
 	rows, err := store.db.Query(ctx, query, arg.Limit, arg.Offset)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
+
 	items := []ListReservationsResult{}
+	var totalCount int64
+
+	log.Println("posle upita")
 	for rows.Next() {
 		var i ListReservationsResult
+		var count int64
 		if err := rows.Scan(
 			&i.ReservationID,
 			&i.RoomGuestNumber,
@@ -110,14 +147,17 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 			&i.RoomNameSr,
 			&i.RoomNameEn,
 			&i.RoomNameBg,
+			&count,
 		); err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		items = append(items, i)
+		totalCount = count // totalCount će biti isti za svaki red zbog funkcije COUNT(*) OVER ()
+		log.Println(count, totalCount)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	return items, nil
+	return items, totalCount, nil
 
 }

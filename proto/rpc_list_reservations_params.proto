@@ -15,5 +15,6 @@ message ListReservationsParamsRequest {
 }
 
 message ListReservationsParamsResponse {
-    repeated ReservationAll reservations = 1; // Lista soba
+    repeated ReservationAll reservations = 1; // Lista reservacija
+    int64 total = 2; // Ukupan broj rezervacija
 }

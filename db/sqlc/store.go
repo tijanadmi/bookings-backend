@@ -9,7 +9,7 @@ import (
 // Store defines all functions to execute db queries and transactions
 type Store interface {
 	Querier
-	ListReservationsWithParams(ctx context.Context, arg ReservationsWithParams) ([]ListReservationsResult, error)
+	ListReservationsWithParams(ctx context.Context, arg ReservationsWithParams) ([]ListReservationsResult, int64, error)
 }
 
 // SQLStore provides all functions to execute SQL queries and transactions

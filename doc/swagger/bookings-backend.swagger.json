@@ -958,7 +958,12 @@
             "type": "object",
             "$ref": "#/definitions/pbReservationAll"
           },
-          "title": "Lista soba"
+          "title": "Lista reservacija"
+        },
+        "total": {
+          "type": "string",
+          "format": "int64",
+          "title": "Ukupan broj rezervacija"
         }
       }
     },
