@@ -55,3 +55,21 @@ func (maker *PasetoMaker) VerifyToken(token string) (*Payload, error) {
 
 	return payload, nil
 }
+
+// VerifyToken checks if the token is valid or not
+// func (maker *PasetoMaker) GetUsernameFromToken(token string) (string, error) {
+// 	payload := &Payload{}
+// 	var userName string;
+
+// 	err := maker.paseto.Decrypt(token, maker.symmetricKey, payload, nil)
+// 	if err != nil {
+// 		return userName, ErrInvalidToken
+// 	}
+
+// 	err = payload.Valid()
+// 	if err != nil {
+// 		return userName, err
+// 	}
+
+// 	return userName, nil
+// }

@@ -11,4 +11,6 @@ type Maker interface {
 
 	// VerifyToken checks if the token is valid or not
 	VerifyToken(token string) (*Payload, error)
+	// VerifyToken checks if the token is valid or not
+	//GetUsernameFromToken(token string) (string, error)
 }

@@ -194,6 +194,39 @@
         ]
       }
     },
+    "/v1/delete_restriction": {
+      "delete": {
+        "summary": "Delete restriction",
+        "description": "Use this API to delete restriction",
+        "operationId": "Bookings_DeleteRestriction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbDeleteRestrictionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "restrictionId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/delete_room": {
       "delete": {
         "summary": "Delete room",
@@ -216,6 +249,39 @@
         "parameters": [
           {
             "name": "roomId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/get_restriction": {
+      "get": {
+        "summary": "Get restriction",
+        "description": "Use this API to get restriction",
+        "operationId": "Bookings_GetRestriction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetRestrictionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "restrictionId",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -286,6 +352,40 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/pbGetUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/get_user_by_token": {
+      "post": {
+        "summary": "Get user by token",
+        "description": "Use this API to get user by token",
+        "operationId": "Bookings_GetUserByToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetUserByTokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbGetUserByTokenRequest"
             }
           }
         ],
@@ -480,6 +580,48 @@
         ]
       }
     },
+    "/v1/list_restrictions": {
+      "get": {
+        "summary": "List restrictions",
+        "description": "Use this API to list restrictions with pagination",
+        "operationId": "Bookings_ListRestrictions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListRestrictionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "description": "Limit restrikcija koje vraćamo",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "description": "Offset za paginaciju",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/list_rooms": {
       "get": {
         "summary": "List rooms",
@@ -627,6 +769,40 @@
             "required": false,
             "type": "integer",
             "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/update_restriction": {
+      "patch": {
+        "summary": "Update restriction",
+        "description": "Use this API to update restriction",
+        "operationId": "Bookings_UpdateRestriction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateRestrictionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbUpdateRestrictionRequest"
+            }
           }
         ],
         "tags": [
@@ -878,6 +1054,14 @@
         }
       }
     },
+    "pbDeleteRestrictionResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "pbDeleteRoomResponse": {
       "type": "object",
       "properties": {
@@ -886,11 +1070,35 @@
         }
       }
     },
+    "pbGetRestrictionResponse": {
+      "type": "object",
+      "properties": {
+        "restriction": {
+          "$ref": "#/definitions/pbRestriction"
+        }
+      }
+    },
     "pbGetRoomResponse": {
       "type": "object",
       "properties": {
         "room": {
           "$ref": "#/definitions/pbRoom"
+        }
+      }
+    },
+    "pbGetUserByTokenRequest": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        }
+      }
+    },
+    "pbGetUserByTokenResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/pbUser"
         }
       }
     },
@@ -964,6 +1172,19 @@
           "type": "string",
           "format": "int64",
           "title": "Ukupan broj rezervacija"
+        }
+      }
+    },
+    "pbListRestrictionsResponse": {
+      "type": "object",
+      "properties": {
+        "restrictions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbRestriction"
+          },
+          "title": "Lista restrikcija"
         }
       }
     },
@@ -1145,6 +1366,10 @@
     "pbRestriction": {
       "type": "object",
       "properties": {
+        "restrictionId": {
+          "type": "integer",
+          "format": "int32"
+        },
         "restrictionNameSr": {
           "type": "string"
         },
@@ -1260,6 +1485,32 @@
             "$ref": "#/definitions/pbRoom"
           },
           "title": "Lista soba"
+        }
+      }
+    },
+    "pbUpdateRestrictionRequest": {
+      "type": "object",
+      "properties": {
+        "restrictionId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "restrictionNameSr": {
+          "type": "string"
+        },
+        "restrictionNameEn": {
+          "type": "string"
+        },
+        "restrictionNameBg": {
+          "type": "string"
+        }
+      }
+    },
+    "pbUpdateRestrictionResponse": {
+      "type": "object",
+      "properties": {
+        "restriction": {
+          "$ref": "#/definitions/pbRestriction"
         }
       }
     },

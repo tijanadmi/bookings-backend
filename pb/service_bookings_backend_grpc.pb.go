@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Bookings_CreateUser_FullMethodName                    = "/pb.Bookings/CreateUser"
 	Bookings_GetUser_FullMethodName                       = "/pb.Bookings/GetUser"
+	Bookings_GetUserByToken_FullMethodName                = "/pb.Bookings/GetUserByToken"
 	Bookings_UpdateUser_FullMethodName                    = "/pb.Bookings/UpdateUser"
 	Bookings_LoginUser_FullMethodName                     = "/pb.Bookings/LoginUser"
 	Bookings_RefreshToken_FullMethodName                  = "/pb.Bookings/RefreshToken"
@@ -31,6 +32,10 @@ const (
 	Bookings_UpdateRoom_FullMethodName                    = "/pb.Bookings/UpdateRoom"
 	Bookings_DeleteRoom_FullMethodName                    = "/pb.Bookings/DeleteRoom"
 	Bookings_CreateRestriction_FullMethodName             = "/pb.Bookings/CreateRestriction"
+	Bookings_GetRestriction_FullMethodName                = "/pb.Bookings/GetRestriction"
+	Bookings_ListRestrictions_FullMethodName              = "/pb.Bookings/ListRestrictions"
+	Bookings_UpdateRestriction_FullMethodName             = "/pb.Bookings/UpdateRestriction"
+	Bookings_DeleteRestriction_FullMethodName             = "/pb.Bookings/DeleteRestriction"
 	Bookings_ListAllReservations_FullMethodName           = "/pb.Bookings/ListAllReservations"
 	Bookings_ListNewReservations_FullMethodName           = "/pb.Bookings/ListNewReservations"
 	Bookings_ListProcessedReservations_FullMethodName     = "/pb.Bookings/ListProcessedReservations"
@@ -45,6 +50,7 @@ const (
 type BookingsClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	GetUserByToken(ctx context.Context, in *GetUserByTokenRequest, opts ...grpc.CallOption) (*GetUserByTokenResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
@@ -55,6 +61,10 @@ type BookingsClient interface {
 	UpdateRoom(ctx context.Context, in *UpdateRoomRequest, opts ...grpc.CallOption) (*UpdateRoomResponse, error)
 	DeleteRoom(ctx context.Context, in *DeleteRoomRequest, opts ...grpc.CallOption) (*DeleteRoomResponse, error)
 	CreateRestriction(ctx context.Context, in *CreateRestrictionRequest, opts ...grpc.CallOption) (*CreateRestrictionResponse, error)
+	GetRestriction(ctx context.Context, in *GetRestrictionRequest, opts ...grpc.CallOption) (*GetRestrictionResponse, error)
+	ListRestrictions(ctx context.Context, in *ListRestrictionsRequest, opts ...grpc.CallOption) (*ListRestrictionsResponse, error)
+	UpdateRestriction(ctx context.Context, in *UpdateRestrictionRequest, opts ...grpc.CallOption) (*UpdateRestrictionResponse, error)
+	DeleteRestriction(ctx context.Context, in *DeleteRestrictionRequest, opts ...grpc.CallOption) (*DeleteRestrictionResponse, error)
 	ListAllReservations(ctx context.Context, in *ListAllReservationsRequest, opts ...grpc.CallOption) (*ListAllReservationsResponse, error)
 	ListNewReservations(ctx context.Context, in *ListNewReservationsRequest, opts ...grpc.CallOption) (*ListNewReservationsResponse, error)
 	ListProcessedReservations(ctx context.Context, in *ListProcessedReservationsRequest, opts ...grpc.CallOption) (*ListProcessedReservationsResponse, error)
@@ -85,6 +95,16 @@ func (c *bookingsClient) GetUser(ctx context.Context, in *GetUserRequest, opts .
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUserResponse)
 	err := c.cc.Invoke(ctx, Bookings_GetUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) GetUserByToken(ctx context.Context, in *GetUserByTokenRequest, opts ...grpc.CallOption) (*GetUserByTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserByTokenResponse)
+	err := c.cc.Invoke(ctx, Bookings_GetUserByToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -191,6 +211,46 @@ func (c *bookingsClient) CreateRestriction(ctx context.Context, in *CreateRestri
 	return out, nil
 }
 
+func (c *bookingsClient) GetRestriction(ctx context.Context, in *GetRestrictionRequest, opts ...grpc.CallOption) (*GetRestrictionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetRestrictionResponse)
+	err := c.cc.Invoke(ctx, Bookings_GetRestriction_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) ListRestrictions(ctx context.Context, in *ListRestrictionsRequest, opts ...grpc.CallOption) (*ListRestrictionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListRestrictionsResponse)
+	err := c.cc.Invoke(ctx, Bookings_ListRestrictions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) UpdateRestriction(ctx context.Context, in *UpdateRestrictionRequest, opts ...grpc.CallOption) (*UpdateRestrictionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateRestrictionResponse)
+	err := c.cc.Invoke(ctx, Bookings_UpdateRestriction_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) DeleteRestriction(ctx context.Context, in *DeleteRestrictionRequest, opts ...grpc.CallOption) (*DeleteRestrictionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteRestrictionResponse)
+	err := c.cc.Invoke(ctx, Bookings_DeleteRestriction_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *bookingsClient) ListAllReservations(ctx context.Context, in *ListAllReservationsRequest, opts ...grpc.CallOption) (*ListAllReservationsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListAllReservationsResponse)
@@ -257,6 +317,7 @@ func (c *bookingsClient) CreateRoomRestriction(ctx context.Context, in *CreateRo
 type BookingsServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	GetUserByToken(context.Context, *GetUserByTokenRequest) (*GetUserByTokenResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
@@ -267,6 +328,10 @@ type BookingsServer interface {
 	UpdateRoom(context.Context, *UpdateRoomRequest) (*UpdateRoomResponse, error)
 	DeleteRoom(context.Context, *DeleteRoomRequest) (*DeleteRoomResponse, error)
 	CreateRestriction(context.Context, *CreateRestrictionRequest) (*CreateRestrictionResponse, error)
+	GetRestriction(context.Context, *GetRestrictionRequest) (*GetRestrictionResponse, error)
+	ListRestrictions(context.Context, *ListRestrictionsRequest) (*ListRestrictionsResponse, error)
+	UpdateRestriction(context.Context, *UpdateRestrictionRequest) (*UpdateRestrictionResponse, error)
+	DeleteRestriction(context.Context, *DeleteRestrictionRequest) (*DeleteRestrictionResponse, error)
 	ListAllReservations(context.Context, *ListAllReservationsRequest) (*ListAllReservationsResponse, error)
 	ListNewReservations(context.Context, *ListNewReservationsRequest) (*ListNewReservationsResponse, error)
 	ListProcessedReservations(context.Context, *ListProcessedReservationsRequest) (*ListProcessedReservationsResponse, error)
@@ -288,6 +353,9 @@ func (UnimplementedBookingsServer) CreateUser(context.Context, *CreateUserReques
 }
 func (UnimplementedBookingsServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedBookingsServer) GetUserByToken(context.Context, *GetUserByTokenRequest) (*GetUserByTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserByToken not implemented")
 }
 func (UnimplementedBookingsServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
@@ -318,6 +386,18 @@ func (UnimplementedBookingsServer) DeleteRoom(context.Context, *DeleteRoomReques
 }
 func (UnimplementedBookingsServer) CreateRestriction(context.Context, *CreateRestrictionRequest) (*CreateRestrictionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRestriction not implemented")
+}
+func (UnimplementedBookingsServer) GetRestriction(context.Context, *GetRestrictionRequest) (*GetRestrictionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRestriction not implemented")
+}
+func (UnimplementedBookingsServer) ListRestrictions(context.Context, *ListRestrictionsRequest) (*ListRestrictionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRestrictions not implemented")
+}
+func (UnimplementedBookingsServer) UpdateRestriction(context.Context, *UpdateRestrictionRequest) (*UpdateRestrictionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRestriction not implemented")
+}
+func (UnimplementedBookingsServer) DeleteRestriction(context.Context, *DeleteRestrictionRequest) (*DeleteRestrictionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRestriction not implemented")
 }
 func (UnimplementedBookingsServer) ListAllReservations(context.Context, *ListAllReservationsRequest) (*ListAllReservationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAllReservations not implemented")
@@ -390,6 +470,24 @@ func _Bookings_GetUser_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BookingsServer).GetUser(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_GetUserByToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).GetUserByToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_GetUserByToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).GetUserByToken(ctx, req.(*GetUserByTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -574,6 +672,78 @@ func _Bookings_CreateRestriction_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookings_GetRestriction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRestrictionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).GetRestriction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_GetRestriction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).GetRestriction(ctx, req.(*GetRestrictionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_ListRestrictions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRestrictionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).ListRestrictions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_ListRestrictions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).ListRestrictions(ctx, req.(*ListRestrictionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_UpdateRestriction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRestrictionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).UpdateRestriction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_UpdateRestriction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).UpdateRestriction(ctx, req.(*UpdateRestrictionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_DeleteRestriction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRestrictionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).DeleteRestriction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_DeleteRestriction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).DeleteRestriction(ctx, req.(*DeleteRestrictionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Bookings_ListAllReservations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListAllReservationsRequest)
 	if err := dec(in); err != nil {
@@ -698,6 +868,10 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Bookings_GetUser_Handler,
 		},
 		{
+			MethodName: "GetUserByToken",
+			Handler:    _Bookings_GetUserByToken_Handler,
+		},
+		{
 			MethodName: "UpdateUser",
 			Handler:    _Bookings_UpdateUser_Handler,
 		},
@@ -736,6 +910,22 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateRestriction",
 			Handler:    _Bookings_CreateRestriction_Handler,
+		},
+		{
+			MethodName: "GetRestriction",
+			Handler:    _Bookings_GetRestriction_Handler,
+		},
+		{
+			MethodName: "ListRestrictions",
+			Handler:    _Bookings_ListRestrictions_Handler,
+		},
+		{
+			MethodName: "UpdateRestriction",
+			Handler:    _Bookings_UpdateRestriction_Handler,
+		},
+		{
+			MethodName: "DeleteRestriction",
+			Handler:    _Bookings_DeleteRestriction_Handler,
 		},
 		{
 			MethodName: "ListAllReservations",

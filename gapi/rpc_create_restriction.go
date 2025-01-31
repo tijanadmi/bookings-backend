@@ -13,10 +13,10 @@ import (
 )
 
 func (server *Server) CreateRestriction(ctx context.Context, req *pb.CreateRestrictionRequest) (*pb.CreateRestrictionResponse, error) {
-	_, err := server.authorizeUser(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
+	// _, err := server.authorizeUser(ctx)
+	// if err != nil {
+	// 	return nil, unauthenticatedError(err)
+	// }
 	violations := validateCreateRestrictionRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

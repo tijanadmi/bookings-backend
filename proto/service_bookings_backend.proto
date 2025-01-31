@@ -11,6 +11,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "rpc_create_user.proto";
 import "rpc_get_user.proto";
+import "rpc_get_user_by_token.proto";
 import "rpc_update_user.proto";
 import "rpc_login_user.proto";
 import "rpc_refresh_token.proto";
@@ -22,6 +23,10 @@ import "rpc_search_availability_rooms.proto";
 import "rpc_update_room.proto";
 import "rpc_delete_room.proto";
 import "rpc_create_restriction.proto";
+import "rpc_get_restriction.proto";
+import "rpc_list_restrictions.proto";
+import "rpc_update_restriction.proto";
+import "rpc_delete_restriction.proto";
 import "rpc_create_reservation.proto";
 import "rpc_list_all_reservations.proto";
 import "rpc_list_new_reservations.proto";
@@ -62,6 +67,16 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to get user by id";
             summary: "Get user by id";
+        };
+    }
+    rpc GetUserByToken (GetUserByTokenRequest) returns (GetUserByTokenResponse) {
+        option (google.api.http) = {
+            post: "/v1/get_user_by_token"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to get user by token";
+            summary: "Get user by token";
         };
     }
     rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
@@ -167,6 +182,43 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to create a new restriction";
             summary: "Create new restriction";
+        };
+    }
+    rpc GetRestriction (GetRestrictionRequest) returns (GetRestrictionResponse) {
+        option (google.api.http) = {
+            get: "/v1/get_restriction"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to get restriction";
+            summary: "Get restriction";
+        };
+    }
+    rpc ListRestrictions (ListRestrictionsRequest) returns (ListRestrictionsResponse) {
+        option (google.api.http) = {
+            get: "/v1/list_restrictions"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to list restrictions with pagination";
+            summary: "List restrictions";
+        };
+    }
+    rpc UpdateRestriction (UpdateRestrictionRequest) returns (UpdateRestrictionResponse) {
+        option (google.api.http) = {
+            patch: "/v1/update_restriction"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to update restriction";
+            summary: "Update restriction";
+        };
+    }
+    rpc DeleteRestriction (DeleteRestrictionRequest) returns (DeleteRestrictionResponse) {
+        option (google.api.http) = {
+            delete: "/v1/delete_restriction"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to delete restriction";
+            summary: "Delete restriction";
         };
     }
     rpc ListAllReservations (ListAllReservationsRequest) returns (ListAllReservationsResponse) {

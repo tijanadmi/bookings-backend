@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "restriction.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message GetRestrictionRequest {
+    int32 restriction_id = 1;
+}
+
+message GetRestrictionResponse {
+    Restriction restriction = 1;
+}

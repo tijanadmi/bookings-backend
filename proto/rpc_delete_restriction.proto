@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message DeleteRestrictionRequest {
+    int32 restriction_id = 1;
+}
+
+message DeleteRestrictionResponse {
+    string message = 1;
+}

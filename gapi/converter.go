@@ -38,9 +38,10 @@ func convertRoom(room db.Room) *pb.Room {
 
 func convertRestriction(restriction db.Restriction) *pb.Restriction {
 	return &pb.Restriction{
+		RestrictionId:     restriction.ID,
 		RestrictionNameSr: restriction.RestrictionNameSr,
-		RestrictionNameEn: restriction.RestrictionNameSr,
-		RestrictionNameBg: restriction.RestrictionNameSr,
+		RestrictionNameEn: restriction.RestrictionNameEn,
+		RestrictionNameBg: restriction.RestrictionNameBg,
 		CreatedAt:         timestamppb.New(restriction.CreatedAt),
 	}
 }

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package pb;
+
+import "restriction.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message ListRestrictionsRequest {
+    int32 limit = 1;  // Limit restrikcija koje vraćamo
+    int32 offset = 2; // Offset za paginaciju
+}
+
+message ListRestrictionsResponse {
+    repeated Restriction restrictions = 1; // Lista restrikcija
+    
+}
