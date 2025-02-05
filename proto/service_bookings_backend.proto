@@ -28,10 +28,14 @@ import "rpc_list_restrictions.proto";
 import "rpc_update_restriction.proto";
 import "rpc_delete_restriction.proto";
 import "rpc_create_reservation.proto";
+import "rpc_get_reservation.proto";
 import "rpc_list_all_reservations.proto";
 import "rpc_list_new_reservations.proto";
 import "rpc_list_processed_reservations.proto";
 import "rpc_list_reservations_params.proto";
+import "rpc_list_reservations_after_date.proto";
+import "rpc_update_reservation.proto";
+import "rpc_delete_reservation.proto";
 import "rpc_create_room_restriction.proto";
 
 option go_package = "github.com/tijanadmi/bookings_backend/pb";
@@ -221,6 +225,15 @@ service Bookings {
             summary: "Delete restriction";
         };
     }
+    rpc GetReservation (GetReservationRequest) returns (GetReservationResponse) {
+        option (google.api.http) = {
+            get: "/v1/get_reservation"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to get reservation";
+            summary: "Get reservation";
+        };
+    }
     rpc ListAllReservations (ListAllReservationsRequest) returns (ListAllReservationsResponse) {
         option (google.api.http) = {
             get: "/v1/list_all_reservations"
@@ -257,6 +270,15 @@ service Bookings {
             summary: "List processed reservations";
         };
     }
+    rpc ListReservationsAfterDate (ListReservationsAfterDateRequest) returns (ListReservationsAfterDateResponse) {
+        option (google.api.http) = {
+            get: "/v1/list_reservations_after_date"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to list reservations in period";
+            summary: "List reservations in period";
+        };
+    }
     rpc CreateReservation (CreateReservationRequest) returns (CreateReservationResponse) {
         option (google.api.http) = {
             post: "/v1/create_reservation"
@@ -265,6 +287,25 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to create a new reservation";
             summary: "Create new reservation";
+        };
+    }
+    rpc UpdateReservation (UpdateReservationRequest) returns (UpdateReservationResponse) {
+        option (google.api.http) = {
+            patch: "/v1/update_reservation"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to update reservation";
+            summary: "Update reservaton";
+        };
+    }
+    rpc DeleteReservation (DeleteReservationRequest) returns (DeleteReservationResponse) {
+        option (google.api.http) = {
+            delete: "/v1/delete_reservation"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to delete reservaton";
+            summary: "Delete reservaton";
         };
     }
     rpc CreateRoomRestriction (CreateRoomRestrictionRequest) returns (CreateRoomRestrictionResponse) {

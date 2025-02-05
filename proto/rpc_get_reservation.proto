@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "reservation_all.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message GetReservationRequest {
+    int32 reservation_id = 1;
+}
+
+message GetReservationResponse {
+    ReservationAll reservation = 1;
+}

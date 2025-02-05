@@ -7,9 +7,16 @@ INSERT INTO reservations (
 	phone,
 	start_date,
 	end_date,
-	processed
+	processed,
+  num_nights,
+  num_guests,
+  status,
+  total_price,
+  extras_price,
+  is_paid,
+  has_breakfast
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
 ) RETURNING *;
 
 -- name: GetReservation :one
@@ -38,7 +45,14 @@ SET
   phone = COALESCE(sqlc.narg(phone), phone),
   start_date = COALESCE(sqlc.narg(start_date), start_date),
   end_date = COALESCE(sqlc.narg(end_date), end_date),
-  processed = COALESCE(sqlc.narg(processed), processed)
+  processed = COALESCE(sqlc.narg(processed), processed),
+  num_nights = COALESCE(sqlc.narg(num_nights), num_nights),
+  num_guests = COALESCE(sqlc.narg(num_guests), num_guests),
+  status = COALESCE(sqlc.narg(status), status),
+  total_price = COALESCE(sqlc.narg(total_price), total_price),
+  extras_price = COALESCE(sqlc.narg(extras_price), extras_price),
+  is_paid = COALESCE(sqlc.narg(is_paid), is_paid),
+  has_breakfast = COALESCE(sqlc.narg(has_breakfast), has_breakfast)
 WHERE
 id = sqlc.arg(id)
 RETURNING *;
@@ -57,7 +71,8 @@ WHERE id = $1;
 
 -- name: AllReservations :many
 select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
-r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
 from reservations r
@@ -68,7 +83,8 @@ OFFSET $2;
 
 -- name: AllNewReservations :many
 select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
-r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
 from reservations r
@@ -80,7 +96,8 @@ OFFSET $2;
 
 -- name: AllProcessedReservations :many
 select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
-r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed,r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
 from reservations r
@@ -92,12 +109,22 @@ OFFSET $2;
 
 -- name: GetReservationByID :one
 select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
-r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
 from reservations r
 left join rooms rm on (r.room_id = rm.id)
 where r.id = $1
-order by r.start_date asc
-LIMIT $2
-OFFSET $3;
+order by r.start_date asc;
+
+-- name: ListReservationsAfterDate :many
+select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
+rm.room_name_en,
+rm.room_name_bg
+from reservations r
+left join rooms rm on (r.room_id = rm.id)
+where r.created_at >= $1 and r.created_at <= $2
+order by r.start_date asc;

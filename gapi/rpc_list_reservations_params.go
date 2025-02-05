@@ -26,9 +26,18 @@ func (server *Server) ListReservationsWithParams(ctx context.Context, req *pb.Li
 		OrderBy:   req.GetOrderBy(),
 		OrderDir:  req.GetOrderDir(),
 		Processed: req.GetProcessed(),
+		Status:    req.GetStatus(),
 		Limit:     req.GetLimit(),
 		Offset:    req.GetOffset(),
 	}
+
+	// rsp := &pb.ListReservationsParamsResponse{
+	// 	Total:        0,
+	// 	Reservations: []*pb.ReservationAll{}, // Inicijalizacija kao prazan niz
+	// }
+	// for _, reservation := range reservations {
+	// 	rsp.Reservations = append(rsp.Reservations, convertReservationParams(reservation))
+	// }
 
 	reservations, total, err := server.store.ListReservationsWithParams(ctx, arg)
 	if err != nil {
@@ -36,10 +45,19 @@ func (server *Server) ListReservationsWithParams(ctx context.Context, req *pb.Li
 		return nil, status.Errorf(codes.Internal, "failed to list rooms: %s", err)
 	}
 
-	// Mapiranje rezultata u gRPC odgovor
 	rsp := &pb.ListReservationsParamsResponse{
-		Total: total,
+		Total:        0,
+		Reservations: []*pb.ReservationAll{}, // Inicijalizacija kao prazan niz
 	}
+
+	if total == 0 {
+		rsp.Total = 0 // Osiguravamo da je 0
+		return rsp, nil
+	}
+
+	rsp.Total = total
+	// Mapiranje rezultata u gRPC odgovor
+
 	for _, reservation := range reservations {
 		rsp.Reservations = append(rsp.Reservations, convertReservationParams(reservation))
 	}
@@ -52,6 +70,7 @@ func validateListReservationsParamsRequest(req *pb.ListReservationsParamsRequest
 		OrderBy:   req.GetOrderBy(),
 		OrderDir:  req.GetOrderDir(),
 		Processed: req.GetProcessed(),
+		Status:    req.GetStatus(),
 		Limit:     req.GetLimit(),
 		Offset:    req.GetOffset(),
 	}
@@ -76,6 +95,11 @@ func validateListReservationsParamsRequest(req *pb.ListReservationsParamsRequest
 
 	if arg.Processed != "0" && arg.Processed != "1" && arg.Processed != "all" {
 		violations = append(violations, fieldViolation("processed", fmt.Errorf("invalid processed param")))
+
+	}
+
+	if arg.Status != "checked-in" && arg.Status != "checked-out" && arg.Status != "unconfirmed" && arg.Status != "all" {
+		violations = append(violations, fieldViolation("status", fmt.Errorf("invalid processed param")))
 
 	}
 

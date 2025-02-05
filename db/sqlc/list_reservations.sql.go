@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 )
 
@@ -12,6 +11,7 @@ type ReservationsWithParams struct {
 	OrderBy   string `json:"order_by"`
 	OrderDir  string `json:"order_dir"`
 	Processed string `json:"processed"`
+	Status    string `json:"status"`
 	Limit     int32  `json:"limit"`
 	Offset    int32  `json:"offset"`
 }
@@ -31,15 +31,20 @@ type ListReservationsResult struct {
 	CreatedAt       time.Time `json:"created_at"`
 	UpdatedAt       time.Time `json:"updated_at"`
 	Processed       int32     `json:"processed"`
+	NumNights       int32     `json:"num_nights"`
+	NumGuests       int32     `json:"num_guests"`
+	Status          string    `json:"status"`
+	TotalPrice      int32     `json:"total_price"`
+	ExtrasPrice     int32     `json:"extras_price"`
+	IsPaid          bool      `json:"is_paid"`
 	RoomNameSr      string    `json:"room_name_sr"`
 	RoomNameEn      string    `json:"room_name_en"`
 	RoomNameBg      string    `json:"room_name_bg"`
 }
 
-// TransferTx performs a money transfer from one account to the other.
-// It creates the transfer, add account entries, and update accounts' balance within a database transaction
+
 func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg ReservationsWithParams) ([]ListReservationsResult, int64, error) {
-	log.Println("ListReservationsWithParams")
+
 	// Provera sigurnosti unosa (samo dozvoljena polja)
 	validOrderFields := map[string]bool{
 		"start_date":    true,
@@ -59,39 +64,31 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 
 	// Dinamički WHERE uslov za processed
 	whereClause := ""
-	switch arg.Processed {
-	case "0":
+	if arg.Processed == "0" {
 		whereClause = "WHERE r.processed = 0"
-	case "1":
+	} else if arg.Processed == "1" {
 		whereClause = "WHERE r.processed = 1"
-	case "all":
-		whereClause = "" // Bez dodatnih uslova
-	default:
-		return nil, 0, fmt.Errorf("invalid processed value")
 	}
 
-	log.Println("Prosao sve validacije")
-	// Dinamički SQL upit
-	// query := fmt.Sprintf(`
-	// 	SELECT r.id as reservation_id, rm.room_guest_number, rm.room_price_en,
-	// 	       r.first_name, r.last_name, r.email, r.phone,
-	// 	       r.start_date, r.end_date, r.room_id, r.created_at, r.updated_at, r.processed,
-	// 	       rm.room_name_sr, rm.room_name_en, rm.room_name_bg
-	// 	FROM reservations r
-	// 	LEFT JOIN rooms rm ON (r.room_id = rm.id)
-	// 	%s
-	// 	ORDER BY %s %s
-	// 	LIMIT $1
-	// 	OFFSET $2;
-	// `, whereClause, arg.OrderBy, arg.OrderDir)
+	// Dodavanje uslova za status
+	if arg.Status != "all" {
+		if whereClause == "" {
+			whereClause = "WHERE "
+		} else {
+			whereClause += " AND "
+		}
 
-	// // Izvršenje upita
-
-	// rows, err := store.db.Query(ctx, query, arg.Limit, arg.Offset)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// defer rows.Close()
+		switch arg.Status {
+		case "checked-in":
+			whereClause += " r.status = 'checked-in'"
+		case "checked-out":
+			whereClause += " r.status = 'checked-out'"
+		case "unconfirmed":
+			whereClause += " r.status = 'unconfirmed'"
+		default:
+			return nil, 0, fmt.Errorf("invalid status value")
+		}
+	}
 
 	// Dinamički SQL upit sa brojanjem ukupnog broja redova
 	query := fmt.Sprintf(`
@@ -99,6 +96,7 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 			SELECT r.id as reservation_id, rm.room_guest_number, rm.room_price_en, 
 			       r.first_name, r.last_name, r.email, r.phone, 
 			       r.start_date, r.end_date, r.room_id, r.created_at, r.updated_at, r.processed, 
+				   r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid,
 			       rm.room_name_sr, rm.room_name_en, rm.room_name_bg,
 			       COUNT(*) OVER () as total_count
 			FROM reservations r
@@ -108,6 +106,7 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 		SELECT reservation_id, room_guest_number, room_price_en, 
 		       first_name, last_name, email, phone, 
 		       start_date, end_date, room_id, created_at, updated_at, processed, 
+			   num_nights, num_guests, status, total_price, extras_price, is_paid,
 		       room_name_sr, room_name_en, room_name_bg, total_count
 		FROM reservations_with_count
 		ORDER BY %s %s
@@ -115,7 +114,6 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 		OFFSET $2;
 	`, whereClause, arg.OrderBy, arg.OrderDir)
 
-	log.Println(query)
 	// Izvršenje upita
 	rows, err := store.db.Query(ctx, query, arg.Limit, arg.Offset)
 	if err != nil {
@@ -126,7 +124,6 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 	items := []ListReservationsResult{}
 	var totalCount int64
 
-	log.Println("posle upita")
 	for rows.Next() {
 		var i ListReservationsResult
 		var count int64
@@ -144,6 +141,12 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.Processed,
+			&i.NumNights,
+			&i.NumGuests,
+			&i.Status,
+			&i.TotalPrice,
+			&i.ExtrasPrice,
+			&i.IsPaid,
 			&i.RoomNameSr,
 			&i.RoomNameEn,
 			&i.RoomNameBg,
@@ -153,7 +156,7 @@ func (store *SQLStore) ListReservationsWithParams(ctx context.Context, arg Reser
 		}
 		items = append(items, i)
 		totalCount = count // totalCount će biti isti za svaki red zbog funkcije COUNT(*) OVER ()
-		log.Println(count, totalCount)
+
 	}
 	if err := rows.Err(); err != nil {
 		return nil, 0, err

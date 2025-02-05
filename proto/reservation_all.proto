@@ -17,9 +17,16 @@ message ReservationAll {
     required string start_date = 9;
     required string end_date = 10;
     optional int32 processed = 11;
-    required google.protobuf.Timestamp created_at = 12;
-    optional google.protobuf.Timestamp updated_at = 13;
-    required string room_name_sr = 14;    // Naziv sobe na srpskom
-    required string room_name_en = 15;   // Naziv sobe na engleskom
-    required string room_name_bg = 16;   // Naziv sobe na bugarskom
+    optional int32 num_nights = 12;
+    optional int32 num_guests = 13;
+    optional string status = 14;
+    optional int32 total_price = 15;
+    optional int32 extras_price = 16;
+	optional bool is_paid  = 17;
+    optional bool has_breakfast  = 18;
+    required google.protobuf.Timestamp created_at = 19;
+    optional google.protobuf.Timestamp updated_at = 20;
+    required string room_name_sr = 21;    // Naziv sobe na srpskom
+    required string room_name_en = 22;   // Naziv sobe na engleskom
+    required string room_name_bg = 23;   // Naziv sobe na bugarskom
 }

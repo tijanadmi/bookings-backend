@@ -54,3 +54,7 @@ RETURNING *;
 -- name: DeleteRoomRestriction :exec
 DELETE FROM room_restrictions
 WHERE id = $1;
+
+-- name: DeleteRoomRestrictionForReservation :exec
+DELETE FROM room_restrictions
+WHERE reservation_id = $1;

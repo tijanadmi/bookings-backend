@@ -12,17 +12,24 @@ import (
 )
 
 type Reservation struct {
-	ID        int32     `json:"id"`
-	RoomID    int32     `json:"room_id"`
-	FirstName string    `json:"first_name"`
-	LastName  string    `json:"last_name"`
-	Email     string    `json:"email"`
-	Phone     string    `json:"phone"`
-	StartDate time.Time `json:"start_date"`
-	EndDate   time.Time `json:"end_date"`
-	Processed int32     `json:"processed"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID           int32       `json:"id"`
+	RoomID       int32       `json:"room_id"`
+	FirstName    string      `json:"first_name"`
+	LastName     string      `json:"last_name"`
+	Email        string      `json:"email"`
+	Phone        string      `json:"phone"`
+	StartDate    time.Time   `json:"start_date"`
+	EndDate      time.Time   `json:"end_date"`
+	Processed    int32       `json:"processed"`
+	CreatedAt    time.Time   `json:"created_at"`
+	UpdatedAt    time.Time   `json:"updated_at"`
+	NumNights    pgtype.Int4 `json:"num_nights"`
+	NumGuests    pgtype.Int4 `json:"num_guests"`
+	Status       string      `json:"status"`
+	TotalPrice   pgtype.Int4 `json:"total_price"`
+	ExtrasPrice  int32       `json:"extras_price"`
+	IsPaid       bool        `json:"is_paid"`
+	HasBreakfast bool        `json:"has_breakfast"`
 }
 
 type Restriction struct {

@@ -194,6 +194,39 @@
         ]
       }
     },
+    "/v1/delete_reservation": {
+      "delete": {
+        "summary": "Delete reservaton",
+        "description": "Use this API to delete reservaton",
+        "operationId": "Bookings_DeleteReservation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbDeleteReservationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "reservationId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/delete_restriction": {
       "delete": {
         "summary": "Delete restriction",
@@ -249,6 +282,39 @@
         "parameters": [
           {
             "name": "roomId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/get_reservation": {
+      "get": {
+        "summary": "Get reservation",
+        "description": "Use this API to get reservation",
+        "operationId": "Bookings_GetReservation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetReservationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "reservationId",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -520,6 +586,44 @@
         ]
       }
     },
+    "/v1/list_reservations_after_date": {
+      "get": {
+        "summary": "List reservations in period",
+        "description": "Use this API to list reservations in period",
+        "operationId": "Bookings_ListReservationsAfterDate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListReservationsAfterDateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/list_reservations_params": {
       "get": {
         "summary": "List processed reservations",
@@ -554,6 +658,12 @@
           },
           {
             "name": "processed",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
             "in": "query",
             "required": false,
             "type": "string"
@@ -776,6 +886,40 @@
         ]
       }
     },
+    "/v1/update_reservation": {
+      "patch": {
+        "summary": "Update reservaton",
+        "description": "Use this API to update reservation",
+        "operationId": "Bookings_UpdateReservation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateReservationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbUpdateReservationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/update_restriction": {
       "patch": {
         "summary": "Update restriction",
@@ -908,6 +1052,31 @@
         "processed": {
           "type": "integer",
           "format": "int32"
+        },
+        "numNights": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numGuests": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "string"
+        },
+        "totalPrice": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "extrasPrice": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isPaid": {
+          "type": "boolean"
+        },
+        "hasBreakfast": {
+          "type": "boolean"
         }
       }
     },
@@ -1054,6 +1223,14 @@
         }
       }
     },
+    "pbDeleteReservationResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "pbDeleteRestrictionResponse": {
       "type": "object",
       "properties": {
@@ -1067,6 +1244,14 @@
       "properties": {
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "pbGetReservationResponse": {
+      "type": "object",
+      "properties": {
+        "reservation": {
+          "$ref": "#/definitions/pbReservationAll"
         }
       }
     },
@@ -1154,6 +1339,19 @@
             "$ref": "#/definitions/pbReservationAll"
           },
           "title": "Lista soba"
+        }
+      }
+    },
+    "pbListReservationsAfterDateResponse": {
+      "type": "object",
+      "properties": {
+        "reservations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbReservationAll"
+          },
+          "title": "Lista reservacija"
         }
       }
     },
@@ -1290,6 +1488,31 @@
           "type": "integer",
           "format": "int32"
         },
+        "numNights": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numGuests": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "string"
+        },
+        "totalPrice": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "extrasPrice": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isPaid": {
+          "type": "boolean"
+        },
+        "hasBreakfast": {
+          "type": "boolean"
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"
@@ -1340,6 +1563,31 @@
         "processed": {
           "type": "integer",
           "format": "int32"
+        },
+        "numNights": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numGuests": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "string"
+        },
+        "totalPrice": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "extrasPrice": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isPaid": {
+          "type": "boolean"
+        },
+        "hasBreakfast": {
+          "type": "boolean"
         },
         "createdAt": {
           "type": "string",
@@ -1485,6 +1733,74 @@
             "$ref": "#/definitions/pbRoom"
           },
           "title": "Lista soba"
+        }
+      }
+    },
+    "pbUpdateReservationRequest": {
+      "type": "object",
+      "properties": {
+        "reservationId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "processed": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numNights": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numGuests": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "string"
+        },
+        "totalPrice": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "extrasPrice": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isPaid": {
+          "type": "boolean"
+        },
+        "hasBreakfast": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pbUpdateReservationResponse": {
+      "type": "object",
+      "properties": {
+        "reservation": {
+          "$ref": "#/definitions/pbReservation"
         }
       }
     },

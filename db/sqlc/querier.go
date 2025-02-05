@@ -8,6 +8,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Querier interface {
@@ -24,8 +25,9 @@ type Querier interface {
 	DeleteRestriction(ctx context.Context, id int32) error
 	DeleteRoom(ctx context.Context, id int32) error
 	DeleteRoomRestriction(ctx context.Context, id int32) error
+	DeleteRoomRestrictionForReservation(ctx context.Context, reservationID pgtype.Int4) error
 	GetReservation(ctx context.Context, id int32) (Reservation, error)
-	GetReservationByID(ctx context.Context, arg GetReservationByIDParams) (GetReservationByIDRow, error)
+	GetReservationByID(ctx context.Context, id int32) (GetReservationByIDRow, error)
 	GetReservationForUpdate(ctx context.Context, id int32) (Reservation, error)
 	GetRestriction(ctx context.Context, id int32) (Restriction, error)
 	GetRestrictionForUpdate(ctx context.Context, id int32) (Restriction, error)
@@ -37,6 +39,7 @@ type Querier interface {
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUser(ctx context.Context, email string) (User, error)
 	ListReservations(ctx context.Context, arg ListReservationsParams) ([]Reservation, error)
+	ListReservationsAfterDate(ctx context.Context, arg ListReservationsAfterDateParams) ([]ListReservationsAfterDateRow, error)
 	ListRestrictions(ctx context.Context, arg ListRestrictionsParams) ([]Restriction, error)
 	ListRoomRestrictions(ctx context.Context, arg ListRoomRestrictionsParams) ([]RoomRestriction, error)
 	ListRooms(ctx context.Context, arg ListRoomsParams) ([]Room, error)

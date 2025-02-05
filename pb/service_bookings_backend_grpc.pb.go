@@ -36,11 +36,15 @@ const (
 	Bookings_ListRestrictions_FullMethodName              = "/pb.Bookings/ListRestrictions"
 	Bookings_UpdateRestriction_FullMethodName             = "/pb.Bookings/UpdateRestriction"
 	Bookings_DeleteRestriction_FullMethodName             = "/pb.Bookings/DeleteRestriction"
+	Bookings_GetReservation_FullMethodName                = "/pb.Bookings/GetReservation"
 	Bookings_ListAllReservations_FullMethodName           = "/pb.Bookings/ListAllReservations"
 	Bookings_ListNewReservations_FullMethodName           = "/pb.Bookings/ListNewReservations"
 	Bookings_ListProcessedReservations_FullMethodName     = "/pb.Bookings/ListProcessedReservations"
 	Bookings_ListReservationsWithParams_FullMethodName    = "/pb.Bookings/ListReservationsWithParams"
+	Bookings_ListReservationsAfterDate_FullMethodName     = "/pb.Bookings/ListReservationsAfterDate"
 	Bookings_CreateReservation_FullMethodName             = "/pb.Bookings/CreateReservation"
+	Bookings_UpdateReservation_FullMethodName             = "/pb.Bookings/UpdateReservation"
+	Bookings_DeleteReservation_FullMethodName             = "/pb.Bookings/DeleteReservation"
 	Bookings_CreateRoomRestriction_FullMethodName         = "/pb.Bookings/CreateRoomRestriction"
 )
 
@@ -65,11 +69,15 @@ type BookingsClient interface {
 	ListRestrictions(ctx context.Context, in *ListRestrictionsRequest, opts ...grpc.CallOption) (*ListRestrictionsResponse, error)
 	UpdateRestriction(ctx context.Context, in *UpdateRestrictionRequest, opts ...grpc.CallOption) (*UpdateRestrictionResponse, error)
 	DeleteRestriction(ctx context.Context, in *DeleteRestrictionRequest, opts ...grpc.CallOption) (*DeleteRestrictionResponse, error)
+	GetReservation(ctx context.Context, in *GetReservationRequest, opts ...grpc.CallOption) (*GetReservationResponse, error)
 	ListAllReservations(ctx context.Context, in *ListAllReservationsRequest, opts ...grpc.CallOption) (*ListAllReservationsResponse, error)
 	ListNewReservations(ctx context.Context, in *ListNewReservationsRequest, opts ...grpc.CallOption) (*ListNewReservationsResponse, error)
 	ListProcessedReservations(ctx context.Context, in *ListProcessedReservationsRequest, opts ...grpc.CallOption) (*ListProcessedReservationsResponse, error)
 	ListReservationsWithParams(ctx context.Context, in *ListReservationsParamsRequest, opts ...grpc.CallOption) (*ListReservationsParamsResponse, error)
+	ListReservationsAfterDate(ctx context.Context, in *ListReservationsAfterDateRequest, opts ...grpc.CallOption) (*ListReservationsAfterDateResponse, error)
 	CreateReservation(ctx context.Context, in *CreateReservationRequest, opts ...grpc.CallOption) (*CreateReservationResponse, error)
+	UpdateReservation(ctx context.Context, in *UpdateReservationRequest, opts ...grpc.CallOption) (*UpdateReservationResponse, error)
+	DeleteReservation(ctx context.Context, in *DeleteReservationRequest, opts ...grpc.CallOption) (*DeleteReservationResponse, error)
 	CreateRoomRestriction(ctx context.Context, in *CreateRoomRestrictionRequest, opts ...grpc.CallOption) (*CreateRoomRestrictionResponse, error)
 }
 
@@ -251,6 +259,16 @@ func (c *bookingsClient) DeleteRestriction(ctx context.Context, in *DeleteRestri
 	return out, nil
 }
 
+func (c *bookingsClient) GetReservation(ctx context.Context, in *GetReservationRequest, opts ...grpc.CallOption) (*GetReservationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetReservationResponse)
+	err := c.cc.Invoke(ctx, Bookings_GetReservation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *bookingsClient) ListAllReservations(ctx context.Context, in *ListAllReservationsRequest, opts ...grpc.CallOption) (*ListAllReservationsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListAllReservationsResponse)
@@ -291,10 +309,40 @@ func (c *bookingsClient) ListReservationsWithParams(ctx context.Context, in *Lis
 	return out, nil
 }
 
+func (c *bookingsClient) ListReservationsAfterDate(ctx context.Context, in *ListReservationsAfterDateRequest, opts ...grpc.CallOption) (*ListReservationsAfterDateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListReservationsAfterDateResponse)
+	err := c.cc.Invoke(ctx, Bookings_ListReservationsAfterDate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *bookingsClient) CreateReservation(ctx context.Context, in *CreateReservationRequest, opts ...grpc.CallOption) (*CreateReservationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateReservationResponse)
 	err := c.cc.Invoke(ctx, Bookings_CreateReservation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) UpdateReservation(ctx context.Context, in *UpdateReservationRequest, opts ...grpc.CallOption) (*UpdateReservationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateReservationResponse)
+	err := c.cc.Invoke(ctx, Bookings_UpdateReservation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) DeleteReservation(ctx context.Context, in *DeleteReservationRequest, opts ...grpc.CallOption) (*DeleteReservationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteReservationResponse)
+	err := c.cc.Invoke(ctx, Bookings_DeleteReservation_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -332,11 +380,15 @@ type BookingsServer interface {
 	ListRestrictions(context.Context, *ListRestrictionsRequest) (*ListRestrictionsResponse, error)
 	UpdateRestriction(context.Context, *UpdateRestrictionRequest) (*UpdateRestrictionResponse, error)
 	DeleteRestriction(context.Context, *DeleteRestrictionRequest) (*DeleteRestrictionResponse, error)
+	GetReservation(context.Context, *GetReservationRequest) (*GetReservationResponse, error)
 	ListAllReservations(context.Context, *ListAllReservationsRequest) (*ListAllReservationsResponse, error)
 	ListNewReservations(context.Context, *ListNewReservationsRequest) (*ListNewReservationsResponse, error)
 	ListProcessedReservations(context.Context, *ListProcessedReservationsRequest) (*ListProcessedReservationsResponse, error)
 	ListReservationsWithParams(context.Context, *ListReservationsParamsRequest) (*ListReservationsParamsResponse, error)
+	ListReservationsAfterDate(context.Context, *ListReservationsAfterDateRequest) (*ListReservationsAfterDateResponse, error)
 	CreateReservation(context.Context, *CreateReservationRequest) (*CreateReservationResponse, error)
+	UpdateReservation(context.Context, *UpdateReservationRequest) (*UpdateReservationResponse, error)
+	DeleteReservation(context.Context, *DeleteReservationRequest) (*DeleteReservationResponse, error)
 	CreateRoomRestriction(context.Context, *CreateRoomRestrictionRequest) (*CreateRoomRestrictionResponse, error)
 	mustEmbedUnimplementedBookingsServer()
 }
@@ -399,6 +451,9 @@ func (UnimplementedBookingsServer) UpdateRestriction(context.Context, *UpdateRes
 func (UnimplementedBookingsServer) DeleteRestriction(context.Context, *DeleteRestrictionRequest) (*DeleteRestrictionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRestriction not implemented")
 }
+func (UnimplementedBookingsServer) GetReservation(context.Context, *GetReservationRequest) (*GetReservationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReservation not implemented")
+}
 func (UnimplementedBookingsServer) ListAllReservations(context.Context, *ListAllReservationsRequest) (*ListAllReservationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAllReservations not implemented")
 }
@@ -411,8 +466,17 @@ func (UnimplementedBookingsServer) ListProcessedReservations(context.Context, *L
 func (UnimplementedBookingsServer) ListReservationsWithParams(context.Context, *ListReservationsParamsRequest) (*ListReservationsParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListReservationsWithParams not implemented")
 }
+func (UnimplementedBookingsServer) ListReservationsAfterDate(context.Context, *ListReservationsAfterDateRequest) (*ListReservationsAfterDateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListReservationsAfterDate not implemented")
+}
 func (UnimplementedBookingsServer) CreateReservation(context.Context, *CreateReservationRequest) (*CreateReservationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateReservation not implemented")
+}
+func (UnimplementedBookingsServer) UpdateReservation(context.Context, *UpdateReservationRequest) (*UpdateReservationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateReservation not implemented")
+}
+func (UnimplementedBookingsServer) DeleteReservation(context.Context, *DeleteReservationRequest) (*DeleteReservationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteReservation not implemented")
 }
 func (UnimplementedBookingsServer) CreateRoomRestriction(context.Context, *CreateRoomRestrictionRequest) (*CreateRoomRestrictionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRoomRestriction not implemented")
@@ -744,6 +808,24 @@ func _Bookings_DeleteRestriction_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookings_GetReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReservationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).GetReservation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_GetReservation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).GetReservation(ctx, req.(*GetReservationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Bookings_ListAllReservations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListAllReservationsRequest)
 	if err := dec(in); err != nil {
@@ -816,6 +898,24 @@ func _Bookings_ListReservationsWithParams_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookings_ListReservationsAfterDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListReservationsAfterDateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).ListReservationsAfterDate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_ListReservationsAfterDate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).ListReservationsAfterDate(ctx, req.(*ListReservationsAfterDateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Bookings_CreateReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateReservationRequest)
 	if err := dec(in); err != nil {
@@ -830,6 +930,42 @@ func _Bookings_CreateReservation_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BookingsServer).CreateReservation(ctx, req.(*CreateReservationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_UpdateReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateReservationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).UpdateReservation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_UpdateReservation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).UpdateReservation(ctx, req.(*UpdateReservationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_DeleteReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteReservationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).DeleteReservation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_DeleteReservation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).DeleteReservation(ctx, req.(*DeleteReservationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -928,6 +1064,10 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Bookings_DeleteRestriction_Handler,
 		},
 		{
+			MethodName: "GetReservation",
+			Handler:    _Bookings_GetReservation_Handler,
+		},
+		{
 			MethodName: "ListAllReservations",
 			Handler:    _Bookings_ListAllReservations_Handler,
 		},
@@ -944,8 +1084,20 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Bookings_ListReservationsWithParams_Handler,
 		},
 		{
+			MethodName: "ListReservationsAfterDate",
+			Handler:    _Bookings_ListReservationsAfterDate_Handler,
+		},
+		{
 			MethodName: "CreateReservation",
 			Handler:    _Bookings_CreateReservation_Handler,
+		},
+		{
+			MethodName: "UpdateReservation",
+			Handler:    _Bookings_UpdateReservation_Handler,
+		},
+		{
+			MethodName: "DeleteReservation",
+			Handler:    _Bookings_DeleteReservation_Handler,
 		},
 		{
 			MethodName: "CreateRoomRestriction",

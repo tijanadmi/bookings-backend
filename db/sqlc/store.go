@@ -10,6 +10,8 @@ import (
 type Store interface {
 	Querier
 	ListReservationsWithParams(ctx context.Context, arg ReservationsWithParams) ([]ListReservationsResult, int64, error)
+	CreateReservationTx(ctx context.Context, arg CreateReservationParams) (Reservation, error)
+	DeleteReservationTx(ctx context.Context, id int32) error
 }
 
 // SQLStore provides all functions to execute SQL queries and transactions

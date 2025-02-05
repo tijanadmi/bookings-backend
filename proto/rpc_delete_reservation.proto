@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message DeleteReservationRequest {
+    int32 reservation_id = 1;
+}
+
+message DeleteReservationResponse {
+    string message = 1;
+}

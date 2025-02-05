@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package pb;
+
+import "reservation.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message UpdateReservationRequest {
+    int32 reservation_id  = 1;
+    optional int32 room_id = 2;
+    optional string first_name = 3;
+    optional string last_name = 4;
+    optional string email = 5;
+    optional string phone = 6;
+    optional string start_date = 7;
+    optional string end_date = 8;
+    optional int32 processed = 9;
+    optional int32 num_nights = 10;
+    optional int32 num_guests = 11;
+    optional string status = 12;
+    optional int32 total_price = 13;
+    optional int32 extras_price = 14;
+	optional bool is_paid  = 15;
+    optional bool has_breakfast  = 16;
+}
+
+message UpdateReservationResponse {
+    Reservation reservation = 1;
+}

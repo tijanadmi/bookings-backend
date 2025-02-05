@@ -15,6 +15,13 @@ message CreateReservationRequest {
     string start_date = 6;
     string end_date = 7;
     int32 processed = 8;
+    int32 num_nights = 9;
+    int32 num_guests = 10;
+    string status = 11;
+    int32 total_price = 12;
+    int32 extras_price = 13;
+	bool is_paid  = 14;
+    bool has_breakfast  = 15;
 }
 
 message CreateReservationResponse {

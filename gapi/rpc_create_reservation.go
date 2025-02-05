@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/tijanadmi/bookings_backend/db/sqlc"
 	"github.com/tijanadmi/bookings_backend/pb"
 	"github.com/tijanadmi/bookings_backend/val"
@@ -13,10 +14,10 @@ import (
 )
 
 func (server *Server) CreateReservation(ctx context.Context, req *pb.CreateReservationRequest) (*pb.CreateReservationResponse, error) {
-	_, err := server.authorizeUser(ctx)
-	if err != nil {
-		return nil, unauthenticatedError(err)
-	}
+	// _, err := server.authorizeUser(ctx)
+	// if err != nil {
+	// 	return nil, unauthenticatedError(err)
+	// }
 	violations := validateCreateReservationRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -43,8 +44,24 @@ func (server *Server) CreateReservation(ctx context.Context, req *pb.CreateReser
 		StartDate: startDate,
 		EndDate:   endDate,
 		Processed: req.GetProcessed(),
+		NumNights: pgtype.Int4{
+			Int32: req.GetNumNights(),
+			Valid: true,
+		},
+		NumGuests: pgtype.Int4{
+			Int32: req.GetNumGuests(),
+			Valid: true,
+		},
+		Status: req.GetStatus(),
+		TotalPrice: pgtype.Int4{
+			Int32: req.GetTotalPrice(),
+			Valid: true,
+		},
+		ExtrasPrice:  req.GetExtrasPrice(),
+		IsPaid:       req.GetIsPaid(),
+		HasBreakfast: req.GetHasBreakfast(),
 	}
-	reservation, err := server.store.CreateReservation(ctx, arg)
+	reservation, err := server.store.CreateReservationTx(ctx, arg)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create reservation: %s", err)
 	}

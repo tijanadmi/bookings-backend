@@ -64,6 +64,16 @@ func (q *Queries) DeleteRoomRestriction(ctx context.Context, id int32) error {
 	return err
 }
 
+const deleteRoomRestrictionForReservation = `-- name: DeleteRoomRestrictionForReservation :exec
+DELETE FROM room_restrictions
+WHERE reservation_id = $1
+`
+
+func (q *Queries) DeleteRoomRestrictionForReservation(ctx context.Context, reservationID pgtype.Int4) error {
+	_, err := q.db.Exec(ctx, deleteRoomRestrictionForReservation, reservationID)
+	return err
+}
+
 const getRestrictionsForRoomByDate = `-- name: GetRestrictionsForRoomByDate :many
 select id, start_date, end_date, room_id, reservation_id, restriction_id, created_at, updated_at
 from room_restrictions where $1 < end_date and $2 >= start_date

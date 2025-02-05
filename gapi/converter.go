@@ -3,8 +3,25 @@ package gapi
 import (
 	db "github.com/tijanadmi/bookings_backend/db/sqlc"
 	"github.com/tijanadmi/bookings_backend/pb"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+func logResponse(rsp proto.Message) (string, error) {
+	marshaler := protojson.MarshalOptions{
+		UseProtoNames:   true, // Koristi originalna proto imena umesto camelCase
+		EmitUnpopulated: true, // Prikazuje čak i default vrednosti (npr. `0`, `""`, `false`)
+		Indent:          "  ", // Formatira JSON sa uvučenjima
+	}
+
+	jsonData, err := marshaler.Marshal(rsp)
+	if err != nil {
+		return "", err // Vraća prazan string i grešku
+	}
+
+	return string(jsonData), nil
+}
 
 func convertUser(user db.User) *pb.User {
 	return &pb.User{
@@ -49,16 +66,41 @@ func convertRestriction(restriction db.Restriction) *pb.Restriction {
 func convertReservation(reservation db.Reservation) *pb.Reservation {
 	startDate := reservation.StartDate.Format("2006-01-02")
 	endDate := reservation.EndDate.Format("2006-01-02")
+
+	var numNights, numGuests, totalPrice *int32
+	// Provera i konverzija NumNights
+	if reservation.NumNights.Valid {
+		nn := reservation.NumNights.Int32
+		numNights = &nn
+	}
+	// Provera i konverzija NumGuests
+	if reservation.NumGuests.Valid {
+		nn := reservation.NumGuests.Int32
+		numGuests = &nn
+	}
+	// Provera i konverzija TotalPrice
+	if reservation.TotalPrice.Valid {
+		nn := reservation.TotalPrice.Int32
+		totalPrice = &nn
+	}
+
 	return &pb.Reservation{
-		RoomId:    &reservation.RoomID,
-		FirstName: &reservation.FirstName,
-		LastName:  &reservation.LastName,
-		Email:     &reservation.Email,
-		Phone:     &reservation.Phone,
-		StartDate: &startDate,
-		EndDate:   &endDate,
-		Processed: &reservation.Processed,
-		CreatedAt: timestamppb.New(reservation.CreatedAt),
+		RoomId:       &reservation.RoomID,
+		FirstName:    &reservation.FirstName,
+		LastName:     &reservation.LastName,
+		Email:        &reservation.Email,
+		Phone:        &reservation.Phone,
+		StartDate:    &startDate,
+		EndDate:      &endDate,
+		Processed:    &reservation.Processed,
+		NumNights:    numNights,
+		NumGuests:    numGuests,
+		Status:       &reservation.Status,
+		TotalPrice:   totalPrice,
+		ExtrasPrice:  &reservation.ExtrasPrice,
+		IsPaid:       &reservation.IsPaid,
+		HasBreakfast: &reservation.HasBreakfast,
+		CreatedAt:    timestamppb.New(reservation.CreatedAt),
 	}
 }
 
@@ -99,6 +141,23 @@ func convertReservationAll(reservation db.AllReservationsRow) *pb.ReservationAll
 		roomPriceEn = &roomPN
 	}
 
+	var numNights, numGuests, totalPrice *int32
+	// Provera i konverzija NumNights
+	if reservation.NumNights.Valid {
+		nn := reservation.NumNights.Int32
+		numNights = &nn
+	}
+	// Provera i konverzija NumGuests
+	if reservation.NumGuests.Valid {
+		nn := reservation.NumGuests.Int32
+		numGuests = &nn
+	}
+	// Provera i konverzija TotalPrice
+	if reservation.TotalPrice.Valid {
+		nn := reservation.TotalPrice.Int32
+		totalPrice = &nn
+	}
+
 	return &pb.ReservationAll{
 		ReservationId:   &reservation.ReservationID,
 		RoomId:          &reservation.RoomID,
@@ -111,6 +170,13 @@ func convertReservationAll(reservation db.AllReservationsRow) *pb.ReservationAll
 		StartDate:       &startDate,
 		EndDate:         &endDate,
 		Processed:       &reservation.Processed,
+		NumNights:       numNights,
+		NumGuests:       numGuests,
+		Status:          &reservation.Status,
+		TotalPrice:      totalPrice,
+		ExtrasPrice:     &reservation.ExtrasPrice,
+		IsPaid:          &reservation.IsPaid,
+		HasBreakfast:    &reservation.HasBreakfast,
 		CreatedAt:       timestamppb.New(reservation.CreatedAt),
 		RoomNameSr:      roomNameSr,
 		RoomNameEn:      roomNameEn,
@@ -155,6 +221,23 @@ func convertReservationNew(reservation db.AllNewReservationsRow) *pb.Reservation
 		roomPriceEn = &roomPN
 	}
 
+	var numNights, numGuests, totalPrice *int32
+	// Provera i konverzija NumNights
+	if reservation.NumNights.Valid {
+		nn := reservation.NumNights.Int32
+		numNights = &nn
+	}
+	// Provera i konverzija NumGuests
+	if reservation.NumGuests.Valid {
+		nn := reservation.NumGuests.Int32
+		numGuests = &nn
+	}
+	// Provera i konverzija TotalPrice
+	if reservation.TotalPrice.Valid {
+		nn := reservation.TotalPrice.Int32
+		totalPrice = &nn
+	}
+
 	return &pb.ReservationAll{
 		ReservationId:   &reservation.ReservationID,
 		RoomId:          &reservation.RoomID,
@@ -167,6 +250,13 @@ func convertReservationNew(reservation db.AllNewReservationsRow) *pb.Reservation
 		StartDate:       &startDate,
 		EndDate:         &endDate,
 		Processed:       &reservation.Processed,
+		NumNights:       numNights,
+		NumGuests:       numGuests,
+		Status:          &reservation.Status,
+		TotalPrice:      totalPrice,
+		ExtrasPrice:     &reservation.ExtrasPrice,
+		IsPaid:          &reservation.IsPaid,
+		HasBreakfast:    &reservation.HasBreakfast,
 		CreatedAt:       timestamppb.New(reservation.CreatedAt),
 		RoomNameSr:      roomNameSr,
 		RoomNameEn:      roomNameEn,
@@ -211,6 +301,23 @@ func convertReservationProcessed(reservation db.AllProcessedReservationsRow) *pb
 		roomPriceEn = &roomPN
 	}
 
+	var numNights, numGuests, totalPrice *int32
+	// Provera i konverzija NumNights
+	if reservation.NumNights.Valid {
+		nn := reservation.NumNights.Int32
+		numNights = &nn
+	}
+	// Provera i konverzija NumGuests
+	if reservation.NumGuests.Valid {
+		nn := reservation.NumGuests.Int32
+		numGuests = &nn
+	}
+	// Provera i konverzija TotalPrice
+	if reservation.TotalPrice.Valid {
+		nn := reservation.TotalPrice.Int32
+		totalPrice = &nn
+	}
+
 	return &pb.ReservationAll{
 		ReservationId:   &reservation.ReservationID,
 		RoomId:          &reservation.RoomID,
@@ -223,6 +330,13 @@ func convertReservationProcessed(reservation db.AllProcessedReservationsRow) *pb
 		StartDate:       &startDate,
 		EndDate:         &endDate,
 		Processed:       &reservation.Processed,
+		NumNights:       numNights,
+		NumGuests:       numGuests,
+		Status:          &reservation.Status,
+		TotalPrice:      totalPrice,
+		ExtrasPrice:     &reservation.ExtrasPrice,
+		IsPaid:          &reservation.IsPaid,
+		HasBreakfast:    &reservation.HasBreakfast,
 		CreatedAt:       timestamppb.New(reservation.CreatedAt),
 		RoomNameSr:      roomNameSr,
 		RoomNameEn:      roomNameEn,
@@ -246,10 +360,96 @@ func convertReservationParams(reservation db.ListReservationsResult) *pb.Reserva
 		StartDate:       &startDate,
 		EndDate:         &endDate,
 		Processed:       &reservation.Processed,
+		NumNights:       &reservation.NumNights,
+		NumGuests:       &reservation.NumGuests,
+		Status:          &reservation.Status,
+		TotalPrice:      &reservation.TotalPrice,
+		ExtrasPrice:     &reservation.ExtrasPrice,
+		IsPaid:          &reservation.IsPaid,
 		CreatedAt:       timestamppb.New(reservation.CreatedAt),
 		RoomNameSr:      &reservation.RoomNameSr,
 		RoomNameEn:      &reservation.RoomNameEn,
 		RoomNameBg:      &reservation.RoomNameBg,
+	}
+}
+
+func convertReservationAfterDate(reservation db.ListReservationsAfterDateRow) *pb.ReservationAll {
+	startDate := reservation.StartDate.Format("2006-01-02")
+	endDate := reservation.EndDate.Format("2006-01-02")
+
+	var roomNameSr, roomNameEn, roomNameBg *string
+	var roomGuestNumber, roomPriceEn *int32
+
+	// Provera i konverzija RoomNameSr
+	if reservation.RoomNameSr.Valid {
+		roomName := reservation.RoomNameSr.String
+		roomNameSr = &roomName
+	}
+
+	// Provera i konverzija RoomNameEn
+	if reservation.RoomNameEn.Valid {
+		roomName := reservation.RoomNameEn.String
+		roomNameEn = &roomName
+	}
+
+	// Provera i konverzija RoomNameBg
+	if reservation.RoomNameBg.Valid {
+		roomName := reservation.RoomNameBg.String
+		roomNameBg = &roomName
+	}
+
+	// Provera i konverzija RoomGuestNumber
+	if reservation.RoomGuestNumber.Valid {
+		roomGN := reservation.RoomGuestNumber.Int32
+		roomGuestNumber = &roomGN
+	}
+
+	// Provera i konverzija RoomPriceEn
+	if reservation.RoomPriceEn.Valid {
+		roomPN := reservation.RoomPriceEn.Int32
+		roomPriceEn = &roomPN
+	}
+
+	var numNights, numGuests, totalPrice *int32
+	// Provera i konverzija NumNights
+	if reservation.NumNights.Valid {
+		nn := reservation.NumNights.Int32
+		numNights = &nn
+	}
+	// Provera i konverzija NumGuests
+	if reservation.NumGuests.Valid {
+		nn := reservation.NumGuests.Int32
+		numGuests = &nn
+	}
+	// Provera i konverzija TotalPrice
+	if reservation.TotalPrice.Valid {
+		nn := reservation.TotalPrice.Int32
+		totalPrice = &nn
+	}
+
+	return &pb.ReservationAll{
+		ReservationId:   &reservation.ReservationID,
+		RoomId:          &reservation.RoomID,
+		RoomGuestNumber: roomGuestNumber,
+		RoomPriceEn:     roomPriceEn,
+		FirstName:       &reservation.FirstName,
+		LastName:        &reservation.LastName,
+		Email:           &reservation.Email,
+		Phone:           &reservation.Phone,
+		StartDate:       &startDate,
+		EndDate:         &endDate,
+		Processed:       &reservation.Processed,
+		NumNights:       numNights,
+		NumGuests:       numGuests,
+		Status:          &reservation.Status,
+		TotalPrice:      totalPrice,
+		ExtrasPrice:     &reservation.ExtrasPrice,
+		IsPaid:          &reservation.IsPaid,
+		HasBreakfast:    &reservation.HasBreakfast,
+		CreatedAt:       timestamppb.New(reservation.CreatedAt),
+		RoomNameSr:      roomNameSr,
+		RoomNameEn:      roomNameEn,
+		RoomNameBg:      roomNameBg,
 	}
 }
 

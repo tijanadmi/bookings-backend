@@ -14,6 +14,13 @@ message Reservation {
     required string start_date = 6;
     required string end_date = 7;
     optional int32 processed = 8;
-    required google.protobuf.Timestamp created_at = 9;
-    optional google.protobuf.Timestamp updated_at = 10;
+    optional int32 num_nights = 9;
+    optional int32 num_guests = 10;
+    optional string status = 11;
+    optional int32 total_price = 12;
+    optional int32 extras_price = 13;
+	optional bool is_paid  = 14;
+    optional bool has_breakfast  = 15;
+    required google.protobuf.Timestamp created_at = 16;
+    optional google.protobuf.Timestamp updated_at = 17;
 }

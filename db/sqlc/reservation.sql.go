@@ -14,7 +14,8 @@ import (
 
 const allNewReservations = `-- name: AllNewReservations :many
 select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
-r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
 from reservations r
@@ -44,6 +45,13 @@ type AllNewReservationsRow struct {
 	CreatedAt       time.Time   `json:"created_at"`
 	UpdatedAt       time.Time   `json:"updated_at"`
 	Processed       int32       `json:"processed"`
+	NumNights       pgtype.Int4 `json:"num_nights"`
+	NumGuests       pgtype.Int4 `json:"num_guests"`
+	Status          string      `json:"status"`
+	TotalPrice      pgtype.Int4 `json:"total_price"`
+	ExtrasPrice     int32       `json:"extras_price"`
+	IsPaid          bool        `json:"is_paid"`
+	HasBreakfast    bool        `json:"has_breakfast"`
 	RoomNameSr      pgtype.Text `json:"room_name_sr"`
 	RoomNameEn      pgtype.Text `json:"room_name_en"`
 	RoomNameBg      pgtype.Text `json:"room_name_bg"`
@@ -72,6 +80,13 @@ func (q *Queries) AllNewReservations(ctx context.Context, arg AllNewReservations
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.Processed,
+			&i.NumNights,
+			&i.NumGuests,
+			&i.Status,
+			&i.TotalPrice,
+			&i.ExtrasPrice,
+			&i.IsPaid,
+			&i.HasBreakfast,
 			&i.RoomNameSr,
 			&i.RoomNameEn,
 			&i.RoomNameBg,
@@ -88,7 +103,8 @@ func (q *Queries) AllNewReservations(ctx context.Context, arg AllNewReservations
 
 const allProcessedReservations = `-- name: AllProcessedReservations :many
 select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
-r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed,r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
 from reservations r
@@ -118,6 +134,13 @@ type AllProcessedReservationsRow struct {
 	CreatedAt       time.Time   `json:"created_at"`
 	UpdatedAt       time.Time   `json:"updated_at"`
 	Processed       int32       `json:"processed"`
+	NumNights       pgtype.Int4 `json:"num_nights"`
+	NumGuests       pgtype.Int4 `json:"num_guests"`
+	Status          string      `json:"status"`
+	TotalPrice      pgtype.Int4 `json:"total_price"`
+	ExtrasPrice     int32       `json:"extras_price"`
+	IsPaid          bool        `json:"is_paid"`
+	HasBreakfast    bool        `json:"has_breakfast"`
 	RoomNameSr      pgtype.Text `json:"room_name_sr"`
 	RoomNameEn      pgtype.Text `json:"room_name_en"`
 	RoomNameBg      pgtype.Text `json:"room_name_bg"`
@@ -146,6 +169,13 @@ func (q *Queries) AllProcessedReservations(ctx context.Context, arg AllProcessed
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.Processed,
+			&i.NumNights,
+			&i.NumGuests,
+			&i.Status,
+			&i.TotalPrice,
+			&i.ExtrasPrice,
+			&i.IsPaid,
+			&i.HasBreakfast,
 			&i.RoomNameSr,
 			&i.RoomNameEn,
 			&i.RoomNameBg,
@@ -162,7 +192,8 @@ func (q *Queries) AllProcessedReservations(ctx context.Context, arg AllProcessed
 
 const allReservations = `-- name: AllReservations :many
 select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
-r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
 from reservations r
@@ -191,6 +222,13 @@ type AllReservationsRow struct {
 	CreatedAt       time.Time   `json:"created_at"`
 	UpdatedAt       time.Time   `json:"updated_at"`
 	Processed       int32       `json:"processed"`
+	NumNights       pgtype.Int4 `json:"num_nights"`
+	NumGuests       pgtype.Int4 `json:"num_guests"`
+	Status          string      `json:"status"`
+	TotalPrice      pgtype.Int4 `json:"total_price"`
+	ExtrasPrice     int32       `json:"extras_price"`
+	IsPaid          bool        `json:"is_paid"`
+	HasBreakfast    bool        `json:"has_breakfast"`
 	RoomNameSr      pgtype.Text `json:"room_name_sr"`
 	RoomNameEn      pgtype.Text `json:"room_name_en"`
 	RoomNameBg      pgtype.Text `json:"room_name_bg"`
@@ -219,6 +257,13 @@ func (q *Queries) AllReservations(ctx context.Context, arg AllReservationsParams
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.Processed,
+			&i.NumNights,
+			&i.NumGuests,
+			&i.Status,
+			&i.TotalPrice,
+			&i.ExtrasPrice,
+			&i.IsPaid,
+			&i.HasBreakfast,
 			&i.RoomNameSr,
 			&i.RoomNameEn,
 			&i.RoomNameBg,
@@ -242,21 +287,35 @@ INSERT INTO reservations (
 	phone,
 	start_date,
 	end_date,
-	processed
+	processed,
+  num_nights,
+  num_guests,
+  status,
+  total_price,
+  extras_price,
+  is_paid,
+  has_breakfast
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8
-) RETURNING id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+) RETURNING id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at, num_nights, num_guests, status, total_price, extras_price, is_paid, has_breakfast
 `
 
 type CreateReservationParams struct {
-	RoomID    int32     `json:"room_id"`
-	FirstName string    `json:"first_name"`
-	LastName  string    `json:"last_name"`
-	Email     string    `json:"email"`
-	Phone     string    `json:"phone"`
-	StartDate time.Time `json:"start_date"`
-	EndDate   time.Time `json:"end_date"`
-	Processed int32     `json:"processed"`
+	RoomID       int32       `json:"room_id"`
+	FirstName    string      `json:"first_name"`
+	LastName     string      `json:"last_name"`
+	Email        string      `json:"email"`
+	Phone        string      `json:"phone"`
+	StartDate    time.Time   `json:"start_date"`
+	EndDate      time.Time   `json:"end_date"`
+	Processed    int32       `json:"processed"`
+	NumNights    pgtype.Int4 `json:"num_nights"`
+	NumGuests    pgtype.Int4 `json:"num_guests"`
+	Status       string      `json:"status"`
+	TotalPrice   pgtype.Int4 `json:"total_price"`
+	ExtrasPrice  int32       `json:"extras_price"`
+	IsPaid       bool        `json:"is_paid"`
+	HasBreakfast bool        `json:"has_breakfast"`
 }
 
 func (q *Queries) CreateReservation(ctx context.Context, arg CreateReservationParams) (Reservation, error) {
@@ -269,6 +328,13 @@ func (q *Queries) CreateReservation(ctx context.Context, arg CreateReservationPa
 		arg.StartDate,
 		arg.EndDate,
 		arg.Processed,
+		arg.NumNights,
+		arg.NumGuests,
+		arg.Status,
+		arg.TotalPrice,
+		arg.ExtrasPrice,
+		arg.IsPaid,
+		arg.HasBreakfast,
 	)
 	var i Reservation
 	err := row.Scan(
@@ -283,6 +349,13 @@ func (q *Queries) CreateReservation(ctx context.Context, arg CreateReservationPa
 		&i.Processed,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.NumNights,
+		&i.NumGuests,
+		&i.Status,
+		&i.TotalPrice,
+		&i.ExtrasPrice,
+		&i.IsPaid,
+		&i.HasBreakfast,
 	)
 	return i, err
 }
@@ -298,7 +371,7 @@ func (q *Queries) DeleteReservation(ctx context.Context, id int32) error {
 }
 
 const getReservation = `-- name: GetReservation :one
-SELECT id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at FROM reservations
+SELECT id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at, num_nights, num_guests, status, total_price, extras_price, is_paid, has_breakfast FROM reservations
 WHERE id = $1 LIMIT 1
 `
 
@@ -317,28 +390,28 @@ func (q *Queries) GetReservation(ctx context.Context, id int32) (Reservation, er
 		&i.Processed,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.NumNights,
+		&i.NumGuests,
+		&i.Status,
+		&i.TotalPrice,
+		&i.ExtrasPrice,
+		&i.IsPaid,
+		&i.HasBreakfast,
 	)
 	return i, err
 }
 
 const getReservationByID = `-- name: GetReservationByID :one
 select r.id as reservation_id,rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
-r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, rm.room_name_sr,
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
 rm.room_name_en,
 rm.room_name_bg
 from reservations r
 left join rooms rm on (r.room_id = rm.id)
 where r.id = $1
 order by r.start_date asc
-LIMIT $2
-OFFSET $3
 `
-
-type GetReservationByIDParams struct {
-	ID     int32 `json:"id"`
-	Limit  int32 `json:"limit"`
-	Offset int32 `json:"offset"`
-}
 
 type GetReservationByIDRow struct {
 	ReservationID   int32       `json:"reservation_id"`
@@ -354,13 +427,20 @@ type GetReservationByIDRow struct {
 	CreatedAt       time.Time   `json:"created_at"`
 	UpdatedAt       time.Time   `json:"updated_at"`
 	Processed       int32       `json:"processed"`
+	NumNights       pgtype.Int4 `json:"num_nights"`
+	NumGuests       pgtype.Int4 `json:"num_guests"`
+	Status          string      `json:"status"`
+	TotalPrice      pgtype.Int4 `json:"total_price"`
+	ExtrasPrice     int32       `json:"extras_price"`
+	IsPaid          bool        `json:"is_paid"`
+	HasBreakfast    bool        `json:"has_breakfast"`
 	RoomNameSr      pgtype.Text `json:"room_name_sr"`
 	RoomNameEn      pgtype.Text `json:"room_name_en"`
 	RoomNameBg      pgtype.Text `json:"room_name_bg"`
 }
 
-func (q *Queries) GetReservationByID(ctx context.Context, arg GetReservationByIDParams) (GetReservationByIDRow, error) {
-	row := q.db.QueryRow(ctx, getReservationByID, arg.ID, arg.Limit, arg.Offset)
+func (q *Queries) GetReservationByID(ctx context.Context, id int32) (GetReservationByIDRow, error) {
+	row := q.db.QueryRow(ctx, getReservationByID, id)
 	var i GetReservationByIDRow
 	err := row.Scan(
 		&i.ReservationID,
@@ -376,6 +456,13 @@ func (q *Queries) GetReservationByID(ctx context.Context, arg GetReservationByID
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.Processed,
+		&i.NumNights,
+		&i.NumGuests,
+		&i.Status,
+		&i.TotalPrice,
+		&i.ExtrasPrice,
+		&i.IsPaid,
+		&i.HasBreakfast,
 		&i.RoomNameSr,
 		&i.RoomNameEn,
 		&i.RoomNameBg,
@@ -384,7 +471,7 @@ func (q *Queries) GetReservationByID(ctx context.Context, arg GetReservationByID
 }
 
 const getReservationForUpdate = `-- name: GetReservationForUpdate :one
-SELECT id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at FROM reservations
+SELECT id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at, num_nights, num_guests, status, total_price, extras_price, is_paid, has_breakfast FROM reservations
 WHERE id = $1 LIMIT 1
 FOR NO KEY UPDATE
 `
@@ -404,12 +491,19 @@ func (q *Queries) GetReservationForUpdate(ctx context.Context, id int32) (Reserv
 		&i.Processed,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.NumNights,
+		&i.NumGuests,
+		&i.Status,
+		&i.TotalPrice,
+		&i.ExtrasPrice,
+		&i.IsPaid,
+		&i.HasBreakfast,
 	)
 	return i, err
 }
 
 const listReservations = `-- name: ListReservations :many
-SELECT id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at FROM reservations
+SELECT id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at, num_nights, num_guests, status, total_price, extras_price, is_paid, has_breakfast FROM reservations
 ORDER BY id
 LIMIT $1
 OFFSET $2
@@ -441,6 +535,100 @@ func (q *Queries) ListReservations(ctx context.Context, arg ListReservationsPara
 			&i.Processed,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.NumNights,
+			&i.NumGuests,
+			&i.Status,
+			&i.TotalPrice,
+			&i.ExtrasPrice,
+			&i.IsPaid,
+			&i.HasBreakfast,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listReservationsAfterDate = `-- name: ListReservationsAfterDate :many
+select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
+rm.room_name_en,
+rm.room_name_bg
+from reservations r
+left join rooms rm on (r.room_id = rm.id)
+where r.created_at >= $1 and r.created_at <= $2
+order by r.start_date asc
+`
+
+type ListReservationsAfterDateParams struct {
+	CreatedAt   time.Time `json:"created_at"`
+	CreatedAt_2 time.Time `json:"created_at_2"`
+}
+
+type ListReservationsAfterDateRow struct {
+	ReservationID   int32       `json:"reservation_id"`
+	RoomGuestNumber pgtype.Int4 `json:"room_guest_number"`
+	RoomPriceEn     pgtype.Int4 `json:"room_price_en"`
+	FirstName       string      `json:"first_name"`
+	LastName        string      `json:"last_name"`
+	Email           string      `json:"email"`
+	Phone           string      `json:"phone"`
+	StartDate       time.Time   `json:"start_date"`
+	EndDate         time.Time   `json:"end_date"`
+	RoomID          int32       `json:"room_id"`
+	CreatedAt       time.Time   `json:"created_at"`
+	UpdatedAt       time.Time   `json:"updated_at"`
+	Processed       int32       `json:"processed"`
+	NumNights       pgtype.Int4 `json:"num_nights"`
+	NumGuests       pgtype.Int4 `json:"num_guests"`
+	Status          string      `json:"status"`
+	TotalPrice      pgtype.Int4 `json:"total_price"`
+	ExtrasPrice     int32       `json:"extras_price"`
+	IsPaid          bool        `json:"is_paid"`
+	HasBreakfast    bool        `json:"has_breakfast"`
+	RoomNameSr      pgtype.Text `json:"room_name_sr"`
+	RoomNameEn      pgtype.Text `json:"room_name_en"`
+	RoomNameBg      pgtype.Text `json:"room_name_bg"`
+}
+
+func (q *Queries) ListReservationsAfterDate(ctx context.Context, arg ListReservationsAfterDateParams) ([]ListReservationsAfterDateRow, error) {
+	rows, err := q.db.Query(ctx, listReservationsAfterDate, arg.CreatedAt, arg.CreatedAt_2)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListReservationsAfterDateRow{}
+	for rows.Next() {
+		var i ListReservationsAfterDateRow
+		if err := rows.Scan(
+			&i.ReservationID,
+			&i.RoomGuestNumber,
+			&i.RoomPriceEn,
+			&i.FirstName,
+			&i.LastName,
+			&i.Email,
+			&i.Phone,
+			&i.StartDate,
+			&i.EndDate,
+			&i.RoomID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Processed,
+			&i.NumNights,
+			&i.NumGuests,
+			&i.Status,
+			&i.TotalPrice,
+			&i.ExtrasPrice,
+			&i.IsPaid,
+			&i.HasBreakfast,
+			&i.RoomNameSr,
+			&i.RoomNameEn,
+			&i.RoomNameBg,
 		); err != nil {
 			return nil, err
 		}
@@ -458,7 +646,7 @@ SET
   processed = $1
 WHERE
 id = $2
-RETURNING id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at
+RETURNING id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at, num_nights, num_guests, status, total_price, extras_price, is_paid, has_breakfast
 `
 
 type UpdateProcessedForReservationParams struct {
@@ -481,6 +669,13 @@ func (q *Queries) UpdateProcessedForReservation(ctx context.Context, arg UpdateP
 		&i.Processed,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.NumNights,
+		&i.NumGuests,
+		&i.Status,
+		&i.TotalPrice,
+		&i.ExtrasPrice,
+		&i.IsPaid,
+		&i.HasBreakfast,
 	)
 	return i, err
 }
@@ -496,23 +691,37 @@ SET
   phone = COALESCE($6, phone),
   start_date = COALESCE($7, start_date),
   end_date = COALESCE($8, end_date),
-  processed = COALESCE($9, processed)
+  processed = COALESCE($9, processed),
+  num_nights = COALESCE($10, num_nights),
+  num_guests = COALESCE($11, num_guests),
+  status = COALESCE($12, status),
+  total_price = COALESCE($13, total_price),
+  extras_price = COALESCE($14, extras_price),
+  is_paid = COALESCE($15, is_paid),
+  has_breakfast = COALESCE($16, has_breakfast)
 WHERE
-id = $10
-RETURNING id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at
+id = $17
+RETURNING id, room_id, first_name, last_name, email, phone, start_date, end_date, processed, created_at, updated_at, num_nights, num_guests, status, total_price, extras_price, is_paid, has_breakfast
 `
 
 type UpdateReservationParams struct {
-	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
-	RoomID    pgtype.Int4        `json:"room_id"`
-	FirstName pgtype.Text        `json:"first_name"`
-	LastName  pgtype.Text        `json:"last_name"`
-	Email     pgtype.Text        `json:"email"`
-	Phone     pgtype.Text        `json:"phone"`
-	StartDate pgtype.Date        `json:"start_date"`
-	EndDate   pgtype.Date        `json:"end_date"`
-	Processed pgtype.Int4        `json:"processed"`
-	ID        int32              `json:"id"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	RoomID       pgtype.Int4        `json:"room_id"`
+	FirstName    pgtype.Text        `json:"first_name"`
+	LastName     pgtype.Text        `json:"last_name"`
+	Email        pgtype.Text        `json:"email"`
+	Phone        pgtype.Text        `json:"phone"`
+	StartDate    pgtype.Date        `json:"start_date"`
+	EndDate      pgtype.Date        `json:"end_date"`
+	Processed    pgtype.Int4        `json:"processed"`
+	NumNights    pgtype.Int4        `json:"num_nights"`
+	NumGuests    pgtype.Int4        `json:"num_guests"`
+	Status       pgtype.Text        `json:"status"`
+	TotalPrice   pgtype.Int4        `json:"total_price"`
+	ExtrasPrice  pgtype.Int4        `json:"extras_price"`
+	IsPaid       pgtype.Bool        `json:"is_paid"`
+	HasBreakfast pgtype.Bool        `json:"has_breakfast"`
+	ID           int32              `json:"id"`
 }
 
 func (q *Queries) UpdateReservation(ctx context.Context, arg UpdateReservationParams) (Reservation, error) {
@@ -526,6 +735,13 @@ func (q *Queries) UpdateReservation(ctx context.Context, arg UpdateReservationPa
 		arg.StartDate,
 		arg.EndDate,
 		arg.Processed,
+		arg.NumNights,
+		arg.NumGuests,
+		arg.Status,
+		arg.TotalPrice,
+		arg.ExtrasPrice,
+		arg.IsPaid,
+		arg.HasBreakfast,
 		arg.ID,
 	)
 	var i Reservation
@@ -541,6 +757,13 @@ func (q *Queries) UpdateReservation(ctx context.Context, arg UpdateReservationPa
 		&i.Processed,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.NumNights,
+		&i.NumGuests,
+		&i.Status,
+		&i.TotalPrice,
+		&i.ExtrasPrice,
+		&i.IsPaid,
+		&i.HasBreakfast,
 	)
 	return i, err
 }
