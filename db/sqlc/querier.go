@@ -43,6 +43,8 @@ type Querier interface {
 	ListRestrictions(ctx context.Context, arg ListRestrictionsParams) ([]Restriction, error)
 	ListRoomRestrictions(ctx context.Context, arg ListRoomRestrictionsParams) ([]RoomRestriction, error)
 	ListRooms(ctx context.Context, arg ListRoomsParams) ([]Room, error)
+	ListStaysAfterDate(ctx context.Context, arg ListStaysAfterDateParams) ([]ListStaysAfterDateRow, error)
+	ListTodayActivity(ctx context.Context, arg ListTodayActivityParams) ([]ListTodayActivityRow, error)
 	SearchAvailabilityByDatesByRoomID(ctx context.Context, arg SearchAvailabilityByDatesByRoomIDParams) (int64, error)
 	SearchAvailabilityForAllRooms(ctx context.Context, arg SearchAvailabilityForAllRoomsParams) ([]Room, error)
 	UpdateProcessedForReservation(ctx context.Context, arg UpdateProcessedForReservationParams) (Reservation, error)

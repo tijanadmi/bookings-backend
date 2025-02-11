@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "reservation_all.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message ListTodayActivitiesRequest {
+    string today =1;
+}
+
+message ListTodayActivitiesResponse {
+    repeated ReservationAll reservations = 1; // Lista reservacija
+}

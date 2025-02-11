@@ -14,6 +14,10 @@ import (
 )
 
 func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 	violations := validateCreateUserRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

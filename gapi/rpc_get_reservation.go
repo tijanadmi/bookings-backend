@@ -10,10 +10,10 @@ import (
 )
 
 func (server *Server) GetReservation(ctx context.Context, req *pb.GetReservationRequest) (*pb.GetReservationResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
 	reservation, err := server.store.GetReservationByID(ctx, req.GetReservationId())
 	if err != nil {

@@ -16,10 +16,10 @@ import (
 )
 
 func (server *Server) UpdateReservation(ctx context.Context, req *pb.UpdateReservationRequest) (*pb.UpdateReservationResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 	violations := validateUpdateReservationRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

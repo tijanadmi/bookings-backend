@@ -12,10 +12,10 @@ import (
 )
 
 func (server *Server) ListReservationsWithParams(ctx context.Context, req *pb.ListReservationsParamsRequest) (*pb.ListReservationsParamsResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
 	violations := validateListReservationsParamsRequest(req)
 	if violations != nil {

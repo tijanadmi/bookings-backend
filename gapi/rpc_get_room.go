@@ -9,10 +9,10 @@ import (
 )
 
 func (server *Server) GetRoom(ctx context.Context, req *pb.GetRoomRequest) (*pb.GetRoomResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
 	room, err := server.store.GetRoom(ctx, req.GetRoomId())
 	if err != nil {

@@ -34,6 +34,8 @@ import "rpc_list_new_reservations.proto";
 import "rpc_list_processed_reservations.proto";
 import "rpc_list_reservations_params.proto";
 import "rpc_list_reservations_after_date.proto";
+import "rpc_list_says_after_date.proto";
+import "rpc_list_today_activities.proto";
 import "rpc_update_reservation.proto";
 import "rpc_delete_reservation.proto";
 import "rpc_create_room_restriction.proto";
@@ -277,6 +279,24 @@ service Bookings {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to list reservations in period";
             summary: "List reservations in period";
+        };
+    }
+    rpc ListStaysAfterDate (ListStaysAfterDateRequest) returns (ListStaysAfterDateResponse) {
+        option (google.api.http) = {
+            get: "/v1/list_stays_after_date"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to list stays in period";
+            summary: "List stays in period";
+        };
+    }
+    rpc ListTodayActivities (ListTodayActivitiesRequest) returns (ListTodayActivitiesResponse) {
+        option (google.api.http) = {
+            get: "/v1/list_today_activities_date"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to list activities for date";
+            summary: "List activities for date";
         };
     }
     rpc CreateReservation (CreateReservationRequest) returns (CreateReservationResponse) {

@@ -62,6 +62,7 @@ func NewPayload(username string, role string, duration time.Duration) (*Payload,
 		Role:      role,
 		IssuedAt:  time.Now(),
 		ExpiredAt: time.Now().Add(duration),
+		// ExpiredAt: time.Now().Add(duration),
 	}
 	return payload, nil
 }

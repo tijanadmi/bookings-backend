@@ -42,6 +42,8 @@ const (
 	Bookings_ListProcessedReservations_FullMethodName     = "/pb.Bookings/ListProcessedReservations"
 	Bookings_ListReservationsWithParams_FullMethodName    = "/pb.Bookings/ListReservationsWithParams"
 	Bookings_ListReservationsAfterDate_FullMethodName     = "/pb.Bookings/ListReservationsAfterDate"
+	Bookings_ListStaysAfterDate_FullMethodName            = "/pb.Bookings/ListStaysAfterDate"
+	Bookings_ListTodayActivities_FullMethodName           = "/pb.Bookings/ListTodayActivities"
 	Bookings_CreateReservation_FullMethodName             = "/pb.Bookings/CreateReservation"
 	Bookings_UpdateReservation_FullMethodName             = "/pb.Bookings/UpdateReservation"
 	Bookings_DeleteReservation_FullMethodName             = "/pb.Bookings/DeleteReservation"
@@ -75,6 +77,8 @@ type BookingsClient interface {
 	ListProcessedReservations(ctx context.Context, in *ListProcessedReservationsRequest, opts ...grpc.CallOption) (*ListProcessedReservationsResponse, error)
 	ListReservationsWithParams(ctx context.Context, in *ListReservationsParamsRequest, opts ...grpc.CallOption) (*ListReservationsParamsResponse, error)
 	ListReservationsAfterDate(ctx context.Context, in *ListReservationsAfterDateRequest, opts ...grpc.CallOption) (*ListReservationsAfterDateResponse, error)
+	ListStaysAfterDate(ctx context.Context, in *ListStaysAfterDateRequest, opts ...grpc.CallOption) (*ListStaysAfterDateResponse, error)
+	ListTodayActivities(ctx context.Context, in *ListTodayActivitiesRequest, opts ...grpc.CallOption) (*ListTodayActivitiesResponse, error)
 	CreateReservation(ctx context.Context, in *CreateReservationRequest, opts ...grpc.CallOption) (*CreateReservationResponse, error)
 	UpdateReservation(ctx context.Context, in *UpdateReservationRequest, opts ...grpc.CallOption) (*UpdateReservationResponse, error)
 	DeleteReservation(ctx context.Context, in *DeleteReservationRequest, opts ...grpc.CallOption) (*DeleteReservationResponse, error)
@@ -319,6 +323,26 @@ func (c *bookingsClient) ListReservationsAfterDate(ctx context.Context, in *List
 	return out, nil
 }
 
+func (c *bookingsClient) ListStaysAfterDate(ctx context.Context, in *ListStaysAfterDateRequest, opts ...grpc.CallOption) (*ListStaysAfterDateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListStaysAfterDateResponse)
+	err := c.cc.Invoke(ctx, Bookings_ListStaysAfterDate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingsClient) ListTodayActivities(ctx context.Context, in *ListTodayActivitiesRequest, opts ...grpc.CallOption) (*ListTodayActivitiesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListTodayActivitiesResponse)
+	err := c.cc.Invoke(ctx, Bookings_ListTodayActivities_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *bookingsClient) CreateReservation(ctx context.Context, in *CreateReservationRequest, opts ...grpc.CallOption) (*CreateReservationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateReservationResponse)
@@ -386,6 +410,8 @@ type BookingsServer interface {
 	ListProcessedReservations(context.Context, *ListProcessedReservationsRequest) (*ListProcessedReservationsResponse, error)
 	ListReservationsWithParams(context.Context, *ListReservationsParamsRequest) (*ListReservationsParamsResponse, error)
 	ListReservationsAfterDate(context.Context, *ListReservationsAfterDateRequest) (*ListReservationsAfterDateResponse, error)
+	ListStaysAfterDate(context.Context, *ListStaysAfterDateRequest) (*ListStaysAfterDateResponse, error)
+	ListTodayActivities(context.Context, *ListTodayActivitiesRequest) (*ListTodayActivitiesResponse, error)
 	CreateReservation(context.Context, *CreateReservationRequest) (*CreateReservationResponse, error)
 	UpdateReservation(context.Context, *UpdateReservationRequest) (*UpdateReservationResponse, error)
 	DeleteReservation(context.Context, *DeleteReservationRequest) (*DeleteReservationResponse, error)
@@ -468,6 +494,12 @@ func (UnimplementedBookingsServer) ListReservationsWithParams(context.Context, *
 }
 func (UnimplementedBookingsServer) ListReservationsAfterDate(context.Context, *ListReservationsAfterDateRequest) (*ListReservationsAfterDateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListReservationsAfterDate not implemented")
+}
+func (UnimplementedBookingsServer) ListStaysAfterDate(context.Context, *ListStaysAfterDateRequest) (*ListStaysAfterDateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListStaysAfterDate not implemented")
+}
+func (UnimplementedBookingsServer) ListTodayActivities(context.Context, *ListTodayActivitiesRequest) (*ListTodayActivitiesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTodayActivities not implemented")
 }
 func (UnimplementedBookingsServer) CreateReservation(context.Context, *CreateReservationRequest) (*CreateReservationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateReservation not implemented")
@@ -916,6 +948,42 @@ func _Bookings_ListReservationsAfterDate_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bookings_ListStaysAfterDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListStaysAfterDateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).ListStaysAfterDate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_ListStaysAfterDate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).ListStaysAfterDate(ctx, req.(*ListStaysAfterDateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Bookings_ListTodayActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTodayActivitiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingsServer).ListTodayActivities(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Bookings_ListTodayActivities_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingsServer).ListTodayActivities(ctx, req.(*ListTodayActivitiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Bookings_CreateReservation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateReservationRequest)
 	if err := dec(in); err != nil {
@@ -1086,6 +1154,14 @@ var Bookings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListReservationsAfterDate",
 			Handler:    _Bookings_ListReservationsAfterDate_Handler,
+		},
+		{
+			MethodName: "ListStaysAfterDate",
+			Handler:    _Bookings_ListStaysAfterDate_Handler,
+		},
+		{
+			MethodName: "ListTodayActivities",
+			Handler:    _Bookings_ListTodayActivities_Handler,
 		},
 		{
 			MethodName: "CreateReservation",

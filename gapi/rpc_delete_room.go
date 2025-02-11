@@ -9,12 +9,12 @@ import (
 )
 
 func (server *Server) DeleteRoom(ctx context.Context, req *pb.DeleteRoomRequest) (*pb.DeleteRoomResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
-	err := server.store.DeleteRoom(ctx, req.GetRoomId())
+	err = server.store.DeleteRoom(ctx, req.GetRoomId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete room: %s", err)
 	}

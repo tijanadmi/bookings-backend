@@ -9,10 +9,10 @@ import (
 )
 
 func (server *Server) GetRestriction(ctx context.Context, req *pb.GetRestrictionRequest) (*pb.GetRestrictionResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
 	restriction, err := server.store.GetRestriction(ctx, req.GetRestrictionId())
 	if err != nil {

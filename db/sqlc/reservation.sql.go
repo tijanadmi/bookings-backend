@@ -561,7 +561,7 @@ rm.room_name_en,
 rm.room_name_bg
 from reservations r
 left join rooms rm on (r.room_id = rm.id)
-where r.created_at >= $1 and r.created_at <= $2
+where r.created_at::date BETWEEN $1 AND  $2
 order by r.start_date asc
 `
 
@@ -605,6 +605,182 @@ func (q *Queries) ListReservationsAfterDate(ctx context.Context, arg ListReserva
 	items := []ListReservationsAfterDateRow{}
 	for rows.Next() {
 		var i ListReservationsAfterDateRow
+		if err := rows.Scan(
+			&i.ReservationID,
+			&i.RoomGuestNumber,
+			&i.RoomPriceEn,
+			&i.FirstName,
+			&i.LastName,
+			&i.Email,
+			&i.Phone,
+			&i.StartDate,
+			&i.EndDate,
+			&i.RoomID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Processed,
+			&i.NumNights,
+			&i.NumGuests,
+			&i.Status,
+			&i.TotalPrice,
+			&i.ExtrasPrice,
+			&i.IsPaid,
+			&i.HasBreakfast,
+			&i.RoomNameSr,
+			&i.RoomNameEn,
+			&i.RoomNameBg,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listStaysAfterDate = `-- name: ListStaysAfterDate :many
+select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
+rm.room_name_en,
+rm.room_name_bg
+from reservations r
+left join rooms rm on (r.room_id = rm.id)
+where r.start_date::date BETWEEN $1 AND  $2
+order by r.start_date asc
+`
+
+type ListStaysAfterDateParams struct {
+	StartDate   time.Time `json:"start_date"`
+	StartDate_2 time.Time `json:"start_date_2"`
+}
+
+type ListStaysAfterDateRow struct {
+	ReservationID   int32       `json:"reservation_id"`
+	RoomGuestNumber pgtype.Int4 `json:"room_guest_number"`
+	RoomPriceEn     pgtype.Int4 `json:"room_price_en"`
+	FirstName       string      `json:"first_name"`
+	LastName        string      `json:"last_name"`
+	Email           string      `json:"email"`
+	Phone           string      `json:"phone"`
+	StartDate       time.Time   `json:"start_date"`
+	EndDate         time.Time   `json:"end_date"`
+	RoomID          int32       `json:"room_id"`
+	CreatedAt       time.Time   `json:"created_at"`
+	UpdatedAt       time.Time   `json:"updated_at"`
+	Processed       int32       `json:"processed"`
+	NumNights       pgtype.Int4 `json:"num_nights"`
+	NumGuests       pgtype.Int4 `json:"num_guests"`
+	Status          string      `json:"status"`
+	TotalPrice      pgtype.Int4 `json:"total_price"`
+	ExtrasPrice     int32       `json:"extras_price"`
+	IsPaid          bool        `json:"is_paid"`
+	HasBreakfast    bool        `json:"has_breakfast"`
+	RoomNameSr      pgtype.Text `json:"room_name_sr"`
+	RoomNameEn      pgtype.Text `json:"room_name_en"`
+	RoomNameBg      pgtype.Text `json:"room_name_bg"`
+}
+
+func (q *Queries) ListStaysAfterDate(ctx context.Context, arg ListStaysAfterDateParams) ([]ListStaysAfterDateRow, error) {
+	rows, err := q.db.Query(ctx, listStaysAfterDate, arg.StartDate, arg.StartDate_2)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListStaysAfterDateRow{}
+	for rows.Next() {
+		var i ListStaysAfterDateRow
+		if err := rows.Scan(
+			&i.ReservationID,
+			&i.RoomGuestNumber,
+			&i.RoomPriceEn,
+			&i.FirstName,
+			&i.LastName,
+			&i.Email,
+			&i.Phone,
+			&i.StartDate,
+			&i.EndDate,
+			&i.RoomID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Processed,
+			&i.NumNights,
+			&i.NumGuests,
+			&i.Status,
+			&i.TotalPrice,
+			&i.ExtrasPrice,
+			&i.IsPaid,
+			&i.HasBreakfast,
+			&i.RoomNameSr,
+			&i.RoomNameEn,
+			&i.RoomNameBg,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listTodayActivity = `-- name: ListTodayActivity :many
+select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
+rm.room_name_en,
+rm.room_name_bg
+from reservations r
+left join rooms rm on (r.room_id = rm.id)
+ where (r.status = 'unconfirmed' AND r.start_date::date =$1)
+    OR 
+    (r.status = 'checked-in' AND r.end_date::date =$2)
+order by r.start_date asc
+`
+
+type ListTodayActivityParams struct {
+	StartDate time.Time `json:"start_date"`
+	EndDate   time.Time `json:"end_date"`
+}
+
+type ListTodayActivityRow struct {
+	ReservationID   int32       `json:"reservation_id"`
+	RoomGuestNumber pgtype.Int4 `json:"room_guest_number"`
+	RoomPriceEn     pgtype.Int4 `json:"room_price_en"`
+	FirstName       string      `json:"first_name"`
+	LastName        string      `json:"last_name"`
+	Email           string      `json:"email"`
+	Phone           string      `json:"phone"`
+	StartDate       time.Time   `json:"start_date"`
+	EndDate         time.Time   `json:"end_date"`
+	RoomID          int32       `json:"room_id"`
+	CreatedAt       time.Time   `json:"created_at"`
+	UpdatedAt       time.Time   `json:"updated_at"`
+	Processed       int32       `json:"processed"`
+	NumNights       pgtype.Int4 `json:"num_nights"`
+	NumGuests       pgtype.Int4 `json:"num_guests"`
+	Status          string      `json:"status"`
+	TotalPrice      pgtype.Int4 `json:"total_price"`
+	ExtrasPrice     int32       `json:"extras_price"`
+	IsPaid          bool        `json:"is_paid"`
+	HasBreakfast    bool        `json:"has_breakfast"`
+	RoomNameSr      pgtype.Text `json:"room_name_sr"`
+	RoomNameEn      pgtype.Text `json:"room_name_en"`
+	RoomNameBg      pgtype.Text `json:"room_name_bg"`
+}
+
+func (q *Queries) ListTodayActivity(ctx context.Context, arg ListTodayActivityParams) ([]ListTodayActivityRow, error) {
+	rows, err := q.db.Query(ctx, listTodayActivity, arg.StartDate, arg.EndDate)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListTodayActivityRow{}
+	for rows.Next() {
+		var i ListTodayActivityRow
 		if err := rows.Scan(
 			&i.ReservationID,
 			&i.RoomGuestNumber,

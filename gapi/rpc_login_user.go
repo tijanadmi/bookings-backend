@@ -2,7 +2,6 @@ package gapi
 
 import (
 	"context"
-	"fmt"
 
 	db "github.com/tijanadmi/bookings_backend/db/sqlc"
 	"github.com/tijanadmi/bookings_backend/pb"
@@ -76,7 +75,7 @@ import (
 // }
 
 func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb.LoginUserResponse, error) {
-	fmt.Println(req)
+	// fmt.Println(req)
 	violations := validateLoginUserRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -125,19 +124,26 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 	}
 
 	rsp := &pb.LoginUserResponse{
-		User:                  convertUser(user),
-		SessionId:             session.ID.String(),
-		AccessToken:           accessToken,
-		RefreshToken:          refreshToken,
-		AccessTokenExpiresAt:  timestamppb.New(accessPayload.ExpiredAt),
-		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt),
+		User:         convertUser(user),
+		SessionId:    session.ID.String(),
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+		// AccessTokenExpiresAt:  timestamppb.New(accessPayload.ExpiredAt),
+		AccessTokenExpiresAt:  timestamppb.New(accessPayload.ExpiredAt.UTC()),
+		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt.UTC()),
 	}
+
+	// fmt.Println("accessPayload.ExpiredAt", accessPayload.ExpiredAt)
+	// fmt.Println("timestamppb.New(accessPayload.ExpiredAt.UTC())", timestamppb.New(accessPayload.ExpiredAt.UTC()))
+
+	// fmt.Println("UTC Now:", time.Now().UTC())
+	// fmt.Println("Local Now:", time.Now())
 
 	/*** create cookie and set into metadata ***/
 	refreshCookie := util.GetRefreshCookie(refreshToken, server.config.CookieName, server.config.CookiePath, server.config.CookieDomain, server.config.RefreshTokenDuration)
 	// Postavite metadata sa `Set-Cookie`
 	md := metadata.Pairs("Set-Cookie", refreshCookie.String())
-	fmt.Println(md)
+	// fmt.Println(md)
 
 	//grpc.SetHeader(ctx, md) // Postavite header kroz `grpc-gateway`
 	// Dodavanje `Set-Cookie` u gRPC metapodatke

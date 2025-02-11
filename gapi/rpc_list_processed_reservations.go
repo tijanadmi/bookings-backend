@@ -10,10 +10,10 @@ import (
 )
 
 func (server *Server) ListProcessedReservations(ctx context.Context, req *pb.ListProcessedReservationsRequest) (*pb.ListProcessedReservationsResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
 	arg := db.AllProcessedReservationsParams{
 		Limit:  req.GetLimit(),

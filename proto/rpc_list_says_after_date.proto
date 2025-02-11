@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "reservation_all.proto";
+
+option go_package = "github.com/tijanadmi/bookings_backend/pb";
+
+message ListStaysAfterDateRequest {
+    string start_date =1;
+	string end_date =2;
+}
+
+message ListStaysAfterDateResponse {
+    repeated ReservationAll reservations = 1; // Lista reservacija
+}

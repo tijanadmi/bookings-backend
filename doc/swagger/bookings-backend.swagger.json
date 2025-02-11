@@ -774,6 +774,76 @@
         ]
       }
     },
+    "/v1/list_stays_after_date": {
+      "get": {
+        "summary": "List stays in period",
+        "description": "Use this API to list stays in period",
+        "operationId": "Bookings_ListStaysAfterDate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListStaysAfterDateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
+    "/v1/list_today_activities_date": {
+      "get": {
+        "summary": "List activities for date",
+        "description": "Use this API to list activities for date",
+        "operationId": "Bookings_ListTodayActivities",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListTodayActivitiesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "today",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Bookings"
+        ]
+      }
+    },
     "/v1/login_user": {
       "post": {
         "summary": "Login user",
@@ -1396,6 +1466,32 @@
             "$ref": "#/definitions/pbRoom"
           },
           "title": "Lista soba"
+        }
+      }
+    },
+    "pbListStaysAfterDateResponse": {
+      "type": "object",
+      "properties": {
+        "reservations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbReservationAll"
+          },
+          "title": "Lista reservacija"
+        }
+      }
+    },
+    "pbListTodayActivitiesResponse": {
+      "type": "object",
+      "properties": {
+        "reservations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbReservationAll"
+          },
+          "title": "Lista reservacija"
         }
       }
     },

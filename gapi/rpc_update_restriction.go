@@ -16,10 +16,10 @@ import (
 )
 
 func (server *Server) UpdateRestriction(ctx context.Context, req *pb.UpdateRestrictionRequest) (*pb.UpdateRestrictionResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 	violations := validateUpdateRestrictionRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

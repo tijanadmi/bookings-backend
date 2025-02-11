@@ -126,5 +126,29 @@ rm.room_name_en,
 rm.room_name_bg
 from reservations r
 left join rooms rm on (r.room_id = rm.id)
-where r.created_at >= $1 and r.created_at <= $2
+where r.created_at::date BETWEEN $1 AND  $2
+order by r.start_date asc;
+
+-- name: ListStaysAfterDate :many
+select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
+rm.room_name_en,
+rm.room_name_bg
+from reservations r
+left join rooms rm on (r.room_id = rm.id)
+where r.start_date::date BETWEEN $1 AND  $2
+order by r.start_date asc;
+
+-- name: ListTodayActivity :many
+select r.id as reservation_id, rm.room_guest_number, rm.room_price_en, r.first_name, r.last_name, r.email, r.phone, r.start_date, 
+r.end_date, r.room_id , r.created_at, r.updated_at, r.processed, r.num_nights, r.num_guests, r.status, r.total_price, r.extras_price, r.is_paid, r.has_breakfast,
+rm.room_name_sr,
+rm.room_name_en,
+rm.room_name_bg
+from reservations r
+left join rooms rm on (r.room_id = rm.id)
+ where (r.status = 'unconfirmed' AND r.start_date::date =$1)
+    OR 
+    (r.status = 'checked-in' AND r.end_date::date =$2)
 order by r.start_date asc;

@@ -16,10 +16,10 @@ import (
 )
 
 func (server *Server) UpdateRoom(ctx context.Context, req *pb.UpdateRoomRequest) (*pb.UpdateRoomResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 	violations := validateUpdateRoomRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

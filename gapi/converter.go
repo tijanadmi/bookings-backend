@@ -453,6 +453,88 @@ func convertReservationAfterDate(reservation db.ListReservationsAfterDateRow) *p
 	}
 }
 
+func convertStaysAfterDate(reservation db.ListStaysAfterDateRow) *pb.ReservationAll {
+	startDate := reservation.StartDate.Format("2006-01-02")
+	endDate := reservation.EndDate.Format("2006-01-02")
+
+	var roomNameSr, roomNameEn, roomNameBg *string
+	var roomGuestNumber, roomPriceEn *int32
+
+	// Provera i konverzija RoomNameSr
+	if reservation.RoomNameSr.Valid {
+		roomName := reservation.RoomNameSr.String
+		roomNameSr = &roomName
+	}
+
+	// Provera i konverzija RoomNameEn
+	if reservation.RoomNameEn.Valid {
+		roomName := reservation.RoomNameEn.String
+		roomNameEn = &roomName
+	}
+
+	// Provera i konverzija RoomNameBg
+	if reservation.RoomNameBg.Valid {
+		roomName := reservation.RoomNameBg.String
+		roomNameBg = &roomName
+	}
+
+	// Provera i konverzija RoomGuestNumber
+	if reservation.RoomGuestNumber.Valid {
+		roomGN := reservation.RoomGuestNumber.Int32
+		roomGuestNumber = &roomGN
+	}
+
+	// Provera i konverzija RoomPriceEn
+	if reservation.RoomPriceEn.Valid {
+		roomPN := reservation.RoomPriceEn.Int32
+		roomPriceEn = &roomPN
+	}
+
+	var numNights, numGuests, totalPrice *int32
+	// Provera i konverzija NumNights
+	if reservation.NumNights.Valid {
+		nn := reservation.NumNights.Int32
+		numNights = &nn
+	}
+	// Provera i konverzija NumGuests
+	if reservation.NumGuests.Valid {
+		nn := reservation.NumGuests.Int32
+		numGuests = &nn
+	}
+	// Provera i konverzija TotalPrice
+	if reservation.TotalPrice.Valid {
+		nn := reservation.TotalPrice.Int32
+		totalPrice = &nn
+	}
+
+	return &pb.ReservationAll{
+		ReservationId:   &reservation.ReservationID,
+		RoomId:          &reservation.RoomID,
+		RoomGuestNumber: roomGuestNumber,
+		RoomPriceEn:     roomPriceEn,
+		FirstName:       &reservation.FirstName,
+		LastName:        &reservation.LastName,
+		Email:           &reservation.Email,
+		Phone:           &reservation.Phone,
+		StartDate:       &startDate,
+		EndDate:         &endDate,
+		Processed:       &reservation.Processed,
+		NumNights:       numNights,
+		NumGuests:       numGuests,
+		Status:          &reservation.Status,
+		TotalPrice:      totalPrice,
+		ExtrasPrice:     &reservation.ExtrasPrice,
+		IsPaid:          &reservation.IsPaid,
+		HasBreakfast:    &reservation.HasBreakfast,
+		CreatedAt:       timestamppb.New(reservation.CreatedAt),
+		RoomNameSr:      roomNameSr,
+		RoomNameEn:      roomNameEn,
+		RoomNameBg:      roomNameBg,
+	}
+}
+
+
+
 func convertRoomRestriction(roomRestriction db.RoomRestriction) *pb.RoomRestriction {
 	startDate := roomRestriction.StartDate.Format("2006-01-02")
 	endDate := roomRestriction.EndDate.Format("2006-01-02")

@@ -9,12 +9,12 @@ import (
 )
 
 func (server *Server) DeleteReservation(ctx context.Context, req *pb.DeleteReservationRequest) (*pb.DeleteReservationResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
-	err := server.store.DeleteReservationTx(ctx, req.GetReservationId())
+	err = server.store.DeleteReservationTx(ctx, req.GetReservationId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete reservation: %s", err)
 	}

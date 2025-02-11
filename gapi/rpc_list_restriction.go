@@ -10,10 +10,10 @@ import (
 )
 
 func (server *Server) ListRestrictions(ctx context.Context, req *pb.ListRestrictionsRequest) (*pb.ListRestrictionsResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
 	arg := db.ListRestrictionsParams{
 		Limit:  req.GetLimit(),

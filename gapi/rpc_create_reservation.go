@@ -14,10 +14,10 @@ import (
 )
 
 func (server *Server) CreateReservation(ctx context.Context, req *pb.CreateReservationRequest) (*pb.CreateReservationResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 	violations := validateCreateReservationRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

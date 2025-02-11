@@ -13,10 +13,10 @@ import (
 )
 
 func (server *Server) ListReservationsAfterDate(ctx context.Context, req *pb.ListReservationsAfterDateRequest) (*pb.ListReservationsAfterDateResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
 	var violations []*errdetails.BadRequest_FieldViolation
 	if violations != nil {

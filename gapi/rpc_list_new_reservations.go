@@ -10,10 +10,10 @@ import (
 )
 
 func (server *Server) ListNewReservations(ctx context.Context, req *pb.ListNewReservationsRequest) (*pb.ListNewReservationsResponse, error) {
-	// _, err := server.authorizeUser(ctx)
-	// if err != nil {
-	// 	return nil, unauthenticatedError(err)
-	// }
+	_, err := server.authorizeUser(ctx)
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
 
 	arg := db.AllNewReservationsParams{
 		Limit:  req.GetLimit(),
