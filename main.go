@@ -166,6 +166,16 @@ func runGatewayServer(
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
 
+	// Dodaj ovaj handler — ovo je novi deo
+	mux.HandleFunc("/upload-room-image", server.UploadRoomImageHandler)
+
+	// Serve static files from ./uploads directory
+	fsUploads := http.FileServer(http.Dir("./uploads"))
+	mux.Handle("/uploads/", http.StripPrefix("/uploads/", fsUploads))
+
+
+	// Serve Swagger statičke fajlove
+
 	statikFS, err := fs.New()
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create statik fs")
